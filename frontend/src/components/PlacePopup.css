@@ -168,3 +168,21 @@
   background: #f59e0b;
   color: #fff;
 }
+
+/* Small note under a day (e.g. lunch break) */
+.pp-day-note {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: #6b7280;
+}
+
+.pp-days td {
+  vertical-align: top;
+}
+
+.pp-network {
+  margin-top: -6px;
+  font-size: 0.78rem;
+  color: #6b7280;
+}

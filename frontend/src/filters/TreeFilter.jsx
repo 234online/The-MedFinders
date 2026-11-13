@@ -84,9 +84,12 @@ export default function TreeFilter({ filter, value, onChange }) {
               <button type="button" className="tree-label" onClick={() => toggleOpen(group.id)}>
                 <span className="tree-icon">{group.icon}</span>
                 <span className="tree-name">{group.label}</span>
-                <span className="tree-count">
-                  {count > 0 ? `${count}/${fullGroup.items.length}` : fullGroup.items.length}
-                </span>
+                {count > 0 && <span className="tree-selected-count">{count}</span>}
+                {filter.groupCounts && (
+                  <span className="tree-count" title={TEXT.clinicsCount(filter.groupCounts[group.id] ?? 0)}>
+                    {TEXT.clinicsCount(filter.groupCounts[group.id] ?? 0)}
+                  </span>
+                )}
                 <span className="tree-chevron">▸</span>
               </button>
             </div>
@@ -101,6 +104,9 @@ export default function TreeFilter({ filter, value, onChange }) {
                     onClick={() => toggleItem(item)}
                   >
                     {item}
+                    {filter.itemCounts && (
+                      <span className="tree-item-count">{filter.itemCounts[item] ?? 0}</span>
+                    )}
                   </button>
                 ))}
               </div>

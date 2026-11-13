@@ -1,0 +1,67 @@
+/* Same glass look as the search bar */
+.floating-btn {
+  position: absolute;
+  z-index: 1000; /* above the map */
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border-radius: 999px;
+  cursor: pointer;
+
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transition: box-shadow 0.25s ease, background 0.25s ease;
+}
+
+/* Glow on hover: same teal glow as the search bar (colours in App.css) */
+.floating-btn:hover,
+.floating-btn:focus-visible {
+  outline: none;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow:
+    0 0 0 2px var(--accent-glow-strong),
+    0 0 18px 4px var(--accent-glow);
+}
+
+/* Icon size */
+.floating-btn img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+/* Positions */
+.floating-btn.top-right {
+  top: 16px;
+  right: 16px;
+}
+
+.floating-btn.bottom-right {
+  bottom: 36px; /* sits above the map's attribution text */
+  right: 16px;
+}
+
+/* Small green dot (e.g. "logged in") */
+.floating-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #22c55e;
+  border: 2px solid #fff;
+}
+
+/* Profile photo instead of the icon */
+.floating-btn img.floating-photo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}

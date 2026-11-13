@@ -199,3 +199,14 @@
 .landing-all:hover {
   opacity: 1;
 }
+
+/* Second row of tiles (types of places): slightly smaller */
+.landing-types .landing-tile {
+  padding: 14px 10px;
+}
+
+.landing-types .landing-tile-icon {
+  width: 44px;
+  height: 44px;
+  font-size: 22px;
+}

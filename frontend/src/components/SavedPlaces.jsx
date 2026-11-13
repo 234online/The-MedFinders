@@ -6,9 +6,15 @@ import "./panels.css";
 export default function SavedPlaces({ user, places, onSelect, onRemove, onLogout }) {
   return (
     <div className="saved">
-      <p className="saved-user">
-        {TEXT.loggedInAs} <strong>{user.email}</strong>
-      </p>
+      <div className="saved-user">
+        {user.picture && (
+          <img src={user.picture} alt="" className="saved-avatar" referrerPolicy="no-referrer" />
+        )}
+        <span>
+          {TEXT.loggedInAs} <strong>{user.name}</strong>
+          <small>{user.email}</small>
+        </span>
+      </div>
 
       <h3>
         {TEXT.savedTitle} ({places.length})

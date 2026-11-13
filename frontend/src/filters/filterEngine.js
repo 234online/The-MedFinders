@@ -34,12 +34,12 @@ export function matchesQuery(place, query) {
     [
       place.name,
       getCategory(place.category).label,
-      place.area,
+      place.network,
       place.address,
       place.description,
       ...(place.tags ?? []),
       ...(place.specialties ?? []),
-      // services the place has, so "non-stop" or "CNAS" can be searched
+      // services the place has, so e.g. "non-stop" can be searched
       ...FEATURES.filter((f) => place[f.id] === true).map((f) => f.label),
     ]
       .filter(Boolean)

@@ -197,3 +197,57 @@
   margin: 0 0 10px;
   padding-left: 20px;
 }
+
+/* ---------- Auth0 login ---------- */
+.auth0-intro {
+  margin: 0;
+  color: #4b5563;
+  font-size: 0.92rem;
+}
+
+.btn-google {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+  color: #1f2937;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-google:hover {
+  background: #f9fafb;
+}
+
+.btn-google-g {
+  font-weight: 800;
+  background: linear-gradient(90deg, #4285f4, #ea4335, #fbbc05, #34a853);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Logged-in user at the top of "Contul meu" */
+.saved-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.saved-user small {
+  display: block;
+  color: #6b7280;
+}
+
+.saved-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
