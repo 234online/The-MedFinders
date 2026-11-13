@@ -1,3 +1,38 @@
+/* ---------- Added with the modular filters ---------- */
+.sidebar {
+  overflow-y: auto;
+}
+
+.results {
+  min-height: 120px;
+}
+
+.popup {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 180px;
+}
+
+.popup-type {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.badge {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #3730a3;
+  font-size: 0.75rem;
+}
 * {
   box-sizing: border-box;
 }

@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import "./SearchBar.css";
+import { TEXT } from "./config/texts.js";
 
 // ICON: replace the file public/search-icon.svg with your own
 // (same name), or change this path to point at your file,
 // e.g. "/my-icon.png". Files in the public folder are served from "/".
 const ICON_SRC = "/search-icon.svg";
 
-export default function SearchBar({ value, onChange, placeholder = "Search places…" }) {
+export default function SearchBar({ value, onChange, placeholder = TEXT.searchPlaceholder }) {
   const [open, setOpen] = useState(false);
   const inputRef = useRef(null);
 
@@ -25,7 +26,7 @@ export default function SearchBar({ value, onChange, placeholder = "Search place
       <button
         type="button"
         className="searchbar-icon"
-        aria-label="Search"
+        aria-label={TEXT.searchButton}
         onClick={() => (open ? inputRef.current?.focus() : setOpen(true))}
       >
         <img src={ICON_SRC} alt="" />
@@ -46,7 +47,7 @@ export default function SearchBar({ value, onChange, placeholder = "Search place
           <button
             type="button"
             className="searchbar-close"
-            aria-label="Clear search"
+            aria-label={TEXT.clearSearch}
             onMouseDown={(e) => e.preventDefault()}
             onClick={close}
           >
