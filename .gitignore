@@ -1,0 +1,20 @@
+# Secrete și chei API (CRITIC - nu se urcă niciodată pe GitHub!)
+.env
+.env.local
+.env.*.local
+
+# Dependențe (fiecare le instalează local cu npm install / pip install)
+node_modules/
+venv/
+.venv/
+__pycache__/
+
+# Fișiere generate la build
+dist/
+build/
+.next/
+
+# Fișiere de sistem și editor
+.DS_Store
+Thumbs.db
+.vscode/
