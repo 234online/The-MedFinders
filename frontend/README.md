@@ -16,17 +16,25 @@ places are highlighted on the map.
 
 4. Open the address it prints (usually http://localhost:5173)
 
-## Where things are
+## Data (from the PostgreSQL database)
 
-- `src/data/places.json`: the places (name, category, tags, coordinates). Add your own here.
-  The sample coordinates are approximate, so check them before relying on them.
-- `src/App.jsx`: search logic, the sidebar, and the map
-- `src/App.css`: styling
-- `CATEGORIES` in `App.jsx`: category labels and marker colours
+- `src/data/clinics.json` is an export of the clinics database, with the database's own
+  table and column names. Regenerate it whenever the database changes (from this folder):
+
+  ```
+  psql -d Clinics_db -At -f database/export_clinics_json.sql > src/data/clinics.json
+  ```
+
+  (add `-U postgres -h localhost` if needed). In pgAdmin you can also run the query and
+  paste the result into the file.
+- `src/data/loadPlaces.js` turns the database rows into what the website uses.
+- `src/data/translations.js` shows the database's English notes in Romanian.
+- Specialty groups come from `specialties.category_ro`; icons/colours are in
+  `src/config/placeTypes.js`. Filters are in `src/config/filters.js`.
 
 ## Notes
 
 - The map tiles come from OpenStreetMap's public server, which is fine for development.
   For a public site, switch the `TileLayer` URL to a provider such as MapTiler, Stadia Maps
-  or Carto (they all have free tiers), and keep the OpenStreetMap attribution.
+  or Carto, and keep the OpenStreetMap attribution.
 - `npm run build` creates a production version in `dist/`.

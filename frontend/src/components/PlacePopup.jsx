@@ -2,6 +2,7 @@ import { FEATURES, getCategory } from "../config/placeTypes.js";
 import { TEXT } from "../config/texts.js";
 import { Stars, ScoreBadge } from "./Stars.jsx";
 import OpeningHours from "./OpeningHours.jsx";
+import { splitPhones } from "../utils/contact.js";
 import "./PlacePopup.css";
 
 // What appears above a pin on the map when you click it
@@ -15,6 +16,7 @@ export default function PlacePopup({ place, isFavorite, onToggleFavorite, onOpen
         {category.icon} {category.label}
       </span>
       <h3 className="pp-name">{place.name}</h3>
+      {place.network !== "Independent" && <span className="pp-network">{place.network}</span>}
 
       <button type="button" className="pp-score" onClick={() => onOpenDetails(place)}>
         <ScoreBadge score={place.score} />
@@ -26,9 +28,11 @@ export default function PlacePopup({ place, isFavorite, onToggleFavorite, onOpen
 
       <div className="pp-contact">
         {place.address && <span>📍 {place.address}</span>}
-        {place.phone && (
-          <a href={`tel:${place.phone.replace(/\s/g, "")}`}>📞 {place.phone}</a>
-        )}
+        {splitPhones(place.phone).map((p) => (
+          <a key={p.label} href={`tel:${p.tel}`}>
+            📞 {p.label}
+          </a>
+        ))}
       </div>
 
       <OpeningHours place={place} />

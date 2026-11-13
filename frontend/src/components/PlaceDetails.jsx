@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { FEATURES, getCategory } from "../config/placeTypes.js";
+import { FEATURES, getCategory, getOwnership } from "../config/placeTypes.js";
+import { splitPhones, shortUrl } from "../utils/contact.js";
 import { TEXT } from "../config/texts.js";
 import { ratingBreakdown } from "../reviews/score.js";
 import { Stars, StarInput } from "./Stars.jsx";
@@ -32,8 +33,9 @@ export default function PlaceDetails({
         </span>
         <div>
           <span className="details-type" style={{ color: category.color }}>
-            {category.label}
-            {place.area && ` · ${place.area}`}
+            {category.singular}
+            {` · ${place.network === "Independent" ? TEXT.independent : place.network}`}
+            {` · ${getOwnership(place.ownership)}`}
           </span>
           <h3>{place.name}</h3>
         </div>
@@ -45,10 +47,26 @@ export default function PlaceDetails({
       <div className="details-grid">
         <div className="details-box">
           <h4>{TEXT.contactTitle}</h4>
-          {place.address && <p>📍 {place.address}</p>}
-          {place.phone && (
+          <p>
+            📍 {place.address}
+            {place.postalCode && `, ${place.postalCode}`}
+          </p>
+          {place.approximate && <p className="details-muted">{TEXT.approximateLocation}</p>}
+          {splitPhones(place.phone).map((p) => (
+            <p key={p.label}>
+              <a href={`tel:${p.tel}`}>📞 {p.label}</a>
+            </p>
+          ))}
+          {place.email && (
             <p>
-              <a href={`tel:${place.phone.replace(/\s/g, "")}`}>📞 {place.phone}</a>
+              <a href={`mailto:${place.email}`}>✉️ {place.email}</a>
+            </p>
+          )}
+          {place.website && (
+            <p>
+              <a href={place.website} target="_blank" rel="noreferrer">
+                🌐 {shortUrl(place.website)}
+              </a>
             </p>
           )}
         </div>
@@ -85,6 +103,28 @@ export default function PlaceDetails({
         {isFavorite ? TEXT.saved : TEXT.save}
       </button>
 
+      {/* ---------- Doctors ---------- */}
+      {place.doctors?.length > 0 && (
+        <div className="details-doctors">
+          <h4>{TEXT.doctorsTitle}</h4>
+          <ul>
+            {place.doctors.map((d, i) => (
+              <li key={d.name + i}>
+                <strong>{d.name}</strong>
+                <span className="details-doctor-meta">
+                  {[d.title, d.specialty, d.role].filter(Boolean).join(" · ")}
+                </span>
+                {d.schedule.length > 0 && (
+                  <span className="details-doctor-schedule">
+                    {d.schedule.map((s) => `${TEXT.daysShort[s.day]} ${s.start}–${s.end}`).join(", ")}
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {/* ---------- Score summary ---------- */}
       <h4 className="details-section-title">{TEXT.reviewsTitle}</h4>
       <div className="score-summary">
@@ -93,19 +133,36 @@ export default function PlaceDetails({
           <Stars value={place.score} size={16} />
           <span className="score-count">{TEXT.reviewsCount(place.reviewCount)}</span>
         </div>
-        <div className="score-bars">
-          {breakdown.map(({ stars, count }) => (
-            <div key={stars} className="score-bar-row">
-              <span>{stars} ★</span>
-              <div className="score-bar">
-                <div
-                  className="score-bar-fill"
-                  style={{ width: reviews.length ? `${(count / reviews.length) * 100}%` : 0 }}
-                />
-              </div>
-              <span className="score-bar-count">{count}</span>
-            </div>
+        <div className="score-sources">
+          {place.ratings.length > 0 && <span className="score-sources-title">{TEXT.publicRatings}</span>}
+          {place.ratings.map((r) => (
+            <a key={r.platform} href={r.url} target="_blank" rel="noreferrer" className="score-source">
+              <span>{r.platform}</span>
+              <span>
+                ★ {r.score.toFixed(1)}/{r.maxScore} {r.votes != null && `(${TEXT.votes(r.votes)})`}
+              </span>
+            </a>
           ))}
+          {reviews.length > 0 && (
+            <>
+              <span className="score-sources-title">{TEXT.siteReviews}</span>
+              {breakdown.map(({ stars, count }) => (
+                <div key={stars} className="score-bar-row">
+                  <span>{stars} ★</span>
+                  <div className="score-bar">
+                    <div
+                      className="score-bar-fill"
+                      style={{ width: `${(count / reviews.length) * 100}%` }}
+                    />
+                  </div>
+                  <span className="score-bar-count">{count}</span>
+                </div>
+              ))}
+            </>
+          )}
+          {place.ratings.length === 0 && reviews.length === 0 && (
+            <span className="details-muted">{TEXT.noRatingsYet}</span>
+          )}
         </div>
       </div>
 
@@ -154,7 +211,23 @@ export default function PlaceDetails({
           ))}
         </ul>
       )}
-      <p className="details-muted">{TEXT.demoReviewsNote}</p>
+      {/* ---------- Sources ---------- */}
+      {place.sources?.length > 0 && (
+        <details className="details-sources">
+          <summary>{TEXT.sourcesTitle(place.sources.length)}</summary>
+          <ul>
+            {place.sources.map((src) => (
+              <li key={src.url}>
+                <a href={src.url} target="_blank" rel="noreferrer">
+                  {shortUrl(src.url)}
+                </a>
+                {src.confirms && <span> · {src.confirms}</span>}
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
+      <p className="details-muted">{TEXT.dataNote}</p>
     </div>
   );
 }

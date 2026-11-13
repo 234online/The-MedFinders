@@ -57,3 +57,11 @@
   background: #22c55e;
   border: 2px solid #fff;
 }
+
+/* Profile photo instead of the icon */
+.floating-btn img.floating-photo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}

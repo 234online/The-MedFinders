@@ -29,8 +29,17 @@ export default function Documentation() {
 
       <h3>Despre date</h3>
       <p>
-        Datele afișate acum sunt exemple de test. Verifică întotdeauna programul
-        și disponibilitatea direct cu unitatea medicală. În caz de urgență, sună la 112.
+        Harta conține 100 de clinici, spitale, laboratoare și cabinete din Timișoara.
+        Datele (adresă, telefon, program, specialități, medici) au fost adunate din
+        site-urile oficiale ale clinicilor, paginile rețelelor medicale, ROmedic și
+        OpenStreetMap. O locație apare doar dacă o sursă a confirmat numele, adresa,
+        telefonul, programul și cel puțin o specialitate. Sursele fiecărei locații
+        sunt afișate în fereastra „Recenzii și detalii”.
+      </p>
+      <p>
+        Scorul combină evaluările publice (ROmedic, SfatulMedicului) cu recenziile
+        scrise pe TimiCareNow. Programul se poate schimba: confirmă telefonic înainte
+        de vizită. În caz de urgență, sună la 112.
       </p>
 
       <h3>Echipa</h3>

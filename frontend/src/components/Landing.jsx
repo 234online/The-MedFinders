@@ -3,8 +3,11 @@ import { SPECIALTY_GROUPS, CATEGORIES, FEATURES } from "../config/placeTypes.js"
 import { TEXT } from "../config/texts.js";
 import "./Landing.css";
 
-// Services offered as quick buttons on the start page (ids from FEATURES)
-const QUICK_FEATURES = ["open24h", "emergency", "onlineBooking", "kids"];
+// Quick buttons on the start page: filter ids from config/filters.js
+const QUICK_FILTERS = [
+  { id: "openNow", label: TEXT.openNow },
+  ...FEATURES.filter((f) => ["open24h", "emergency", "kids"].includes(f.id)),
+];
 
 // The start page: shown before the map opens.
 //   counts      { groupId: number of places offering that domain }
@@ -75,7 +78,7 @@ export default function Landing({
 
         <p className="landing-section">{TEXT.landingTypesTitle}</p>
         <div className="landing-tiles landing-types">
-          {CATEGORIES.map((c) => (
+          {CATEGORIES.filter((c) => typeCounts[c.id] > 0).map((c) => (
             <button
               key={c.id}
               type="button"
@@ -92,7 +95,7 @@ export default function Landing({
 
         <p className="landing-section">{TEXT.landingQuickTitle}</p>
         <div className="landing-quick">
-          {FEATURES.filter((f) => QUICK_FEATURES.includes(f.id)).map((f) => (
+          {QUICK_FILTERS.map((f) => (
             <button key={f.id} type="button" onClick={() => onFeature(f.id)}>
               {f.label}
             </button>

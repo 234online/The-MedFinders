@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { TEXT } from "../config/texts.js";
+import { isOpenAt } from "./hoursLogic.js";
+import { translateHourNote } from "../data/translations.js";
 
 // =============================================================
 //  OPENING HOURS
@@ -7,19 +9,19 @@ import { TEXT } from "../config/texts.js";
 //
 //  1) Google Maps (live), used when BOTH are true:
 //       - the .env file has VITE_GOOGLE_MAPS_KEY=your-key
-//       - the place has "googlePlaceId" filled in, in places.json
+//       - the place has a Google Place ID (add a google_place_id column
+//         to the clinics table; loadPlaces.js already reads it)
 //     (see README for how to get the key and the place ids)
 //
-//  2) Otherwise the "hours" field in places.json (prototype data).
+//  2) Otherwise the opening hours from the database (place.hours).
 //
 //  Whichever is used, the popup receives the same shape:
-//    { source: "google" | "local",
-//      days: ["08:00–20:00", ..., "Închis"]   // Monday ... Sunday
+//    { source: "google" | "database",
+//      days:  ["08:00–20:00", ..., "Închis"]   // Monday ... Sunday
+//      notes: ["", "Pauză 13:30–17:30", ...]   // small text under a day
 //      openNow: true | false | null }
 //  or null if no schedule is known.
 // =============================================================
-
-const DAY_KEYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 
 export async function getOpeningHours(place) {
   const apiKey = import.meta.env.VITE_GOOGLE_MAPS_KEY;
@@ -58,36 +60,28 @@ async function fetchFromGoogle(placeId, apiKey) {
     source: "google",
     // "luni: 08:00–20:00" -> "08:00–20:00"
     days: hours.weekdayDescriptions.map((line) => line.replace(/^[^:]+:\s*/, "")),
+    notes: [],
     openNow: hours.openNow ?? null,
   };
 }
 
-// Prototype hours from places.json, e.g. "hours": { "mon": "08:00-20:00", "sun": null }
+// Hours from the database (place.hours, see services/hoursLogic.js)
 function localHours(place) {
-  if (place.open24h) {
-    return { source: "local", days: Array(7).fill(TEXT.nonstop), openNow: true };
-  }
-  if (!place.hours) return null;
+  const week = place.hours;
+  if (!week || week.every((d) => d === null)) return null;
 
-  const ranges = DAY_KEYS.map((key) => place.hours[key] ?? null);
   return {
-    source: "local",
-    days: ranges.map((r) => (r ? r.replace("-", "–") : TEXT.closed)),
-    openNow: isOpenNow(ranges),
+    source: "database",
+    days: week.map((d) => {
+      if (d === null) return TEXT.notStated;
+      if (d.closed) return TEXT.closed;
+      if (d.h24) return TEXT.nonstop;
+      const overnight = d.close < d.open;
+      return `${d.open}–${d.close}${overnight ? ` ${TEXT.nextDay}` : ""}`;
+    }),
+    notes: week.map((d) => translateHourNote(d?.note)),
+    openNow: isOpenAt(week),
   };
-}
-
-function toMinutes(hhmm) {
-  const [h, m] = hhmm.split(":").map(Number);
-  return h * 60 + m;
-}
-
-function isOpenNow(ranges, now = new Date()) {
-  const today = ranges[(now.getDay() + 6) % 7]; // JavaScript's week starts on Sunday
-  if (!today) return false;
-  const [open, close] = today.split("-").map(toMinutes);
-  const minutes = now.getHours() * 60 + now.getMinutes();
-  return minutes >= open && minutes < close;
 }
 
 // React hook used by the popup: { loading, hours }

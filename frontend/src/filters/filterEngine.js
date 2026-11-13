@@ -34,7 +34,7 @@ export function matchesQuery(place, query) {
     [
       place.name,
       getCategory(place.category).label,
-      place.area,
+      place.network,
       place.address,
       place.description,
       ...(place.tags ?? []),
