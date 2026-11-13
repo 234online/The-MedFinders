@@ -26,7 +26,7 @@ export function normalize(text) {
   return String(text).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 }
 
-// Text search over the name, type, area, address, description, tags and services.
+// Text search over the name, type, area, address, description, tags, specialties and services.
 // Every word typed must appear somewhere.
 export function matchesQuery(place, query) {
   if (!query.trim()) return true;
@@ -38,6 +38,7 @@ export function matchesQuery(place, query) {
       place.address,
       place.description,
       ...(place.tags ?? []),
+      ...(place.specialties ?? []),
       // services the place has, so "non-stop" or "CNAS" can be searched
       ...FEATURES.filter((f) => place[f.id] === true).map((f) => f.label),
     ]

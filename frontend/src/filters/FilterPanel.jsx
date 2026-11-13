@@ -21,10 +21,11 @@ export default function FilterPanel({ filters, values, onChange, onReset }) {
     const key = filter.group ?? filter.id;
     let group = groups.find((g) => g.key === key);
     if (!group) {
-      group = { key, title: filter.group ?? filter.label, items: [] };
+      group = { key, title: filter.group ?? filter.label, items: [], collapsed: false };
       groups.push(group);
     }
     group.items.push(filter);
+    if (filter.collapsed) group.collapsed = true;
   }
 
   const active = countActive(filters, values);
@@ -40,26 +41,39 @@ export default function FilterPanel({ filters, values, onChange, onReset }) {
         )}
       </div>
 
-      {groups.map((group) => (
-        <section key={group.key} className="filter-group">
-          <h3>{group.title}</h3>
-          {group.items.map((filter) => {
-            const Control = COMPONENTS[filter.type];
-            if (!Control) {
-              console.warn(`Unknown filter type "${filter.type}" for filter "${filter.id}"`);
-              return null;
-            }
-            return (
-              <Control
-                key={filter.id}
-                filter={filter}
-                value={values[filter.id]}
-                onChange={(value) => onChange(filter.id, value)}
-              />
-            );
-          })}
-        </section>
-      ))}
+      {groups.map((group) => {
+        const groupActive = countActive(group.items, values);
+        return (
+          <details key={group.key} className="filter-group" open={!group.collapsed}>
+            <summary>
+              <span>{group.title}</span>
+              {groupActive > 0 && <span className="filter-group-count">{groupActive}</span>}
+            </summary>
+
+            <div className="filter-group-body">
+              {group.items.map((filter) => {
+                const Control = COMPONENTS[filter.type];
+                if (!Control) {
+                  console.warn(`Unknown filter type "${filter.type}" for filter "${filter.id}"`);
+                  return null;
+                }
+                // Inside a shared group, chips/selects get a small label of their own
+                const needsLabel = filter.group && filter.type !== "toggle";
+                return (
+                  <div key={filter.id} className="filter-item">
+                    {needsLabel && <span className="filter-sublabel">{filter.label}</span>}
+                    <Control
+                      filter={filter}
+                      value={values[filter.id]}
+                      onChange={(value) => onChange(filter.id, value)}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </details>
+        );
+      })}
     </div>
   );
 }

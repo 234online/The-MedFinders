@@ -1,0 +1,201 @@
+/* Start page. Background colours: change the gradient below. */
+.landing {
+  position: relative;
+  min-height: 100%;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  padding: 72px 20px 48px;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.12), transparent 40%),
+    linear-gradient(135deg, #0f766e 0%, #0e7490 55%, #1e3a8a 100%);
+  color: #fff;
+}
+
+.landing-content {
+  width: 100%;
+  max-width: 860px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.landing-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  opacity: 0.95;
+}
+
+.landing-logo {
+  font-size: 1.6rem;
+}
+
+.landing h1 {
+  margin: 14px 0 8px;
+  font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+  line-height: 1.15;
+}
+
+.landing-subtitle {
+  margin: 0 0 28px;
+  max-width: 560px;
+  font-size: 1.05rem;
+  opacity: 0.9;
+}
+
+/* ---------- Big search bar (glass) ---------- */
+.landing-search {
+  width: 100%;
+  max-width: 620px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 6px 6px 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.25s;
+}
+
+.landing-search:focus-within,
+.landing-search:hover {
+  box-shadow:
+    0 0 0 3px rgba(94, 234, 212, 0.6),
+    0 0 26px 6px rgba(94, 234, 212, 0.45);
+}
+
+.landing-search img {
+  width: 22px;
+  height: 22px;
+}
+
+.landing-search input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 4px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 16px;
+  color: #111827;
+}
+
+.landing-search button {
+  padding: 12px 22px;
+  border: none;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.landing-search button:hover {
+  background: var(--accent-hover);
+}
+
+/* ---------- Section titles ---------- */
+.landing-section {
+  margin: 34px 0 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+/* ---------- Category tiles ---------- */
+.landing-tiles {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.landing-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 18px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.2s, box-shadow 0.2s;
+}
+
+.landing-tile:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.24);
+  box-shadow: 0 0 0 2px var(--tile-color), 0 10px 24px rgba(0, 0, 0, 0.2);
+}
+
+.landing-tile-icon {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--tile-color);
+  font-size: 26px;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.85);
+}
+
+.landing-tile-label {
+  font-weight: 700;
+}
+
+.landing-tile-count {
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
+/* ---------- Quick filters ---------- */
+.landing-quick {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.landing-quick button {
+  padding: 8px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 999px;
+  background: transparent;
+  color: #fff;
+  font-size: 0.92rem;
+  cursor: pointer;
+}
+
+.landing-quick button:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.landing-all {
+  margin-top: 30px;
+  padding: 6px;
+  border: none;
+  background: none;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+.landing-all:hover {
+  opacity: 1;
+}

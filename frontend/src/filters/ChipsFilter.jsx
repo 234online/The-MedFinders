@@ -1,4 +1,5 @@
 // A row of clickable pills. With multiple: true, several can be on at once.
+// Options can have an icon (emoji) and a color.
 export default function ChipsFilter({ filter, value, onChange }) {
   const isOn = (v) => (filter.multiple ? value.includes(v) : value === v);
 
@@ -14,7 +15,7 @@ export default function ChipsFilter({ filter, value, onChange }) {
     <div className="chips">
       {filter.options.map((option) => {
         const on = isOn(option.value);
-        const color = option.color ?? "#2563eb";
+        const color = option.color ?? "var(--accent)";
         return (
           <button
             key={option.value}
@@ -23,7 +24,8 @@ export default function ChipsFilter({ filter, value, onChange }) {
             style={on ? { background: color, borderColor: color } : undefined}
             onClick={() => toggle(option.value)}
           >
-            {option.color && !on && (
+            {option.icon && <span className="chip-icon">{option.icon}</span>}
+            {!option.icon && option.color && !on && (
               <span className="chip-dot" style={{ background: option.color }} />
             )}
             {option.label}

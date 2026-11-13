@@ -7,6 +7,18 @@
 
 export const TEXT = {
   appTitle: "Harta medicală Timișoara",
+  brand: "MedFinders",
+  backHome: "Înapoi la pagina principală",
+
+  // Start page
+  landingTitle: "Găsește îngrijirea medicală potrivită în Timișoara",
+  landingSubtitle: "Spitale, clinici, farmacii și medici: cu program, recenzii și scoruri, pe o singură hartă.",
+  landingSearchPlaceholder: "Ex: farmacie non-stop, cardiologie, stomatolog Fabric…",
+  landingSearchButton: "Caută",
+  landingCategoriesTitle: "Sau alege o categorie",
+  landingQuickTitle: "Filtre rapide",
+  showAllMap: "Vezi toată harta →",
+  placesCount: (n) => (n === 1 ? "1 locație" : n >= 20 ? `${n} de locații` : `${n} locații`),
 
   // Filter panel
   filtersTitle: "Filtre",
@@ -15,6 +27,7 @@ export const TEXT = {
   // Results list
   resultsCount: (shown, total) => `Afișate: ${shown} din ${total}`,
   noResults: "Nicio locație nu corespunde căutării.",
+  sortLabel: "Sortează",
 
   // Search bar
   searchPlaceholder: "Caută farmacii, clinici, spitale…",
@@ -61,5 +74,31 @@ export const TEXT = {
   hoursLoading: "Se încarcă programul…",
   hoursUnavailable: "Program indisponibil",
   hoursFromGoogle: "Program preluat de pe Google Maps",
+  contactTitle: "Contact",
+  priceTitle: "Preț",
+  languagesTitle: "Limbi vorbite",
+  specialtiesTitle: "Specialități",
+  servicesTitle: "Servicii",
+
+  // Score & reviews
+  noScore: "Nou",
+  reviewsButton: "Recenzii și detalii",
+  reviewsTitle: "Recenzii",
+  reviewsCount: (n) =>
+    n === 0 ? "Nicio recenzie" : n === 1 ? "1 recenzie" : n >= 20 ? `${n} de recenzii` : `${n} recenzii`,
+  noReviews: "Nicio recenzie încă. Fii primul care scrie una!",
+  writeReview: "Scrie o recenzie",
+  loginToReviewButton: "Autentifică-te pentru a scrie o recenzie",
+  loginToReview: "Autentifică-te pentru a scrie o recenzie.",
+  yourRating: "Nota ta",
+  yourReview: "Părerea ta",
+  reviewPlaceholder: "Cum a fost experiența ta? (personal, timp de așteptare, curățenie…)",
+  submitReview: "Publică recenzia",
+  cancel: "Anulează",
+  reviewNeedsRating: "Alege o notă de la 1 la 5 stele.",
+  reviewTooShort: "Scrie cel puțin câteva cuvinte.",
+  yourReviewTag: "Recenzia ta",
+  demoReviewsNote: "Recenziile existente sunt exemple de test (prototip).",
+
   days: ["Luni", "Marți", "Miercuri", "Joi", "Vineri", "Sâmbătă", "Duminică"],
 };
