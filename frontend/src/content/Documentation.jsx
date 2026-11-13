@@ -12,9 +12,9 @@
 export default function Documentation() {
   return (
     <div className="docs">
-      <h3>Ce este MedFinders?</h3>
+      <h3>Ce este TimiCareNow?</h3>
       <p>
-        MedFinders te ajută să găsești rapid spitale, clinici, farmacii și alte
+        TimiCareNow te ajută să găsești rapid spitale, clinici, farmacii și alte
         unități medicale din Timișoara, direct pe hartă.
       </p>
 
@@ -34,7 +34,7 @@ export default function Documentation() {
       </p>
 
       <h3>Echipa</h3>
-      <p>Proiect realizat de echipa MedFinders la Unihack.</p>
+      <p>Proiect realizat de echipa TimiCareNow la Unihack.</p>
     </div>
   );
 }

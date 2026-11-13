@@ -1,19 +1,30 @@
 import { useState } from "react";
-import { SPECIALTY_GROUPS, FEATURES } from "../config/placeTypes.js";
+import { SPECIALTY_GROUPS, CATEGORIES, FEATURES } from "../config/placeTypes.js";
 import { TEXT } from "../config/texts.js";
 import "./Landing.css";
 
 // Services offered as quick buttons on the start page (ids from FEATURES)
-const QUICK_FEATURES = ["open24h", "emergency", "cnas", "kids"];
+const QUICK_FEATURES = ["open24h", "emergency", "onlineBooking", "kids"];
 
 // The start page: shown before the map opens.
 //   counts      { groupId: number of places offering that domain }
+//   typeCounts  { categoryId: number of places of that type }
+//   onCategory  (categoryId) => open the map filtered to that type of place
 //   onSearch    (text) => open the map with that search
 //   onGroup     (group) => open the map filtered to that specialty domain
 //   onFeature   (featureId) => open the map with that service switched on
 //   onShowAll   () => open the map with everything
 //   children    extra things to show (the floating buttons)
-export default function Landing({ counts, onSearch, onGroup, onFeature, onShowAll, children }) {
+export default function Landing({
+  counts,
+  typeCounts,
+  onSearch,
+  onGroup,
+  onCategory,
+  onFeature,
+  onShowAll,
+  children,
+}) {
   const [text, setText] = useState("");
 
   function handleSubmit(e) {
@@ -62,11 +73,25 @@ export default function Landing({ counts, onSearch, onGroup, onFeature, onShowAl
           ))}
         </div>
 
+        <p className="landing-section">{TEXT.landingTypesTitle}</p>
+        <div className="landing-tiles landing-types">
+          {CATEGORIES.map((c) => (
+            <button
+              key={c.id}
+              type="button"
+              className="landing-tile"
+              style={{ "--tile-color": c.color }}
+              onClick={() => onCategory(c.id)}
+            >
+              <span className="landing-tile-icon">{c.icon}</span>
+              <span className="landing-tile-label">{c.label}</span>
+              <span className="landing-tile-count">{TEXT.placesCount(typeCounts[c.id] ?? 0)}</span>
+            </button>
+          ))}
+        </div>
+
         <p className="landing-section">{TEXT.landingQuickTitle}</p>
         <div className="landing-quick">
-          <button type="button" onClick={() => onSearch(TEXT.pharmacySearch)}>
-            {TEXT.landingPharmacies}
-          </button>
           {FEATURES.filter((f) => QUICK_FEATURES.includes(f.id)).map((f) => (
             <button key={f.id} type="button" onClick={() => onFeature(f.id)}>
               {f.label}

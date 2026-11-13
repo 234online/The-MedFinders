@@ -1,9 +1,8 @@
 import {
+  CATEGORIES,
   FEATURES,
   AREAS,
   SPECIALTY_GROUPS,
-  LANGUAGES,
-  PRICE_LEVELS,
 } from "./placeTypes.js";
 
 // =============================================================
@@ -37,6 +36,16 @@ export const FILTERS = [
     // Shows places that offer AT LEAST ONE of the selected specialties
     test: (place, selected) =>
       selected.length === 0 || selected.some((s) => (place.specialties ?? []).includes(s)),
+  },
+
+  {
+    id: "category",
+    type: "chips",
+    label: "Tip unitate",
+    multiple: true,
+    default: [],
+    options: CATEGORIES.map((c) => ({ value: c.id, label: c.label, icon: c.icon, color: c.color })),
+    test: (place, selected) => selected.length === 0 || selected.includes(place.category),
   },
 
   {
@@ -75,27 +84,4 @@ export const FILTERS = [
     default: false,
     test: (place, on) => !on || place[feature.id] === true,
   })),
-
-  {
-    id: "price",
-    type: "chips",
-    label: "Preț",
-    collapsed: true,
-    multiple: true,
-    default: [],
-    options: PRICE_LEVELS.map((p) => ({ value: p.id, label: p.label })),
-    test: (place, selected) => selected.length === 0 || selected.includes(place.priceLevel),
-  },
-
-  {
-    id: "languages",
-    type: "chips",
-    label: "Limbi vorbite",
-    collapsed: true,
-    multiple: true,
-    default: [],
-    options: LANGUAGES.map((l) => ({ value: l.id, label: l.label })),
-    // Must speak ALL selected languages
-    test: (place, selected) => selected.every((l) => (place.languages ?? []).includes(l)),
-  },
 ];

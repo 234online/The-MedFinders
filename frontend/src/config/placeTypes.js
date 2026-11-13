@@ -15,9 +15,9 @@ export const CATEGORIES = [
   { id: "clinic",     label: "Clinici",           icon: "🩺", color: "#2563eb" },
   { id: "pharmacy",   label: "Farmacii",          icon: "💊", color: "#16a34a" },
   { id: "doctor",     label: "Medici de familie", icon: "🧑‍⚕️", color: "#0d9488" },
-  { id: "dentist",    label: "Stomatologie",      icon: "🦷", color: "#0ea5e9" },
-  { id: "laboratory", label: "Laboratoare",       icon: "🔬", color: "#9333ea" },
-  { id: "optician",   label: "Optică",            icon: "👓", color: "#d97706" },
+  { id: "dentist",    label: "Cabinete stomatologice", icon: "🦷", color: "#0ea5e9" },
+  { id: "laboratory", label: "Laboratoare de analize", icon: "🔬", color: "#9333ea" },
+  { id: "optician",   label: "Optică medicală",   icon: "👓", color: "#d97706" },
 ];
 
 // Yes/no services. Each becomes an on/off switch in the filters and a
@@ -25,7 +25,6 @@ export const CATEGORIES = [
 export const FEATURES = [
   { id: "open24h",       label: "Deschis non-stop" },
   { id: "emergency",     label: "Urgențe (UPU)" },
-  { id: "cnas",          label: "În contract cu CNAS" },
   { id: "wheelchair",    label: "Acces scaun rulant" },
   { id: "onlineBooking", label: "Programare online" },
   { id: "parking",       label: "Parcare" },
@@ -42,7 +41,7 @@ export const FEATURES = [
 export const SPECIALTY_GROUPS = [
   {
     id: "general",
-    label: "Medicină generală",
+    label: "Medicină generală și internă",
     icon: "🩺",
     color: "#0d9488",
     items: [
@@ -55,14 +54,14 @@ export const SPECIALTY_GROUPS = [
   },
   {
     id: "heart-lungs",
-    label: "Inimă, plămâni și alergii",
+    label: "Cardiologie, pneumologie și alergologie",
     icon: "❤️",
     color: "#dc2626",
     items: ["Cardiologie", "Pneumologie", "Alergologie"],
   },
   {
     id: "internal",
-    label: "Boli interne și metabolice",
+    label: "Specialități medicale interne",
     icon: "🧪",
     color: "#ca8a04",
     items: [
@@ -76,7 +75,7 @@ export const SPECIALTY_GROUPS = [
   },
   {
     id: "surgery",
-    label: "Chirurgie",
+    label: "Specialități chirurgicale",
     icon: "🔪",
     color: "#475569",
     items: [
@@ -90,14 +89,14 @@ export const SPECIALTY_GROUPS = [
   },
   {
     id: "neuro-mental",
-    label: "Neurologie și sănătate mintală",
+    label: "Neurologie și psihiatrie",
     icon: "🧠",
     color: "#7c3aed",
     items: ["Neurologie", "Psihiatrie", "Psihologie / Psihoterapie"],
   },
   {
     id: "mother-child",
-    label: "Mamă și copil",
+    label: "Obstetrică, ginecologie și pediatrie",
     icon: "👶",
     color: "#db2777",
     items: [
@@ -110,7 +109,7 @@ export const SPECIALTY_GROUPS = [
   },
   {
     id: "dental",
-    label: "Stomatologie",
+    label: "Medicină dentară",
     icon: "🦷",
     color: "#0ea5e9",
     items: [
@@ -123,28 +122,28 @@ export const SPECIALTY_GROUPS = [
   },
   {
     id: "senses-skin",
-    label: "Ochi, ORL și piele",
+    label: "Oftalmologie, ORL și dermatologie",
     icon: "👁️",
     color: "#2563eb",
     items: ["Oftalmologie", "ORL", "Dermatovenerologie"],
   },
   {
     id: "oncology",
-    label: "Oncologie",
+    label: "Oncologie și radioterapie",
     icon: "🎗️",
     color: "#e11d48",
     items: ["Oncologie", "Radioterapie"],
   },
   {
     id: "diagnostics",
-    label: "Diagnostic și investigații",
+    label: "Diagnostic paraclinic și imagistică",
     icon: "🔬",
     color: "#4f46e5",
     items: ["Laborator analize medicale", "Imagistică (RMN, radiologie)", "Genetică medicală"],
   },
   {
     id: "recovery",
-    label: "Recuperare și terapie",
+    label: "Recuperare medicală și terapii",
     icon: "🏃",
     color: "#16a34a",
     items: ["Recuperare medicală / Kinetoterapie", "Logopedie"],
@@ -153,22 +152,6 @@ export const SPECIALTY_GROUPS = [
 
 // All specialties in one flat list
 export const SPECIALTIES = SPECIALTY_GROUPS.flatMap((g) => g.items);
-
-// Languages spoken (field "languages": list of ids)
-export const LANGUAGES = [
-  { id: "ro", label: "Română" },
-  { id: "en", label: "Engleză" },
-  { id: "hu", label: "Maghiară" },
-  { id: "de", label: "Germană" },
-  { id: "sr", label: "Sârbă" },
-];
-
-// Price levels (field "priceLevel": 1, 2 or 3)
-export const PRICE_LEVELS = [
-  { id: 1, label: "€ Accesibil" },
-  { id: 2, label: "€€ Mediu" },
-  { id: 3, label: "€€€ Premium" },
-];
 
 // Neighbourhoods for the area dropdown (field "area")
 export const AREAS = [
@@ -185,12 +168,4 @@ const FALLBACK_CATEGORY = { id: "other", label: "Altele", icon: "📍", color: "
 
 export function getCategory(id) {
   return CATEGORIES.find((c) => c.id === id) ?? FALLBACK_CATEGORY;
-}
-
-export function getLanguage(id) {
-  return LANGUAGES.find((l) => l.id === id)?.label ?? id;
-}
-
-export function getPriceLevel(id) {
-  return PRICE_LEVELS.find((p) => p.id === id)?.label ?? "";
 }

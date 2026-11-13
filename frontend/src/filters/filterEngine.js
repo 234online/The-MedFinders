@@ -39,7 +39,7 @@ export function matchesQuery(place, query) {
       place.description,
       ...(place.tags ?? []),
       ...(place.specialties ?? []),
-      // services the place has, so "non-stop" or "CNAS" can be searched
+      // services the place has, so e.g. "non-stop" can be searched
       ...FEATURES.filter((f) => place[f.id] === true).map((f) => f.label),
     ]
       .filter(Boolean)

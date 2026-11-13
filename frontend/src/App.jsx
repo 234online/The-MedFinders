@@ -73,6 +73,13 @@ export default function App() {
     return counts;
   }, []);
 
+  // How many places of each type (for the second row of tiles)
+  const countsByType = useMemo(() => {
+    const counts = {};
+    for (const p of places) counts[p.category] = (counts[p.category] ?? 0) + 1;
+    return counts;
+  }, []);
+
   function setFilter(id, value) {
     setFilterValues((prev) => ({ ...prev, [id]: value }));
   }
@@ -217,7 +224,9 @@ export default function App() {
         <Landing
           counts={countsByGroup}
           onSearch={(text) => startWith({ text })}
+          typeCounts={countsByType}
           onGroup={(group) => startWith({ filters: { specialties: group.items } })}
+          onCategory={(id) => startWith({ filters: { category: [id] } })}
           onFeature={(id) => startWith({ filters: { [id]: true } })}
           onShowAll={() => startWith()}
         >

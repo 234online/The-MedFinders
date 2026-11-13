@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FEATURES, getCategory, getLanguage, getPriceLevel } from "../config/placeTypes.js";
+import { FEATURES, getCategory } from "../config/placeTypes.js";
 import { TEXT } from "../config/texts.js";
 import { ratingBreakdown } from "../reviews/score.js";
 import { Stars, StarInput } from "./Stars.jsx";
@@ -49,16 +49,6 @@ export default function PlaceDetails({
           {place.phone && (
             <p>
               <a href={`tel:${place.phone.replace(/\s/g, "")}`}>📞 {place.phone}</a>
-            </p>
-          )}
-          {place.priceLevel && (
-            <p>
-              {TEXT.priceTitle}: {getPriceLevel(place.priceLevel)}
-            </p>
-          )}
-          {place.languages?.length > 0 && (
-            <p>
-              {TEXT.languagesTitle}: {place.languages.map(getLanguage).join(", ")}
             </p>
           )}
         </div>

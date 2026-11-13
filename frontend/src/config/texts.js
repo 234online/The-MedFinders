@@ -6,18 +6,17 @@
 // =============================================================
 
 export const TEXT = {
-  appTitle: "Harta medicală Timișoara",
-  brand: "MedFinders",
+  appTitle: "Find the care you need",
+  brand: "TimiCareNow",
   backHome: "Înapoi la pagina principală",
 
   // Start page
-  landingTitle: "Găsește îngrijirea medicală potrivită în Timișoara",
-  landingSubtitle: "Spitale, clinici, farmacii și medici: cu program, recenzii și scoruri, pe o singură hartă.",
+  landingTitle: "Find the care you need",
+  landingSubtitle: "Toate informațiile de care ai nevoie într-un singur loc.",
   landingSearchPlaceholder: "Ex: farmacie non-stop, cardiologie, stomatolog Fabric…",
   landingSearchButton: "Caută",
   landingCategoriesTitle: "Sau alege un domeniu medical",
-  landingPharmacies: "💊 Farmacii",
-  pharmacySearch: "Farmacii",
+  landingTypesTitle: "Sau caută după tipul unității",
   landingQuickTitle: "Filtre rapide",
   showAllMap: "Vezi toată harta →",
   placesCount: (n) => (n === 1 ? "1 locație" : n >= 20 ? `${n} de locații` : `${n} locații`),
@@ -46,7 +45,7 @@ export const TEXT = {
 
   // Windows (modals)
   close: "Închide",
-  docsTitle: "Despre MedFinders",
+  docsTitle: "Despre TimiCareNow",
   loginTitle: "Autentificare",
   accountTitle: "Contul meu",
 
@@ -81,8 +80,6 @@ export const TEXT = {
   hoursUnavailable: "Program indisponibil",
   hoursFromGoogle: "Program preluat de pe Google Maps",
   contactTitle: "Contact",
-  priceTitle: "Preț",
-  languagesTitle: "Limbi vorbite",
   specialtiesTitle: "Specialități",
   servicesTitle: "Servicii",
 
