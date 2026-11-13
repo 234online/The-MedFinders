@@ -15,7 +15,9 @@ export const TEXT = {
   landingSubtitle: "Spitale, clinici, farmacii și medici: cu program, recenzii și scoruri, pe o singură hartă.",
   landingSearchPlaceholder: "Ex: farmacie non-stop, cardiologie, stomatolog Fabric…",
   landingSearchButton: "Caută",
-  landingCategoriesTitle: "Sau alege o categorie",
+  landingCategoriesTitle: "Sau alege un domeniu medical",
+  landingPharmacies: "💊 Farmacii",
+  pharmacySearch: "Farmacii",
   landingQuickTitle: "Filtre rapide",
   showAllMap: "Vezi toată harta →",
   placesCount: (n) => (n === 1 ? "1 locație" : n >= 20 ? `${n} de locații` : `${n} locații`),
@@ -23,6 +25,10 @@ export const TEXT = {
   // Filter panel
   filtersTitle: "Filtre",
   reset: (n) => `Resetează (${n})`,
+  specialtySearch: "Caută o specialitate…",
+  specialtyNoMatch: "Nicio specialitate găsită.",
+  selectAll: "Selectează tot domeniul",
+  unselectAll: "Deselectează tot domeniul",
 
   // Results list
   resultsCount: (shown, total) => `Afișate: ${shown} din ${total}`,

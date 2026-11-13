@@ -17,7 +17,7 @@ import { useReviews } from "./reviews/useReviews.js";
 import { getReviews, getScore } from "./reviews/score.js";
 import { FILTERS } from "./config/filters.js";
 import { SORT_OPTIONS, sortPlaces } from "./config/sorting.js";
-import { getCategory } from "./config/placeTypes.js";
+import { getCategory, SPECIALTY_GROUPS } from "./config/placeTypes.js";
 import { applyFilters, getDefaults } from "./filters/filterEngine.js";
 import { markerIcon } from "./map/markerIcons.js";
 import { TEXT } from "./config/texts.js";
@@ -62,9 +62,14 @@ export default function App() {
   const resultIds = useMemo(() => new Set(results.map((p) => p.id)), [results]);
   const favoritePlaces = allPlaces.filter((p) => account.favorites.includes(p.id));
 
-  const countsByCategory = useMemo(() => {
+  // How many places offer each specialty domain (for the start page tiles)
+  const countsByGroup = useMemo(() => {
     const counts = {};
-    for (const p of places) counts[p.category] = (counts[p.category] ?? 0) + 1;
+    for (const g of SPECIALTY_GROUPS) {
+      counts[g.id] = places.filter((p) =>
+        (p.specialties ?? []).some((s) => g.items.includes(s))
+      ).length;
+    }
     return counts;
   }, []);
 
@@ -210,9 +215,9 @@ export default function App() {
     <>
       {!started ? (
         <Landing
-          counts={countsByCategory}
+          counts={countsByGroup}
           onSearch={(text) => startWith({ text })}
-          onCategory={(id) => startWith({ filters: { category: [id] } })}
+          onGroup={(group) => startWith({ filters: { specialties: group.items } })}
           onFeature={(id) => startWith({ filters: { [id]: true } })}
           onShowAll={() => startWith()}
         >

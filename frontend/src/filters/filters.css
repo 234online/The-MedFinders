@@ -187,3 +187,147 @@
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
+
+/* ---------- Tree filter (domains + specialties) ---------- */
+.tree {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tree-search {
+  width: 100%;
+  margin-bottom: 4px;
+  padding: 7px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.tree-search:focus {
+  outline: 2px solid var(--accent);
+  border-color: transparent;
+}
+
+.tree-selected {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.tree-pill {
+  padding: 2px 8px;
+  border: none;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.tree-pill:hover {
+  background: var(--accent-hover);
+}
+
+.tree-empty {
+  margin: 4px 0;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.tree-group {
+  border-radius: 8px;
+}
+
+.tree-group.open {
+  background: #fff;
+  box-shadow: 0 0 0 1px #e5e7eb;
+}
+
+.tree-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 4px;
+}
+
+/* Checkbox for a whole domain: empty / – (some) / ✓ (all) */
+.tree-check {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 2px solid #9ca3af;
+  border-radius: 4px;
+  background: #fff;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.tree-check.some,
+.tree-check.all {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.tree-label {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 2px;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 0.88rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.tree-label:hover .tree-name {
+  color: var(--accent);
+}
+
+.tree-icon {
+  font-size: 1rem;
+}
+
+.tree-name {
+  flex: 1;
+}
+
+.tree-count {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.tree-chevron {
+  color: #9ca3af;
+  transition: transform 0.15s;
+}
+
+.tree-group.open .tree-chevron {
+  transform: rotate(90deg);
+}
+
+.tree-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 2px 8px 10px 30px;
+}
+
+.tree-items .chip {
+  font-size: 0.8rem;
+}
+
+.chip.tree-chip-on {
+  background: var(--accent);
+  border-color: var(--accent);
+}

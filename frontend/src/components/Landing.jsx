@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CATEGORIES, FEATURES } from "../config/placeTypes.js";
+import { SPECIALTY_GROUPS, FEATURES } from "../config/placeTypes.js";
 import { TEXT } from "../config/texts.js";
 import "./Landing.css";
 
@@ -7,13 +7,13 @@ import "./Landing.css";
 const QUICK_FEATURES = ["open24h", "emergency", "cnas", "kids"];
 
 // The start page: shown before the map opens.
-//   counts      { categoryId: number of places }
+//   counts      { groupId: number of places offering that domain }
 //   onSearch    (text) => open the map with that search
-//   onCategory  (categoryId) => open the map filtered to that category
+//   onGroup     (group) => open the map filtered to that specialty domain
 //   onFeature   (featureId) => open the map with that service switched on
 //   onShowAll   () => open the map with everything
 //   children    extra things to show (the floating buttons)
-export default function Landing({ counts, onSearch, onCategory, onFeature, onShowAll, children }) {
+export default function Landing({ counts, onSearch, onGroup, onFeature, onShowAll, children }) {
   const [text, setText] = useState("");
 
   function handleSubmit(e) {
@@ -47,23 +47,26 @@ export default function Landing({ counts, onSearch, onCategory, onFeature, onSho
 
         <p className="landing-section">{TEXT.landingCategoriesTitle}</p>
         <div className="landing-tiles">
-          {CATEGORIES.map((c) => (
+          {SPECIALTY_GROUPS.map((g) => (
             <button
-              key={c.id}
+              key={g.id}
               type="button"
               className="landing-tile"
-              style={{ "--tile-color": c.color }}
-              onClick={() => onCategory(c.id)}
+              style={{ "--tile-color": g.color }}
+              onClick={() => onGroup(g)}
             >
-              <span className="landing-tile-icon">{c.icon}</span>
-              <span className="landing-tile-label">{c.label}</span>
-              <span className="landing-tile-count">{TEXT.placesCount(counts[c.id] ?? 0)}</span>
+              <span className="landing-tile-icon">{g.icon}</span>
+              <span className="landing-tile-label">{g.label}</span>
+              <span className="landing-tile-count">{TEXT.placesCount(counts[g.id] ?? 0)}</span>
             </button>
           ))}
         </div>
 
         <p className="landing-section">{TEXT.landingQuickTitle}</p>
         <div className="landing-quick">
+          <button type="button" onClick={() => onSearch(TEXT.pharmacySearch)}>
+            {TEXT.landingPharmacies}
+          </button>
           {FEATURES.filter((f) => QUICK_FEATURES.includes(f.id)).map((f) => (
             <button key={f.id} type="button" onClick={() => onFeature(f.id)}>
               {f.label}
