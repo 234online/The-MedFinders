@@ -19,6 +19,29 @@
   font-size: 1.05rem;
 }
 
+/* Score row (clickable: opens reviews) */
+.pp-score {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pp-score-count {
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.pp-score:hover .pp-score-count {
+  text-decoration: underline;
+}
+
 .pp-desc {
   margin: 0 !important; /* Leaflet adds margins to <p> in popups */
   color: #4b5563;
@@ -31,7 +54,7 @@
 }
 
 .pp-contact a {
-  color: #2563eb;
+  color: var(--accent);
   text-decoration: none;
   font-weight: 600;
 }
@@ -100,21 +123,41 @@
 .pp-badge {
   padding: 2px 8px;
   border-radius: 999px;
-  background: #eef2ff;
-  color: #3730a3;
+  background: var(--accent-soft);
+  color: var(--accent-dark);
   font-size: 0.72rem;
 }
 
-/* ---------- Save button ---------- */
+/* ---------- Buttons ---------- */
+.pp-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pp-details,
 .pp-save {
   padding: 9px 12px;
-  border: 1px solid #f59e0b;
   border-radius: 8px;
-  background: #fff;
-  color: #b45309;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
+}
+
+.pp-details {
+  border: none;
+  background: var(--accent);
+  color: #fff;
+}
+
+.pp-details:hover {
+  background: var(--accent-hover);
+}
+
+.pp-save {
+  border: 1px solid #f59e0b;
+  background: #fff;
+  color: #b45309;
 }
 
 .pp-save:hover {

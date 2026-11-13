@@ -20,10 +20,11 @@ export default function Documentation() {
 
       <h3>Cum se folosește</h3>
       <ul>
-        <li>Apasă pe lupa din partea de sus a hărții și scrie ce cauți (de exemplu „farmacie non-stop”).</li>
+        <li>Scrie ce cauți pe pagina de start sau în lupa de pe hartă (de exemplu „farmacie non-stop”).</li>
         <li>Folosește filtrele din stânga pentru tip, zonă și servicii.</li>
         <li>Apasă pe un punct de pe hartă pentru telefon, program și descriere.</li>
-        <li>Intră în cont pentru a salva locațiile preferate.</li>
+        <li>Fiecare locație are un scor (media recenziilor, din 5 stele). Deschide „Recenzii și detalii” pentru a le citi.</li>
+        <li>Intră în cont pentru a salva locațiile preferate și pentru a scrie recenzii.</li>
       </ul>
 
       <h3>Despre date</h3>

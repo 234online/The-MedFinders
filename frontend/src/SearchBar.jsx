@@ -8,7 +8,8 @@ import { TEXT } from "./config/texts.js";
 const ICON_SRC = "/search-icon.svg";
 
 export default function SearchBar({ value, onChange, placeholder = TEXT.searchPlaceholder }) {
-  const [open, setOpen] = useState(false);
+  // Start open if there is already a search (e.g. typed on the start page)
+  const [open, setOpen] = useState(Boolean(value));
   const inputRef = useRef(null);
 
   // Focus the text field as soon as the bar opens
