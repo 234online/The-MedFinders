@@ -1,0 +1,25 @@
+{
+  "name": "the-medfinders-backend",
+  "version": "1.0.0",
+  "description": "Backend API server for The-MedFinders",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "sync-db": "node scripts/sync_clinics.js",
+    "export-frontend": "node scripts/export_frontend.js"
+  },
+  "keywords": [
+    "express",
+    "node",
+    "medfinders",
+    "clinics"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  }
+}
