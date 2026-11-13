@@ -24,6 +24,7 @@ const INFO_ICON = "/info-icon.svg";
 const ACCOUNT_ICON = "/user-icon.svg";
 
 export default function App() {
+  const [placesList, setPlacesList] = useState(places);
   const [query, setQuery] = useState("");
   const [filterValues, setFilterValues] = useState(() => getDefaults(FILTERS));
   const [selectedId, setSelectedId] = useState(null);
@@ -36,12 +37,30 @@ export default function App() {
   const [pendingSaveId, setPendingSaveId] = useState(null);
   const account = useAccount();
 
+  // Conectare la backend API pentru încărcarea clinicilor din baza de date
+  useEffect(() => {
+    const backendUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api/places";
+    fetch(backendUrl)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setPlacesList(data);
+        }
+      })
+      .catch((err) => {
+        console.warn("Backend API indisponibil, se folosește copia locală din places.json:", err.message);
+      });
+  }, []);
+
   const results = useMemo(
-    () => applyFilters(places, FILTERS, filterValues, query),
-    [filterValues, query]
+    () => applyFilters(placesList, FILTERS, filterValues, query),
+    [placesList, filterValues, query]
   );
   const resultIds = useMemo(() => new Set(results.map((p) => p.id)), [results]);
-  const favoritePlaces = places.filter((p) => account.favorites.includes(p.id));
+  const favoritePlaces = placesList.filter((p) => account.favorites.includes(p.id));
 
   function setFilter(id, value) {
     setFilterValues((prev) => ({ ...prev, [id]: value }));
@@ -108,7 +127,7 @@ export default function App() {
   }
 
   // Draw non-matching places first so highlighted ones sit on top
-  const ordered = [...places].sort(
+  const ordered = [...placesList].sort(
     (a, b) => Number(resultIds.has(a.id)) - Number(resultIds.has(b.id))
   );
 
@@ -124,7 +143,7 @@ export default function App() {
           onReset={resetFilters}
         />
 
-        <p className="count">{TEXT.resultsCount(results.length, places.length)}</p>
+        <p className="count">{TEXT.resultsCount(results.length, placesList.length)}</p>
 
         <ul className="results">
           {results.map((p) => {
