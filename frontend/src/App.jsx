@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { MapContainer, TileLayer, CircleMarker, Popup } from "react-leaflet";
 import places from "./data/places.json";
 import SearchBar from "./SearchBar.jsx";
-import FilterPanel from "./filters/filterPanel.jsx";
+import FilterPanel from "./filters/FilterPanel.jsx";
 import { FILTERS } from "./config/filters.js";
 import { FEATURES, getCategory } from "./config/placeTypes.js";
 import { applyFilters, getDefaults } from "./filters/filterEngine.js";
