@@ -140,6 +140,35 @@ const TEXTS = {
     sourcesTitle: (n) => `Surse (${n})`,
     dataNote: "Date verificate din surse publice (13.11.2026). Confirmă programul telefonic înainte de vizită. În caz de urgență, sună la 112.",
 
+    // Contact actions
+    callButton: "Sună",
+    whatsappButton: "WhatsApp",
+    appointmentButton: "✉️ Cere o programare",
+    appointmentHint: "Se deschide aplicația de email cu un mesaj gata scris.",
+    appointmentSubject: (clinic) => `Cerere programare – ${clinic}`,
+    appointmentBody: ({ clinic, specialty, name, email }) =>
+      [
+        "Bună ziua,",
+        "",
+        `Aș dori să fac o programare la ${clinic}${specialty ? `, pentru ${specialty}` : ""}.`,
+        "",
+        "Zile și ore preferate: ",
+        `Nume: ${name ?? ""}`,
+        "Telefon: ",
+        email ? `Email: ${email}` : null,
+        "",
+        "Vă mulțumesc!",
+      ]
+        .filter((line) => line !== null)
+        .join("\r\n"),
+    whatsappMessage: ({ clinic, specialty }) =>
+      `Bună ziua! Aș dori o programare la ${clinic}${specialty ? `, pentru ${specialty}` : ""}. Când ar fi un loc disponibil? Mulțumesc!`,
+
+    // Accessible mode
+    a11yButton: "Mod accesibil",
+    a11yOn: "Mod accesibil: pornit",
+    a11yOff: "Mod accesibil: oprit",
+
     // Symptom guide
     symptomButton: "Ce te doare?",
     symptomTitle: "Ce te doare?",
@@ -271,6 +300,33 @@ const TEXTS = {
     sourcesTitle: (n) => `Sources (${n})`,
     dataNote: "Data checked against public sources (13 Nov 2026). Confirm the opening hours by phone before visiting. In an emergency, call 112.",
 
+    callButton: "Call",
+    whatsappButton: "WhatsApp",
+    appointmentButton: "✉️ Request an appointment",
+    appointmentHint: "Opens your email app with a ready-written message.",
+    appointmentSubject: (clinic) => `Appointment request – ${clinic}`,
+    appointmentBody: ({ clinic, specialty, name, email }) =>
+      [
+        "Hello,",
+        "",
+        `I would like to book an appointment at ${clinic}${specialty ? `, for ${specialty}` : ""}.`,
+        "",
+        "Preferred days and times: ",
+        `Name: ${name ?? ""}`,
+        "Phone: ",
+        email ? `Email: ${email}` : null,
+        "",
+        "Thank you!",
+      ]
+        .filter((line) => line !== null)
+        .join("\r\n"),
+    whatsappMessage: ({ clinic, specialty }) =>
+      `Hello! I would like to book an appointment at ${clinic}${specialty ? `, for ${specialty}` : ""}. When would there be a free slot? Thank you!`,
+
+    a11yButton: "Accessible mode",
+    a11yOn: "Accessible mode: on",
+    a11yOff: "Accessible mode: off",
+
     symptomButton: "What's wrong?",
     symptomTitle: "What's wrong?",
     symptomIntro: "Pick or type what you feel and we'll show you which specialist to see.",
@@ -400,6 +456,33 @@ const TEXTS = {
     noRatingsYet: "Ennek a helynek még nincs értékelése.",
     sourcesTitle: (n) => `Források (${n})`,
     dataNote: "Nyilvános forrásokból ellenőrzött adatok (2026.11.13.). Látogatás előtt telefonon erősítsd meg a nyitvatartást. Vészhelyzetben hívd a 112-t.",
+
+    callButton: "Hívás",
+    whatsappButton: "WhatsApp",
+    appointmentButton: "✉️ Időpontkérés",
+    appointmentHint: "Megnyitja az e-mail-alkalmazást egy előre megírt üzenettel.",
+    appointmentSubject: (clinic) => `Időpontkérés – ${clinic}`,
+    appointmentBody: ({ clinic, specialty, name, email }) =>
+      [
+        "Jó napot kívánok!",
+        "",
+        `Szeretnék időpontot kérni ide: ${clinic}${specialty ? `, ${specialty}` : ""}.`,
+        "",
+        "Előnyös napok és időpontok: ",
+        `Név: ${name ?? ""}`,
+        "Telefon: ",
+        email ? `E-mail: ${email}` : null,
+        "",
+        "Köszönöm!",
+      ]
+        .filter((line) => line !== null)
+        .join("\r\n"),
+    whatsappMessage: ({ clinic, specialty }) =>
+      `Jó napot! Szeretnék időpontot kérni ide: ${clinic}${specialty ? `, ${specialty}` : ""}. Mikor lenne szabad időpont? Köszönöm!`,
+
+    a11yButton: "Akadálymentes mód",
+    a11yOn: "Akadálymentes mód: be",
+    a11yOff: "Akadálymentes mód: ki",
 
     symptomButton: "Mi a panaszod?",
     symptomTitle: "Mi a panaszod?",

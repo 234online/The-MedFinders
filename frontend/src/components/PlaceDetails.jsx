@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { FEATURES, getCategory, getOwnership, specialtyName } from "../config/placeTypes.js";
 import { placeDescription, translateRole } from "../data/translations.js";
-import { splitPhones, shortUrl } from "../utils/contact.js";
+import { shortUrl } from "../utils/contact.js";
+import ContactActions from "./ContactActions.jsx";
 import { TEXT } from "../config/texts.js";
 import { ratingBreakdown } from "../reviews/score.js";
 import { Stars, StarInput } from "./Stars.jsx";
@@ -19,6 +20,7 @@ export default function PlaceDetails({
   onLoginToReview,
   onSubmitReview,
   startWriting = false,
+  requestSpecialty = null,
 }) {
   const category = getCategory(place.category);
   const badges = FEATURES.filter((f) => place[f.id] === true);
@@ -53,11 +55,6 @@ export default function PlaceDetails({
             {place.postalCode && `, ${place.postalCode}`}
           </p>
           {place.approximate && <p className="details-muted">{TEXT.approximateLocation}</p>}
-          {splitPhones(place.phone).map((p) => (
-            <p key={p.label}>
-              <a href={`tel:${p.tel}`}>📞 {p.label}</a>
-            </p>
-          ))}
           {place.email && (
             <p>
               <a href={`mailto:${place.email}`}>✉️ {place.email}</a>
@@ -73,6 +70,8 @@ export default function PlaceDetails({
         </div>
         <OpeningHours place={place} />
       </div>
+
+      <ContactActions place={place} specialty={requestSpecialty} user={user} />
 
       {place.specialties?.length > 0 && (
         <div className="details-tags">

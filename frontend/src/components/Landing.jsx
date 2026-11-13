@@ -2,6 +2,7 @@ import { useState } from "react";
 import { SPECIALTY_GROUPS, CATEGORIES, FEATURES } from "../config/placeTypes.js";
 import { TEXT } from "../config/texts.js";
 import LanguageSwitcher from "./LanguageSwitcher.jsx";
+import AccessibleToggle from "../accessibility/AccessibleToggle.jsx";
 import "./Landing.css";
 
 // Quick buttons on the start page: filter ids from config/filters.js
@@ -29,6 +30,8 @@ export default function Landing({
   onSymptoms,
   lang,
   onLanguage,
+  accessible,
+  onToggleAccessible,
   children,
 }) {
   const [text, setText] = useState("");
@@ -44,7 +47,10 @@ export default function Landing({
 
   return (
     <div className="landing">
-      <LanguageSwitcher value={lang} onChange={onLanguage} variant="light" />
+      <div className="landing-tools">
+        <LanguageSwitcher value={lang} onChange={onLanguage} variant="light" />
+        <AccessibleToggle on={accessible} onToggle={onToggleAccessible} variant="light" />
+      </div>
       {children}
 
       <div className="landing-content">
