@@ -2,10 +2,13 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const db = require('./db/database');
+const { Pool } = require('pg');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 // Middleware-uri esențiale (trebuie să fie înaintea rutelor!)
 // Permite frontend-ului (Vite) să comunice cu serverul
@@ -192,3 +195,29 @@ if (require.main === module) {
 
 module.exports = app;
 ``
+
+app.post('/api/users/sync', async (req, res) => {
+  const { auth0_id, email, name, picture } = req.body;
+
+  if (!auth0_id || !email) {
+    return res.status(400).json({ error: 'auth0_id and email are required' });
+  }
+
+  try {
+    const query = `
+      INSERT INTO users (auth0_id, email, name, picture)
+      VALUES ($1, $2, $3, $4)
+      ON CONFLICT (auth0_id)
+      DO UPDATE SET
+        email = EXCLUDED.email,
+        name = EXCLUDED.name,
+        picture = EXCLUDED.picture
+      RETURNING *;
+    `;
+    const result = await pool.query(query, [auth0_id, email, name, picture]);
+    res.status(200).json({ user: result.rows[0] });
+  } catch (err) {
+    console.error('Database sync error:', err);
+    res.status(500).json({ error: 'Failed to sync user to database' });
+  }
+});
