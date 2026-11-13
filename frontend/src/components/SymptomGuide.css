@@ -1,0 +1,210 @@
+.symptom {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.symptom-intro {
+  margin: 0;
+  color: #4b5563;
+}
+
+.symptom-search {
+  padding: 11px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.symptom-search:focus {
+  outline: 2px solid var(--accent);
+  border-color: transparent;
+}
+
+.symptom-none {
+  margin: 0;
+  color: #6b7280;
+}
+
+.symptom-group {
+  margin: 6px 0 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.symptom-group.emergency {
+  color: #b91c1c;
+}
+
+.symptom-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 8px;
+}
+
+.symptom-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+  font: inherit;
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.symptom-item:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+
+.symptom-item.emergency {
+  border-color: #fecaca;
+  background: #fef2f2;
+}
+
+.symptom-item.emergency:hover {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 2px #fee2e2;
+}
+
+.symptom-item.urgent {
+  border-color: #fde68a;
+  background: #fffbeb;
+}
+
+.symptom-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+/* ---------- One symptom ---------- */
+.symptom-back {
+  align-self: flex-start;
+  padding: 0;
+}
+
+.symptom-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.symptom-title span {
+  font-size: 1.8rem;
+}
+
+.symptom-emergency {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border: 2px solid #dc2626;
+  border-radius: 12px;
+  background: #fef2f2;
+}
+
+.symptom-emergency p {
+  margin: 0;
+  color: #7f1d1d;
+  font-weight: 600;
+}
+
+.symptom-112 {
+  display: block;
+  padding: 14px;
+  border-radius: 10px;
+  background: #dc2626;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+}
+
+.symptom-112:hover {
+  background: #b91c1c;
+}
+
+.symptom-urgent {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #fffbeb;
+  color: #92400e;
+  font-weight: 600;
+}
+
+.symptom-specialties h4 {
+  margin: 0 0 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.symptom-chip {
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.symptom-disclaimer {
+  margin: 4px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid #e5e7eb;
+  font-size: 0.78rem;
+  color: #6b7280;
+}
+
+/* "Ce te doare?" button on the start page */
+.landing-symptom {
+  margin-top: 18px;
+  padding: 12px 26px;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.landing-symptom:hover {
+  background: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 0 22px 4px rgba(94, 234, 212, 0.45);
+}
+
+/* "Ce te doare?" button in the side panel */
+.sidebar-symptom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px dashed var(--accent);
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.sidebar-symptom:hover {
+  background: #fff;
+}

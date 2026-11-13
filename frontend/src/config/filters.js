@@ -3,7 +3,9 @@ import {
   FEATURES,
   SPECIALTY_GROUPS,
   USED_KINDS,
+  specialtyName,
 } from "./placeTypes.js";
+import { TEXT } from "./texts.js";
 import { isOpenAt } from "../services/hoursLogic.js";
 import { places } from "../data/loadPlaces.js";
 
@@ -29,14 +31,16 @@ const clinicsPerGroup = Object.fromEntries(
 //  Fields:
 //    id        unique name; the filter's current value is stored under it
 //    type      which control to draw: "chips" | "toggle" | "select" | "tree"
-//    label     text shown for the filter
+//    label     text shown for the filter (a getter, so it follows the language)
 //    group     optional: filters with the same group share one section
+//    groupLabel  heading shown for that group
 //    collapsed optional: true = the section starts closed
 //    default   value when nothing is selected (also used by "Reset")
 //    options   for "chips" and "select": [{ value, label, color?, icon? }]
 //    multiple  for "chips": true = several can be selected at once
 //    groups    for "tree": [{ id, label, icon, items: [...] }]
 //    itemCounts / groupCounts  for "tree": number shown next to each item / group
+//    itemLabel for "tree": (item) => text shown for an item
 //    test      (place, value) => true if the place should be shown
 //
 //  The place fields come from src/data/loadPlaces.js. Places also get
@@ -47,9 +51,12 @@ export const FILTERS = [
   {
     id: "specialties",
     type: "tree",
-    label: "Specialități",
+    get label() {
+      return TEXT.filterSpecialties;
+    },
     default: [],
     groups: SPECIALTY_GROUPS,
+    itemLabel: specialtyName,
     itemCounts: clinicsPerSpecialty,
     groupCounts: clinicsPerGroup,
     // Shows places that offer AT LEAST ONE of the selected specialties
@@ -60,12 +67,16 @@ export const FILTERS = [
   {
     id: "category",
     type: "chips",
-    label: "Tip unitate",
+    get label() {
+      return TEXT.filterType;
+    },
     multiple: true,
     default: [],
     options: CATEGORIES.filter((c) => USED_KINDS.has(c.id)).map((c) => ({
       value: c.id,
-      label: c.label,
+      get label() {
+        return c.label;
+      },
       icon: c.icon,
       color: c.color,
     })),
@@ -76,16 +87,26 @@ export const FILTERS = [
   {
     id: "openNow",
     type: "toggle",
-    group: "Program",
-    label: "Deschis acum",
+    group: "schedule",
+    get groupLabel() {
+      return TEXT.groupSchedule;
+    },
+    get label() {
+      return TEXT.openNow;
+    },
     default: false,
     test: (place, on) => !on || isOpenAt(place.hours) === true,
   },
   ...FEATURES.filter((f) => f.id === "open24h" || f.id === "weekend").map((feature) => ({
     id: feature.id,
     type: "toggle",
-    group: "Program",
-    label: feature.label,
+    group: "schedule",
+    get groupLabel() {
+      return TEXT.groupSchedule;
+    },
+    get label() {
+      return feature.label;
+    },
     default: false,
     test: (place, on) => !on || place[feature.id] === true,
   })),
@@ -94,8 +115,13 @@ export const FILTERS = [
   ...FEATURES.filter((f) => f.id === "emergency" || f.id === "kids").map((feature) => ({
     id: feature.id,
     type: "toggle",
-    group: "Servicii",
-    label: feature.label,
+    group: "services",
+    get groupLabel() {
+      return TEXT.groupServices;
+    },
+    get label() {
+      return feature.label;
+    },
     default: false,
     test: (place, on) => !on || place[feature.id] === true,
   })),
@@ -103,11 +129,18 @@ export const FILTERS = [
   {
     id: "minScore",
     type: "chips",
-    label: "Scor minim",
+    get label() {
+      return TEXT.filterMinScore;
+    },
     multiple: false,
     default: "any",
     options: [
-      { value: "any", label: "Orice" },
+      {
+        value: "any",
+        get label() {
+          return TEXT.scoreAny;
+        },
+      },
       { value: "4", label: "4+ ★" },
       { value: "4.5", label: "4.5+ ★" },
     ],

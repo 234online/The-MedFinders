@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { SPECIALTY_GROUPS, CATEGORIES, FEATURES } from "../config/placeTypes.js";
 import { TEXT } from "../config/texts.js";
+import LanguageSwitcher from "./LanguageSwitcher.jsx";
 import "./Landing.css";
 
 // Quick buttons on the start page: filter ids from config/filters.js
-const QUICK_FILTERS = [
-  { id: "openNow", label: TEXT.openNow },
-  ...FEATURES.filter((f) => ["open24h", "emergency", "kids"].includes(f.id)),
-];
+const QUICK_FEATURES = ["open24h", "emergency", "kids"];
 
 // The start page: shown before the map opens.
 //   counts      { groupId: number of places offering that domain }
@@ -17,6 +15,8 @@ const QUICK_FILTERS = [
 //   onGroup     (group) => open the map filtered to that specialty domain
 //   onFeature   (featureId) => open the map with that service switched on
 //   onShowAll   () => open the map with everything
+//   onSymptoms  () => open the "Ce te doare?" guide
+//   lang, onLanguage  current language and how to change it
 //   children    extra things to show (the floating buttons)
 export default function Landing({
   counts,
@@ -26,9 +26,16 @@ export default function Landing({
   onCategory,
   onFeature,
   onShowAll,
+  onSymptoms,
+  lang,
+  onLanguage,
   children,
 }) {
   const [text, setText] = useState("");
+  const quickFilters = [
+    { id: "openNow", label: TEXT.openNow },
+    ...FEATURES.filter((f) => QUICK_FEATURES.includes(f.id)),
+  ];
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -37,6 +44,7 @@ export default function Landing({
 
   return (
     <div className="landing">
+      <LanguageSwitcher value={lang} onChange={onLanguage} variant="light" />
       {children}
 
       <div className="landing-content">
@@ -58,6 +66,10 @@ export default function Landing({
           />
           <button type="submit">{TEXT.landingSearchButton}</button>
         </form>
+
+        <button type="button" className="landing-symptom" onClick={onSymptoms}>
+          🩺 {TEXT.symptomButton}
+        </button>
 
         <p className="landing-section">{TEXT.landingCategoriesTitle}</p>
         <div className="landing-tiles">
@@ -95,7 +107,7 @@ export default function Landing({
 
         <p className="landing-section">{TEXT.landingQuickTitle}</p>
         <div className="landing-quick">
-          {QUICK_FILTERS.map((f) => (
+          {quickFilters.map((f) => (
             <button key={f.id} type="button" onClick={() => onFeature(f.id)}>
               {f.label}
             </button>

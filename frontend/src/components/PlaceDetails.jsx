@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { FEATURES, getCategory, getOwnership } from "../config/placeTypes.js";
+import { FEATURES, getCategory, getOwnership, specialtyName } from "../config/placeTypes.js";
+import { placeDescription, translateRole } from "../data/translations.js";
 import { splitPhones, shortUrl } from "../utils/contact.js";
 import { TEXT } from "../config/texts.js";
 import { ratingBreakdown } from "../reviews/score.js";
@@ -41,7 +42,7 @@ export default function PlaceDetails({
         </div>
       </div>
 
-      {place.description && <p className="details-desc">{place.description}</p>}
+      {place.notes && <p className="details-desc">{placeDescription(place)}</p>}
 
       {/* ---------- Info grid ---------- */}
       <div className="details-grid">
@@ -78,7 +79,7 @@ export default function PlaceDetails({
           <h4>{TEXT.specialtiesTitle}</h4>
           {place.specialties.map((s) => (
             <span key={s} className="details-tag">
-              {s}
+              {specialtyName(s)}
             </span>
           ))}
         </div>
@@ -112,7 +113,9 @@ export default function PlaceDetails({
               <li key={d.name + i}>
                 <strong>{d.name}</strong>
                 <span className="details-doctor-meta">
-                  {[d.title, d.specialty, d.role].filter(Boolean).join(" · ")}
+                  {[d.title, d.specialty && specialtyName(d.specialty), translateRole(d.role)]
+                    .filter(Boolean)
+                    .join(" · ")}
                 </span>
                 {d.schedule.length > 0 && (
                   <span className="details-doctor-schedule">

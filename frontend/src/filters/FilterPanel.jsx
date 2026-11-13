@@ -23,7 +23,7 @@ export default function FilterPanel({ filters, values, onChange, onReset }) {
     const key = filter.group ?? filter.id;
     let group = groups.find((g) => g.key === key);
     if (!group) {
-      group = { key, title: filter.group ?? filter.label, items: [], collapsed: false };
+      group = { key, title: filter.groupLabel ?? filter.group ?? filter.label, items: [], collapsed: false };
       groups.push(group);
     }
     group.items.push(filter);

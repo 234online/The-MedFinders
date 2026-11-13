@@ -13,6 +13,8 @@ import Auth0Login from "./components/Auth0Login.jsx";
 import SavedPlaces from "./components/SavedPlaces.jsx";
 import { ScoreBadge } from "./components/Stars.jsx";
 import Documentation from "./content/Documentation.jsx";
+import SymptomGuide from "./components/SymptomGuide.jsx";
+import LanguageSwitcher from "./components/LanguageSwitcher.jsx";
 import { useAccount } from "./account/useAccount.js";
 import { useReviews } from "./reviews/useReviews.js";
 import { getReviews, getScore } from "./reviews/score.js";
@@ -21,7 +23,7 @@ import { SORT_OPTIONS, sortPlaces } from "./config/sorting.js";
 import { getCategory, SPECIALTY_GROUPS } from "./config/placeTypes.js";
 import { applyFilters, getDefaults } from "./filters/filterEngine.js";
 import { markerIcon } from "./map/markerIcons.js";
-import { TEXT } from "./config/texts.js";
+import { TEXT, getLanguage, setLanguage } from "./config/texts.js";
 import "./App.css";
 
 // Centre of Timișoara (around Piața Victoriei)
@@ -35,6 +37,16 @@ export default function App() {
   // false = start page, true = map
   const [started, setStarted] = useState(false);
 
+  // Interface language ("ro" | "en" | "hu"); changing it re-draws everything
+  const [lang, setLang] = useState(getLanguage);
+  function changeLanguage(next) {
+    setLanguage(next);
+    setLang(next);
+  }
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
+
   const [query, setQuery] = useState("");
   const [filterValues, setFilterValues] = useState(() => getDefaults(FILTERS));
   const [sortId, setSortId] = useState("relevance");
@@ -42,7 +54,7 @@ export default function App() {
   const [map, setMap] = useState(null);
   const markerRefs = useRef({});
 
-  // Open window: null | { type: "docs" | "login" | "account" | "details", placeId?, writing? }
+  // Open window: null | { type: "docs" | "login" | "account" | "details" | "symptoms", placeId?, writing? }
   const [modal, setModal] = useState(null);
   // What to do right after logging in: null | { type: "save" | "review", placeId }
   const [pendingAction, setPendingAction] = useState(null);
@@ -255,6 +267,9 @@ export default function App() {
           onCategory={(id) => startWith({ filters: { category: [id] } })}
           onFeature={(id) => startWith({ filters: { [id]: true } })}
           onShowAll={() => startWith()}
+          onSymptoms={() => setModal({ type: "symptoms" })}
+          lang={lang}
+          onLanguage={changeLanguage}
         >
           {floatingButtons}
         </Landing>
@@ -267,6 +282,14 @@ export default function App() {
                 <strong>{TEXT.brand}</strong>
                 <small>{TEXT.appTitle}</small>
               </span>
+            </button>
+
+            <div className="sidebar-tools">
+              <LanguageSwitcher value={lang} onChange={changeLanguage} />
+            </div>
+
+            <button type="button" className="sidebar-symptom" onClick={() => setModal({ type: "symptoms" })}>
+              🩺 {TEXT.symptomButton}
             </button>
 
             <FilterPanel
@@ -358,6 +381,18 @@ export default function App() {
       )}
 
       {/* ---------- Windows ---------- */}
+      {modal?.type === "symptoms" && (
+        <Modal title={TEXT.symptomTitle} onClose={closeModal} width={720}>
+          <SymptomGuide
+            places={places}
+            onShow={({ filters }) => {
+              closeModal();
+              startWith({ filters });
+            }}
+          />
+        </Modal>
+      )}
+
       {modal?.type === "docs" && (
         <Modal title={TEXT.docsTitle} onClose={closeModal} width={640}>
           <Documentation />
