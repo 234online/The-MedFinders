@@ -1,55 +1,39 @@
-import SearchBar from "./SearchBar.jsx";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { MapContainer, TileLayer, CircleMarker, Popup } from "react-leaflet";
 import places from "./data/places.json";
+import SearchBar from "./SearchBar.jsx";
+import FilterPanel from "./filters/FilterPanel.jsx";
+import { FILTERS } from "./config/filters.js";
+import { FEATURES, getCategory } from "./config/placeTypes.js";
+import { applyFilters, getDefaults } from "./filters/filterEngine.js";
+import { TEXT } from "./config/texts.js";
 import "./App.css";
 
 // Centre of Timișoara (around Piața Victoriei)
 const CENTER = [45.7537, 21.2257];
 
-// Category id -> label and marker colour
-const CATEGORIES = {
-  all:       { label: "All",       color: "#2563eb" },
-  landmark:  { label: "Landmarks", color: "#dc2626" },
-  culture:   { label: "Culture",   color: "#9333ea" },
-  museum:    { label: "Museums",   color: "#c026d3" },
-  religion:  { label: "Religion",  color: "#b45309" },
-  park:      { label: "Parks",     color: "#16a34a" },
-  education: { label: "Education", color: "#0891b2" },
-  shopping:  { label: "Shopping",  color: "#ea580c" },
-  transport: { label: "Transport", color: "#475569" },
-  sport:     { label: "Sport",     color: "#0d9488" },
-};
-
-// Lowercase and strip diacritics, so "timisoara" matches "Timișoara"
-function normalize(text) {
-  return text.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
-}
-
-function matches(place, query, category) {
-  if (category !== "all" && place.category !== category) return false;
-  if (!query.trim()) return true;
-  const haystack = normalize(
-    [place.name, place.description, place.category, ...place.tags].join(" ")
-  );
-  // Every word in the query must appear somewhere
-  return normalize(query).split(/\s+/).every((word) => haystack.includes(word));
-}
-
 export default function App() {
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState("all");
+  const [filterValues, setFilterValues] = useState(() => getDefaults(FILTERS));
   const [selectedId, setSelectedId] = useState(null);
   const [map, setMap] = useState(null);
   const markerRefs = useRef({});
 
   const results = useMemo(
-    () => places.filter((p) => matches(p, query, category)),
-    [query, category]
+    () => applyFilters(places, FILTERS, filterValues, query),
+    [filterValues, query]
   );
   const resultIds = useMemo(() => new Set(results.map((p) => p.id)), [results]);
 
-  // Zoom the map to fit whatever matches the current search
+  function setFilter(id, value) {
+    setFilterValues((prev) => ({ ...prev, [id]: value }));
+  }
+
+  function resetFilters() {
+    setFilterValues(getDefaults(FILTERS));
+  }
+
+  // Zoom the map to fit whatever matches the current search and filters
   useEffect(() => {
     if (!map || results.length === 0) return;
     const points = results.map((p) => [p.lat, p.lng]);
@@ -75,86 +59,92 @@ export default function App() {
   return (
     <div className="layout">
       <aside className="sidebar">
-        <h1>Timișoara</h1>
+        <h1>{TEXT.appTitle}</h1>
 
+        <FilterPanel
+          filters={FILTERS}
+          values={filterValues}
+          onChange={setFilter}
+          onReset={resetFilters}
+        />
 
-        <div className="chips">
-          {Object.entries(CATEGORIES).map(([id, { label, color }]) => (
-            <button
-              key={id}
-              className={"chip" + (category === id ? " active" : "")}
-              style={category === id ? { background: color, borderColor: color } : {}}
-              onClick={() => setCategory(id)}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-
-        <p className="count">
-          {results.length} of {places.length} places
-        </p>
+        <p className="count">{TEXT.resultsCount(results.length, places.length)}</p>
 
         <ul className="results">
-          {results.map((p) => (
-            <li
-              key={p.id}
-              className={p.id === selectedId ? "selected" : ""}
-              onClick={() => selectPlace(p)}
-            >
-              <span className="dot" style={{ background: CATEGORIES[p.category].color }} />
-              <div>
-                <strong>{p.name}</strong>
-                <small>{p.description}</small>
-              </div>
-            </li>
-          ))}
-          {results.length === 0 && <li className="empty">No places match your search.</li>}
+          {results.map((p) => {
+            const category = getCategory(p.category);
+            return (
+              <li
+                key={p.id}
+                className={p.id === selectedId ? "selected" : ""}
+                onClick={() => selectPlace(p)}
+              >
+                <span className="dot" style={{ background: category.color }} />
+                <div>
+                  <strong>{p.name}</strong>
+                  <small>
+                    {category.label}
+                    {p.area && ` · ${p.area}`}
+                  </small>
+                </div>
+              </li>
+            );
+          })}
+          {results.length === 0 && <li className="empty">{TEXT.noResults}</li>}
         </ul>
       </aside>
 
       <div className="map-wrap">
-      <SearchBar value={query} onChange={setQuery} />
+        <SearchBar value={query} onChange={setQuery} />
 
-      <MapContainer ref={setMap} center={CENTER} zoom={14} className="map">
+        <MapContainer ref={setMap} center={CENTER} zoom={14} className="map">
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          />
 
-
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        />
-
-        {ordered.map((p) => {
-          const isMatch = resultIds.has(p.id);
-          const isSelected = p.id === selectedId;
-          const color = CATEGORIES[p.category].color;
-          return (
-            <CircleMarker
-              key={p.id}
-              ref={(ref) => (markerRefs.current[p.id] = ref)}
-              center={[p.lat, p.lng]}
-              radius={isSelected ? 13 : isMatch ? 9 : 5}
-              pathOptions={{
-                color: isMatch ? "#ffffff" : "#9ca3af",
-                weight: isMatch ? 2 : 1,
-                fillColor: isMatch ? color : "#9ca3af",
-                fillOpacity: isMatch ? 0.95 : 0.4,
-              }}
-              eventHandlers={{ click: () => setSelectedId(p.id) }}
-            >
-              <Popup>
-                <strong>{p.name}</strong>
-                <br />
-                {p.description}
-                <br />
-                <em>{p.tags.join(", ")}</em>
-              </Popup>
-            </CircleMarker>
-          );
-        })}
-      </MapContainer>
-    </div>
-
+          {ordered.map((p) => {
+            const isMatch = resultIds.has(p.id);
+            const isSelected = p.id === selectedId;
+            const category = getCategory(p.category);
+            const badges = FEATURES.filter((f) => p[f.id] === true);
+            return (
+              <CircleMarker
+                key={p.id}
+                ref={(ref) => (markerRefs.current[p.id] = ref)}
+                center={[p.lat, p.lng]}
+                radius={isSelected ? 13 : isMatch ? 9 : 5}
+                pathOptions={{
+                  color: isMatch ? "#ffffff" : "#9ca3af",
+                  weight: isMatch ? 2 : 1,
+                  fillColor: isMatch ? category.color : "#9ca3af",
+                  fillOpacity: isMatch ? 0.95 : 0.4,
+                }}
+                eventHandlers={{ click: () => setSelectedId(p.id) }}
+              >
+                <Popup>
+                  <div className="popup">
+                    <strong>{p.name}</strong>
+                    <span className="popup-type" style={{ color: category.color }}>
+                      {category.label}
+                    </span>
+                    {p.address && <span>{p.address}</span>}
+                    {p.phone && <a href={`tel:${p.phone.replace(/\s/g, "")}`}>{p.phone}</a>}
+                    {p.description && <span>{p.description}</span>}
+                    {badges.length > 0 && (
+                      <div className="badges">
+                        {badges.map((f) => (
+                          <span key={f.id} className="badge">{f.label}</span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </Popup>
+              </CircleMarker>
+            );
+          })}
+        </MapContainer>
+      </div>
     </div>
   );
 }
