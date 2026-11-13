@@ -3,14 +3,25 @@ import { MapContainer, TileLayer, CircleMarker, Popup } from "react-leaflet";
 import places from "./data/places.json";
 import SearchBar from "./SearchBar.jsx";
 import FilterPanel from "./filters/FilterPanel.jsx";
+import FloatingButton from "./components/FloatingButton.jsx";
+import Modal from "./components/Modal.jsx";
+import PlacePopup from "./components/PlacePopup.jsx";
+import LoginForm from "./components/LoginForm.jsx";
+import SavedPlaces from "./components/SavedPlaces.jsx";
+import Documentation from "./content/Documentation.jsx";
+import { useAccount } from "./account/useAccount.js";
 import { FILTERS } from "./config/filters.js";
-import { FEATURES, getCategory } from "./config/placeTypes.js";
+import { getCategory } from "./config/placeTypes.js";
 import { applyFilters, getDefaults } from "./filters/filterEngine.js";
 import { TEXT } from "./config/texts.js";
 import "./App.css";
 
 // Centre of Timișoara (around Piața Victoriei)
 const CENTER = [45.7537, 21.2257];
+
+// Icons for the floating buttons: replace these files in the public folder
+const INFO_ICON = "/info-icon.svg";
+const ACCOUNT_ICON = "/user-icon.svg";
 
 export default function App() {
   const [query, setQuery] = useState("");
@@ -19,11 +30,18 @@ export default function App() {
   const [map, setMap] = useState(null);
   const markerRefs = useRef({});
 
+  // Which window is open: null | "docs" | "login" | "account"
+  const [modal, setModal] = useState(null);
+  // A place the user tried to save before logging in (saved right after login)
+  const [pendingSaveId, setPendingSaveId] = useState(null);
+  const account = useAccount();
+
   const results = useMemo(
     () => applyFilters(places, FILTERS, filterValues, query),
     [filterValues, query]
   );
   const resultIds = useMemo(() => new Set(results.map((p) => p.id)), [results]);
+  const favoritePlaces = places.filter((p) => account.favorites.includes(p.id));
 
   function setFilter(id, value) {
     setFilterValues((prev) => ({ ...prev, [id]: value }));
@@ -49,6 +67,44 @@ export default function App() {
     if (!map) return;
     map.flyTo([place.lat, place.lng], 17, { duration: 0.6 });
     markerRefs.current[place.id]?.openPopup();
+  }
+
+  // ---------- Account ----------
+  function openAccount() {
+    setModal(account.user ? "account" : "login");
+  }
+
+  function closeModal() {
+    setModal(null);
+    setPendingSaveId(null);
+  }
+
+  function handleToggleFavorite(place) {
+    if (!account.user) {
+      setPendingSaveId(place.id);
+      setModal("login");
+      return;
+    }
+    account.toggleFavorite(place.id);
+  }
+
+  // Returns an error message, or null if login worked
+  function handleLogin(email, password) {
+    const { error, user } = account.login(email, password);
+    if (error) return error;
+    if (pendingSaveId != null) account.addFavorite(pendingSaveId, user.email);
+    closeModal();
+    return null;
+  }
+
+  function handleLogout() {
+    account.logout();
+    closeModal();
+  }
+
+  function showSavedPlace(place) {
+    closeModal();
+    selectPlace(place);
   }
 
   // Draw non-matching places first so highlighted ones sit on top
@@ -97,6 +153,21 @@ export default function App() {
       <div className="map-wrap">
         <SearchBar value={query} onChange={setQuery} />
 
+        <FloatingButton
+          icon={ACCOUNT_ICON}
+          label={TEXT.accountButton}
+          position="top-right"
+          active={Boolean(account.user)}
+          onClick={openAccount}
+        />
+
+        <FloatingButton
+          icon={INFO_ICON}
+          label={TEXT.infoButton}
+          position="bottom-right"
+          onClick={() => setModal("docs")}
+        />
+
         <MapContainer ref={setMap} center={CENTER} zoom={14} className="map">
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -107,7 +178,6 @@ export default function App() {
             const isMatch = resultIds.has(p.id);
             const isSelected = p.id === selectedId;
             const category = getCategory(p.category);
-            const badges = FEATURES.filter((f) => p[f.id] === true);
             return (
               <CircleMarker
                 key={p.id}
@@ -122,29 +192,46 @@ export default function App() {
                 }}
                 eventHandlers={{ click: () => setSelectedId(p.id) }}
               >
-                <Popup>
-                  <div className="popup">
-                    <strong>{p.name}</strong>
-                    <span className="popup-type" style={{ color: category.color }}>
-                      {category.label}
-                    </span>
-                    {p.address && <span>{p.address}</span>}
-                    {p.phone && <a href={`tel:${p.phone.replace(/\s/g, "")}`}>{p.phone}</a>}
-                    {p.description && <span>{p.description}</span>}
-                    {badges.length > 0 && (
-                      <div className="badges">
-                        {badges.map((f) => (
-                          <span key={f.id} className="badge">{f.label}</span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                <Popup minWidth={260} maxWidth={300}>
+                  <PlacePopup
+                    place={p}
+                    isFavorite={account.isFavorite(p.id)}
+                    onToggleFavorite={handleToggleFavorite}
+                  />
                 </Popup>
               </CircleMarker>
             );
           })}
         </MapContainer>
       </div>
+
+      {/* ---------- Windows ---------- */}
+      {modal === "docs" && (
+        <Modal title={TEXT.docsTitle} onClose={closeModal} width={640}>
+          <Documentation />
+        </Modal>
+      )}
+
+      {modal === "login" && (
+        <Modal title={TEXT.loginTitle} onClose={closeModal} width={400}>
+          <LoginForm
+            notice={pendingSaveId != null ? TEXT.loginToSave : null}
+            onSubmit={handleLogin}
+          />
+        </Modal>
+      )}
+
+      {modal === "account" && account.user && (
+        <Modal title={TEXT.accountTitle} onClose={closeModal} width={460}>
+          <SavedPlaces
+            user={account.user}
+            places={favoritePlaces}
+            onSelect={showSavedPlace}
+            onRemove={(p) => account.removeFavorite(p.id)}
+            onLogout={handleLogout}
+          />
+        </Modal>
+      )}
     </div>
   );
 }

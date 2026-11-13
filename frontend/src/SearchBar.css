@@ -25,7 +25,7 @@
 
 /* Open size: up to 480px wide, never wider than the map minus some margin */
 .searchbar.open {
-  width: min(480px, calc(100% - 32px));
+  width: min(480px, calc(100% - 160px));
 }
 
 /* ---------- Glow on hover / while typing ----------
