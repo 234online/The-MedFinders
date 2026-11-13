@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import places from "./data/places.json";
+import { places } from "./data/loadPlaces.js";
 import SearchBar from "./SearchBar.jsx";
 import FilterPanel from "./filters/FilterPanel.jsx";
 import Landing from "./components/Landing.jsx";
@@ -9,6 +9,7 @@ import Modal from "./components/Modal.jsx";
 import PlacePopup from "./components/PlacePopup.jsx";
 import PlaceDetails from "./components/PlaceDetails.jsx";
 import LoginForm from "./components/LoginForm.jsx";
+import Auth0Login from "./components/Auth0Login.jsx";
 import SavedPlaces from "./components/SavedPlaces.jsx";
 import { ScoreBadge } from "./components/Stars.jsx";
 import Documentation from "./content/Documentation.jsx";
@@ -73,6 +74,13 @@ export default function App() {
     return counts;
   }, []);
 
+  // How many places of each type (for the second row of tiles)
+  const countsByType = useMemo(() => {
+    const counts = {};
+    for (const p of places) counts[p.category] = (counts[p.category] ?? 0) + 1;
+    return counts;
+  }, []);
+
   function setFilter(id, value) {
     setFilterValues((prev) => ({ ...prev, [id]: value }));
   }
@@ -121,6 +129,30 @@ export default function App() {
   function selectPlace(place) {
     setSelectedId(place.id);
     setFocusId(place.id);
+  }
+
+  // ---------- Coming back from the Auth0 login page ----------
+  // The page reloads after logging in with Auth0, so we saved what the
+  // user was doing (e.g. saving a place) and finish it here.
+  useEffect(() => {
+    if (account.isLoading || !account.user) return;
+    const pending = account.takePendingAction();
+    if (!pending) return;
+    if (pending.started) setStarted(true);
+    const action = pending.action;
+    if (action?.type === "save") {
+      account.addFavorite(action.placeId);
+      const place = places.find((p) => p.id === action.placeId);
+      if (place) selectPlace(place);
+    } else if (action?.type === "review") {
+      setModal({ type: "details", placeId: action.placeId, writing: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account.isLoading, account.user]);
+
+  // Auth0: go to the login page, remembering what to do afterwards
+  function auth0Login(options = {}) {
+    account.redirectToLogin({ ...options, pending: { action: pendingAction, started } });
   }
 
   // ---------- Account, favourites, reviews ----------
@@ -188,6 +220,7 @@ export default function App() {
         label={TEXT.accountButton}
         position="top-right"
         active={Boolean(account.user)}
+        photo={account.user?.picture}
         onClick={openAccount}
       />
       <FloatingButton
@@ -217,7 +250,9 @@ export default function App() {
         <Landing
           counts={countsByGroup}
           onSearch={(text) => startWith({ text })}
+          typeCounts={countsByType}
           onGroup={(group) => startWith({ filters: { specialties: group.items } })}
+          onCategory={(id) => startWith({ filters: { category: [id] } })}
           onFeature={(id) => startWith({ filters: { [id]: true } })}
           onShowAll={() => startWith()}
         >
@@ -272,8 +307,8 @@ export default function App() {
                     <div className="result-text">
                       <strong>{p.name}</strong>
                       <small>
-                        {category.label}
-                        {p.area && ` · ${p.area}`}
+                        {category.singular}
+                        {p.network !== "Independent" && ` · ${p.network}`}
                       </small>
                     </div>
                     <ScoreBadge score={p.score} />
@@ -331,7 +366,16 @@ export default function App() {
 
       {modal?.type === "login" && (
         <Modal title={TEXT.loginTitle} onClose={closeModal} width={400}>
-          <LoginForm notice={loginNotice} onSubmit={handleLogin} />
+          {account.mode === "auth0" ? (
+            <Auth0Login
+              notice={loginNotice}
+              onLogin={() => auth0Login()}
+              onSignup={() => auth0Login({ signup: true })}
+              onGoogle={() => auth0Login({ google: true })}
+            />
+          ) : (
+            <LoginForm notice={loginNotice} onSubmit={handleLogin} />
+          )}
         </Modal>
       )}
 

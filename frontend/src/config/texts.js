@@ -6,18 +6,17 @@
 // =============================================================
 
 export const TEXT = {
-  appTitle: "Harta medicală Timișoara",
-  brand: "MedFinders",
+  appTitle: "Find the care you need",
+  brand: "TimiCareNow",
   backHome: "Înapoi la pagina principală",
 
   // Start page
-  landingTitle: "Găsește îngrijirea medicală potrivită în Timișoara",
-  landingSubtitle: "Spitale, clinici, farmacii și medici: cu program, recenzii și scoruri, pe o singură hartă.",
+  landingTitle: "Find the care you need",
+  landingSubtitle: "Toate informațiile de care ai nevoie într-un singur loc.",
   landingSearchPlaceholder: "Ex: farmacie non-stop, cardiologie, stomatolog Fabric…",
   landingSearchButton: "Caută",
   landingCategoriesTitle: "Sau alege un domeniu medical",
-  landingPharmacies: "💊 Farmacii",
-  pharmacySearch: "Farmacii",
+  landingTypesTitle: "Sau caută după tipul unității",
   landingQuickTitle: "Filtre rapide",
   showAllMap: "Vezi toată harta →",
   placesCount: (n) => (n === 1 ? "1 locație" : n >= 20 ? `${n} de locații` : `${n} locații`),
@@ -26,6 +25,7 @@ export const TEXT = {
   filtersTitle: "Filtre",
   reset: (n) => `Resetează (${n})`,
   specialtySearch: "Caută o specialitate…",
+  clinicsCount: (n) => (n === 1 ? "1 clinică" : n >= 20 ? `${n} de clinici` : `${n} clinici`),
   specialtyNoMatch: "Nicio specialitate găsită.",
   selectAll: "Selectează tot domeniul",
   unselectAll: "Deselectează tot domeniul",
@@ -46,7 +46,7 @@ export const TEXT = {
 
   // Windows (modals)
   close: "Închide",
-  docsTitle: "Despre MedFinders",
+  docsTitle: "Despre TimiCareNow",
   loginTitle: "Autentificare",
   accountTitle: "Contul meu",
 
@@ -61,6 +61,9 @@ export const TEXT = {
   invalidEmail: "Introdu o adresă de email validă.",
   shortPassword: "Parola trebuie să aibă cel puțin 4 caractere.",
   prototypeNote: "Prototip: contul este salvat doar în acest browser.",
+  auth0Intro: "Autentificarea se face securizat prin Auth0. Poți folosi email și parolă sau contul Google.",
+  googleLogin: "Continuă cu Google",
+  auth0Note: "Autentificare securizată prin Auth0.",
 
   // Saved places
   loggedInAs: "Conectat ca",
@@ -76,13 +79,13 @@ export const TEXT = {
   openNow: "Deschis acum",
   closedNow: "Închis acum",
   closed: "Închis",
+  notStated: "Nespecificat",
+  nextDay: "(a doua zi)",
   nonstop: "Non-stop",
   hoursLoading: "Se încarcă programul…",
   hoursUnavailable: "Program indisponibil",
   hoursFromGoogle: "Program preluat de pe Google Maps",
   contactTitle: "Contact",
-  priceTitle: "Preț",
-  languagesTitle: "Limbi vorbite",
   specialtiesTitle: "Specialități",
   servicesTitle: "Servicii",
 
@@ -91,8 +94,8 @@ export const TEXT = {
   reviewsButton: "Recenzii și detalii",
   reviewsTitle: "Recenzii",
   reviewsCount: (n) =>
-    n === 0 ? "Nicio recenzie" : n === 1 ? "1 recenzie" : n >= 20 ? `${n} de recenzii` : `${n} recenzii`,
-  noReviews: "Nicio recenzie încă. Fii primul care scrie una!",
+    n === 0 ? "Nicio evaluare" : n === 1 ? "1 evaluare" : n >= 20 ? `${n} de evaluări` : `${n} evaluări`,
+  noReviews: "Nicio recenzie pe TimiCareNow încă. Fii primul care scrie una!",
   writeReview: "Scrie o recenzie",
   loginToReviewButton: "Autentifică-te pentru a scrie o recenzie",
   loginToReview: "Autentifică-te pentru a scrie o recenzie.",
@@ -104,7 +107,16 @@ export const TEXT = {
   reviewNeedsRating: "Alege o notă de la 1 la 5 stele.",
   reviewTooShort: "Scrie cel puțin câteva cuvinte.",
   yourReviewTag: "Recenzia ta",
-  demoReviewsNote: "Recenziile existente sunt exemple de test (prototip).",
 
+  independent: "Independent",
+  approximateLocation: "Poziția pe hartă este aproximativă (pe stradă).",
+  doctorsTitle: "Medici",
+  publicRatings: "Evaluări publice",
+  siteReviews: "Recenzii pe TimiCareNow",
+  votes: (n) => (n === 1 ? "1 vot" : n >= 20 ? `${n} de voturi` : `${n} voturi`),
+  noRatingsYet: "Încă nu există evaluări pentru această locație.",
+  sourcesTitle: (n) => `Surse (${n})`,
+  dataNote: "Date verificate din surse publice (13.11.2026). Confirmă programul telefonic înainte de vizită. În caz de urgență, sună la 112.",
+  daysShort: ["Lu", "Ma", "Mi", "Jo", "Vi", "Sâ", "Du"],
   days: ["Luni", "Marți", "Miercuri", "Joi", "Vineri", "Sâmbătă", "Duminică"],
 };

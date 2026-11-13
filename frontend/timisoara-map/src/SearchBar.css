@@ -1,0 +1,94 @@
+/* ---------- The bar itself (closed = round button) ---------- */
+.searchbar {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000; /* above the map */
+
+  display: flex;
+  align-items: center;
+  width: 52px;  /* closed size */
+  height: 52px;
+  overflow: hidden;
+  border-radius: 999px;
+
+  /* Transparent "glass" look: change the last number (0.35) for more/less see-through */
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+
+  transition: width 0.3s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+/* Open size: up to 480px wide, never wider than the map minus some margin */
+.searchbar.open {
+  width: min(480px, calc(100% - 160px));
+}
+
+/* ---------- Glow on hover / while typing ----------
+   Glow colour comes from --accent-glow in App.css. */
+.searchbar:hover,
+.searchbar:focus-within {
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow:
+    0 0 0 2px var(--accent-glow-strong),
+    0 0 18px 4px var(--accent-glow);
+}
+
+/* ---------- Icon button ---------- */
+.searchbar-icon {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+/* Icon size */
+.searchbar-icon img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+/* ---------- Text field ---------- */
+.searchbar input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 16px; /* 16px stops iPhones from zooming in */
+  color: #111827;
+}
+
+.searchbar input::placeholder {
+  color: #374151;
+}
+
+/* ---------- Clear (×) button ---------- */
+.searchbar-close {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  margin-right: 4px;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  font-size: 24px;
+  line-height: 1;
+  color: #374151;
+  cursor: pointer;
+}
+
+.searchbar-close:hover {
+  background: rgba(0, 0, 0, 0.08);
+}

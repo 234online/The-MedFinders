@@ -35,7 +35,6 @@ export function fromOverpass(json) {
         open24h: t.opening_hours === "24/7",
         emergency: t.emergency === "yes",
         wheelchair: t.wheelchair === "yes",
-        cnas: false, // not recorded in OpenStreetMap; fill in yourself
         lat: e.lat ?? e.center?.lat,
         lng: e.lon ?? e.center?.lon,
         description: t.opening_hours ? `Program: ${t.opening_hours}` : "",

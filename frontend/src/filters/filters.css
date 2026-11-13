@@ -331,3 +331,29 @@
   background: var(--accent);
   border-color: var(--accent);
 }
+
+/* Number of selected specialties in a group */
+.tree-selected-count {
+  min-width: 18px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.7rem;
+  text-align: center;
+}
+
+/* Number of clinics next to a specialty chip */
+.tree-item-count {
+  margin-left: 2px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  color: #6b7280;
+  font-size: 0.7rem;
+}
+
+.chip.tree-chip-on .tree-item-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}

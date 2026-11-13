@@ -26,7 +26,10 @@ export default function OpeningHours({ place }) {
             {hours.days.map((text, i) => (
               <tr key={i} className={i === today ? "today" : ""}>
                 <td>{TEXT.days[i]}</td>
-                <td>{text}</td>
+                <td>
+                  {text}
+                  {hours.notes?.[i] && <small className="pp-day-note">{hours.notes[i]}</small>}
+                </td>
               </tr>
             ))}
           </tbody>
