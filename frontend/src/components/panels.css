@@ -11,12 +11,12 @@
 
 .btn-primary {
   border: none;
-  background: #2563eb;
+  background: var(--accent);
   color: #fff;
 }
 
 .btn-primary:hover {
-  background: #1d4ed8;
+  background: var(--accent-hover);
 }
 
 .btn-secondary {
@@ -33,7 +33,7 @@
   padding: 4px;
   border: none;
   background: none;
-  color: #2563eb;
+  color: var(--accent);
   font-size: 0.9rem;
   cursor: pointer;
 }
@@ -67,7 +67,7 @@
 }
 
 .login-form input:focus {
-  outline: 2px solid #2563eb;
+  outline: 2px solid var(--accent);
   border-color: transparent;
 }
 
@@ -75,8 +75,8 @@
   margin: 0;
   padding: 10px 12px;
   border-radius: 8px;
-  background: #eff6ff;
-  color: #1e40af;
+  background: var(--accent-soft);
+  color: var(--accent-dark);
   font-size: 0.9rem;
 }
 
@@ -145,7 +145,7 @@
 }
 
 .saved-item:hover {
-  background: #eef2ff;
+  background: var(--accent-soft);
 }
 
 .saved-item strong {
