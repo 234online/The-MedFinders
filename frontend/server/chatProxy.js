@@ -4,13 +4,20 @@
 //  The browser sends the conversation to /api/chat; this file adds
 //  the secret API key, the assistant's instructions and two tools
 //  ("search_clinics" and "get_clinic_details"), and forwards it to
-//  the Claude API. The tools run in the browser (src/chat/chatTools.js),
-//  on the same data the map uses.
+//  the AI: Google Gemini or Anthropic Claude. The tools run in the
+//  browser (src/chat/chatTools.js), on the same data the map uses.
 //
-//  Settings in the .env file (next to package.json):
-//    ANTHROPIC_API_KEY=sk-ant-...        (required for the AI)
-//    CLAUDE_MODEL=claude-haiku-5-5       (optional: cheaper, less smart;
-//                                         the default is claude-sonnet-5-5)
+//  The browser always uses one conversation format (Claude's); for
+//  Gemini this file translates it both ways, so the rest of the site
+//  doesn't care which AI is used.
+//
+//  Settings in the .env file (next to package.json), one key is enough:
+//    GEMINI_API_KEY=...                  (Google AI Studio key)
+//    GEMINI_MODEL=gemini-flash-latest    (optional)
+//    ANTHROPIC_API_KEY=sk-ant-...        (Claude key)
+//    CLAUDE_MODEL=claude-sonnet-5-5      (optional)
+//    AI_PROVIDER=gemini | claude         (optional: which one to use if
+//                                         both keys are set; default gemini)
 //  Without a key, GET /api/chat answers { ai: false } and the chat
 //  uses its simple built-in mode instead.
 // =============================================================
@@ -18,8 +25,11 @@
 import { readFileSync } from "node:fs";
 import { SYMPTOMS } from "../src/config/symptoms.js";
 
-const API_URL = "https://api.anthropic.com/v1/messages";
-const DEFAULT_MODEL = "claude-sonnet-5-5";
+const CLAUDE_URL = "https://api.anthropic.com/v1/messages";
+const CLAUDE_DEFAULT_MODEL = "claude-sonnet-5-5";
+const GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta";
+const GEMINI_DEFAULT_MODEL = "gemini-flash-latest"; // Google's alias for the current Flash model
+const MAX_OUTPUT_TOKENS = 4000; // thinking models count their reasoning in this too
 const MAX_BODY_BYTES = 400_000; // the browser also shortens old tool results
 const MAX_MESSAGES = 80;
 const MAX_RETRIES = 2; // for "rate limited" / "overloaded" answers
@@ -223,13 +233,157 @@ function checkMessages(messages) {
   return { messages };
 }
 
+// Which AI to use, from the .env settings
+function pickProvider(env) {
+  const wanted = (env.AI_PROVIDER || "").toLowerCase();
+  if (wanted === "claude" && env.ANTHROPIC_API_KEY) return "claude";
+  if (wanted === "gemini" && env.GEMINI_API_KEY) return "gemini";
+  if (env.GEMINI_API_KEY) return "gemini";
+  if (env.ANTHROPIC_API_KEY) return "claude";
+  return null;
+}
+
+// ======================= CLAUDE =======================
+// Returns { ok, content, stop_reason } or { ok: false, status, message }
+async function callClaude(messages, system, env) {
+  const response = await fetch(env.ANTHROPIC_API_URL || CLAUDE_URL, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "x-api-key": env.ANTHROPIC_API_KEY,
+      "anthropic-version": "2023-06-01",
+    },
+    body: JSON.stringify({
+      model: env.CLAUDE_MODEL || CLAUDE_DEFAULT_MODEL,
+      max_tokens: MAX_OUTPUT_TOKENS,
+      system,
+      tools: TOOLS,
+      messages,
+    }),
+    signal: AbortSignal.timeout(TIMEOUT_MS),
+  });
+  const result = await response.json().catch(() => ({}));
+  if (response.ok) return { ok: true, content: result.content, stop_reason: result.stop_reason };
+  return { ok: false, status: response.status, message: result?.error?.message ?? JSON.stringify(result) };
+}
+
+// ======================= GEMINI =======================
+// Conversation (Claude format) -> Gemini "contents".
+// Gemini's "thought signatures" are kept on our blocks as gemini_signature
+// and must be sent back on the exact same part, or Gemini answers 400.
+function toGeminiContents(messages) {
+  const nameOfCall = {}; // tool_use id -> function name (Gemini wants the name back)
+  for (const m of messages) {
+    if (m.role === "assistant" && Array.isArray(m.content)) {
+      for (const b of m.content) if (b.type === "tool_use") nameOfCall[b.id] = b.name;
+    }
+  }
+
+  return messages
+    .map((m) => {
+      const role = m.role === "assistant" ? "model" : "user";
+      if (typeof m.content === "string") return { role, parts: [{ text: m.content }] };
+
+      const parts = [];
+      for (const b of m.content) {
+        const signature = b.gemini_signature ? { thoughtSignature: b.gemini_signature } : {};
+        if (b.type === "text" && b.text) {
+          parts.push({ text: b.text, ...signature });
+        } else if (b.type === "tool_use") {
+          const call = { name: b.name, args: b.input ?? {} };
+          if (b.gemini_id) call.id = b.gemini_id;
+          parts.push({ functionCall: call, ...signature });
+        } else if (b.type === "tool_result") {
+          let response;
+          try {
+            response = JSON.parse(b.content);
+          } catch {
+            response = { result: String(b.content) };
+          }
+          if (typeof response !== "object" || response === null || Array.isArray(response)) response = { result: response };
+          const reply = { name: nameOfCall[b.tool_use_id] ?? "search_clinics", response };
+          if (b.tool_use_id?.startsWith("gemini:")) reply.id = b.tool_use_id.slice("gemini:".length);
+          parts.push({ functionResponse: reply });
+        }
+        // "thinking" blocks are Claude-only: skipped
+      }
+      return parts.length ? { role, parts } : null;
+    })
+    .filter(Boolean);
+}
+
+// Gemini answer -> blocks in the conversation format the browser uses
+function fromGeminiParts(parts = []) {
+  const content = [];
+  let calls = 0;
+  for (const part of parts) {
+    if (part.thought) continue; // Gemini's visible thinking summary, not part of the answer
+    const signature = part.thoughtSignature ? { gemini_signature: part.thoughtSignature } : {};
+    if (part.functionCall) {
+      calls++;
+      const fc = part.functionCall;
+      content.push({
+        type: "tool_use",
+        // keep Gemini's own call id if it gave one, so the reply can refer to it
+        id: fc.id ? `gemini:${fc.id}` : `call_${Date.now()}_${calls}`,
+        ...(fc.id ? { gemini_id: fc.id } : {}),
+        name: fc.name,
+        input: fc.args ?? {},
+        ...signature,
+      });
+    } else if (typeof part.text === "string") {
+      content.push({ type: "text", text: part.text, ...signature });
+    }
+  }
+  return { content, stop_reason: calls > 0 ? "tool_use" : "end_turn" };
+}
+
+// Tool definitions in Gemini's format
+const GEMINI_TOOLS = [
+  {
+    functionDeclarations: TOOLS.map((t) => ({
+      name: t.name,
+      description: t.description,
+      parameters: t.input_schema,
+    })),
+  },
+];
+
+async function callGemini(messages, system, env) {
+  const model = env.GEMINI_MODEL || GEMINI_DEFAULT_MODEL;
+  const base = env.GEMINI_API_URL || GEMINI_BASE_URL;
+  const response = await fetch(`${base}/models/${encodeURIComponent(model)}:generateContent`, {
+    method: "POST",
+    headers: { "content-type": "application/json", "x-goog-api-key": env.GEMINI_API_KEY },
+    body: JSON.stringify({
+      systemInstruction: { parts: [{ text: system }] },
+      contents: toGeminiContents(messages),
+      tools: GEMINI_TOOLS,
+      generationConfig: { maxOutputTokens: MAX_OUTPUT_TOKENS },
+    }),
+    signal: AbortSignal.timeout(TIMEOUT_MS),
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    return { ok: false, status: response.status, message: result?.error?.message ?? JSON.stringify(result) };
+  }
+  const candidate = result.candidates?.[0];
+  if (!candidate?.content?.parts?.length) {
+    // e.g. blocked by Google's safety filter, or an empty answer
+    const reason = candidate?.finishReason || result.promptFeedback?.blockReason || "empty answer";
+    return { ok: false, status: 200, message: `Gemini returned no answer (${reason})` };
+  }
+  return { ok: true, ...fromGeminiParts(candidate.content.parts) };
+}
+
+// ======================= HANDLER =======================
 // Express/Connect-style handler: (req, res, env)
 export async function chatHandler(req, res, env = process.env) {
-  const apiKey = env.ANTHROPIC_API_KEY;
+  const provider = pickProvider(env);
 
-  if (req.method === "GET") return send(res, 200, { ai: Boolean(apiKey) });
+  if (req.method === "GET") return send(res, 200, { ai: Boolean(provider), provider });
   if (req.method !== "POST") return send(res, 405, { error: "method_not_allowed" });
-  if (!apiKey) return send(res, 503, { error: "no_api_key" });
+  if (!provider) return send(res, 503, { error: "no_api_key" });
 
   let payload;
   try {
@@ -239,61 +393,48 @@ export async function chatHandler(req, res, env = process.env) {
     return send(res, error.message === "too_large" ? 413 : 400, { error: error.message || "bad_request" });
   }
 
-  const { messages, problem } = checkMessages(payload.messages);
-  if (problem) {
-    console.error(`[chat] Rejected request: ${problem}`);
-    return send(res, 400, { error: "bad_messages", message: problem });
+  const checked = checkMessages(payload.messages);
+  if (checked.problem) {
+    console.error(`[chat] Rejected request: ${checked.problem}`);
+    return send(res, 400, { error: "bad_messages", message: checked.problem });
   }
 
   const system = systemPrompt(payload.lang);
-  const makeBody = (msgs) =>
-    JSON.stringify({ model: env.CLAUDE_MODEL || DEFAULT_MODEL, max_tokens: 1500, system, tools: TOOLS, messages: msgs });
-  let body = makeBody(messages);
+  const call = provider === "gemini" ? callGemini : callClaude;
+  const label = provider === "gemini" ? "Gemini" : "Claude";
+  let messages = checked.messages;
   let thinkingRetried = false;
 
   for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
     try {
-      const response = await fetch(env.ANTHROPIC_API_URL || API_URL, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          "x-api-key": apiKey,
-          "anthropic-version": "2023-06-01",
-        },
-        body,
-        signal: AbortSignal.timeout(TIMEOUT_MS),
-      });
-      const result = await response.json().catch(() => ({}));
+      const result = await call(messages, system, env);
+      if (result.ok) return send(res, 200, { content: result.content, stop_reason: result.stop_reason });
 
-      if (response.ok) return send(res, 200, { content: result.content, stop_reason: result.stop_reason });
-
-      const message = result?.error?.message ?? JSON.stringify(result);
-
-      // A reasoning block the API no longer accepts: try once more without them
-      if (response.status === 400 && !thinkingRetried && /thinking|signature/i.test(message)) {
+      // Claude: a reasoning block it no longer accepts -> try once more without them
+      if (provider === "claude" && result.status === 400 && !thinkingRetried && /thinking|signature/i.test(result.message)) {
         console.warn("[chat] The API refused an old reasoning block; retrying without reasoning blocks.");
         thinkingRetried = true;
-        body = makeBody(withoutThinking(messages));
+        messages = withoutThinking(messages);
         attempt--; // doesn't count as one of the normal retries
         continue;
       }
 
-      // 429 = too many requests, 529 = overloaded, 5xx = temporary: wait and try again
-      const retryable = response.status === 429 || response.status >= 500;
+      // 429 = too many requests, 5xx/529 = overloaded or temporary: wait and try again
+      const retryable = result.status === 429 || result.status >= 500;
       if (retryable && attempt < MAX_RETRIES) {
-        const waitSeconds = Math.min(Number(response.headers.get("retry-after")) || 2 * (attempt + 1), 10);
-        console.warn(`[chat] Claude API ${response.status} (${message}). Retrying in ${waitSeconds}s…`);
+        const waitSeconds = 2 * (attempt + 1);
+        console.warn(`[chat] ${label} API ${result.status} (${result.message}). Retrying in ${waitSeconds}s…`);
         await new Promise((r) => setTimeout(r, waitSeconds * 1000));
         continue;
       }
-      console.error(`[chat] Claude API error ${response.status}: ${message}`);
-      return send(res, 502, { error: "api_error", status: response.status, message });
+      console.error(`[chat] ${label} API error ${result.status}: ${result.message}`);
+      return send(res, 502, { error: "api_error", status: result.status, message: result.message });
     } catch (error) {
       if (attempt < MAX_RETRIES) {
-        console.warn(`[chat] Could not reach the Claude API (${error.message}). Retrying…`);
+        console.warn(`[chat] Could not reach the ${label} API (${error.message}). Retrying…`);
         continue;
       }
-      console.error("[chat] Could not reach the Claude API:", error.message);
+      console.error(`[chat] Could not reach the ${label} API:`, error.message);
       return send(res, 502, { error: "unreachable" });
     }
   }
