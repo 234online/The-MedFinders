@@ -4,6 +4,7 @@ const cors = require('cors');
 const { auth } = require('express-oauth2-jwt-bearer');
 const db = require('./db/database');
 const users = require('./db/users');
+const analytics = require('./db/analytics');
 
 const PORT = process.env.PORT || 5000;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
@@ -20,6 +21,16 @@ const toPlaceId = (value) => {
   const n = Number(value);
   return Number.isInteger(n) && n > 0 ? n : null;
 };
+
+// The website identifies clinics by their code ("medlife-spital"), the
+// PostgreSQL tables by the numeric id from places.json. Accepts either and
+// returns both: { id, code }, or null if the clinic doesn't exist.
+async function resolvePlace(value) {
+  const places = await db.loadPlaces();
+  const id = toPlaceId(value);
+  const place = id ? places.find((p) => p.id === id) : places.find((p) => p.code === value);
+  return place ? { id: place.id, code: place.code } : null;
+}
 
 /**
  * Construiește aplicația. `options.authConfig` permite testelor să folosească
@@ -275,16 +286,25 @@ function createApp(options = {}) {
 
   // Corp: { placeId, kind: "call" | "whatsapp" | "email", target: "0256 000 000" }
   // Funcționează și fără login (se salvează fără utilizator).
-  app.post('/api/contacts', needDb, optionalJwt, loadUser, asyncRoute(async (req, res) => {
+  // placeId poate fi id-ul numeric sau codul clinicii ("medlife-spital").
+  // Clicul ajunge și în statisticile din Tiger Data, chiar fără PostgreSQL-ul de pe Render.
+  app.post('/api/contacts', optionalJwt, (req, res, next) => (users.isEnabled() ? loadUser(req, res, next) : next()), asyncRoute(async (req, res) => {
     const { placeId, kind, target } = req.body || {};
-    const id = toPlaceId(placeId);
-    if (!id) return res.status(400).json({ error: 'Câmpul "placeId" este obligatoriu' });
+    const place = await resolvePlace(placeId);
+    if (!place) return res.status(400).json({ error: 'Câmpul "placeId" este obligatoriu (id sau cod de clinică)' });
     if (!users.CONTACT_KINDS.includes(kind)) {
       return res.status(400).json({ error: `Câmpul "kind" trebuie să fie unul din: ${users.CONTACT_KINDS.join(', ')}` });
     }
+    const userId = req.user?.user_id ?? null;
+
+    await analytics.record({ placeCode: place.code, kind, userId }).catch((err) =>
+      console.error('[Analytics] Clic neînregistrat:', err.message)
+    );
+    if (!users.isEnabled()) return res.status(201).json({ placeId: place.id, kind, savedToHistory: false });
+
     const event = await users.addContactEvent({
-      userId: req.user?.user_id ?? null,
-      placeId: id,
+      userId,
+      placeId: place.id,
       kind,
       target: typeof target === 'string' ? target : null
     });
@@ -294,6 +314,23 @@ function createApp(options = {}) {
   app.get('/api/me/contacts', ...requireUser, asyncRoute(async (req, res) => {
     const limit = Math.min(Math.max(Number(req.query.limit) || 50, 1), 200);
     res.json(await users.getContactEvents(req.user.user_id, limit));
+  }));
+
+  // ------------------------------------------------------------------
+  // Statistici (Tiger Data): "ore aglomerate" și panoul de cerere.
+  // Doar date reale; fără TIGER_DATABASE_URL răspund 503 și site-ul le ascunde.
+  // ------------------------------------------------------------------
+
+  const needTiger = (req, res, next) => (analytics.isEnabled() ? next() : notConfigured('Tiger Data (TIGER_DATABASE_URL)')(req, res));
+
+  app.get('/api/analytics/popular-times/:placeId', needTiger, asyncRoute(async (req, res) => {
+    const place = await resolvePlace(req.params.placeId);
+    if (!place) return res.status(404).json({ error: 'Clinica nu există' });
+    res.json(await analytics.popularTimes(place.code));
+  }));
+
+  app.get('/api/analytics/dashboard', needTiger, asyncRoute(async (req, res) => {
+    res.json(await analytics.dashboard(req.query.days));
   }));
 
   // ------------------------------------------------------------------
@@ -325,11 +362,18 @@ function createApp(options = {}) {
 // ---------------------------------------------------------------------
 
 async function start() {
+  let places = [];
   try {
-    const places = await db.loadPlaces();
+    places = await db.loadPlaces();
     console.log(`[DB] ${places.length} locații încărcate`);
   } catch (err) {
     console.error('[DB] Eroare la încărcarea clinicilor:', err.message);
+  }
+
+  try {
+    await analytics.init();
+  } catch (err) {
+    console.error('[Tiger] Nu m-am putut conecta la Tiger Data:', err.message);
   }
 
   if (users.isEnabled()) {

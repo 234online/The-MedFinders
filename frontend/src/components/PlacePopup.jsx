@@ -2,6 +2,7 @@ import { FEATURES, getCategory } from "../config/placeTypes.js";
 import { TEXT } from "../config/texts.js";
 import { Stars, ScoreBadge } from "./Stars.jsx";
 import OpeningHours from "./OpeningHours.jsx";
+import PopularTimes from "./PopularTimes.jsx";
 import ContactActions from "./ContactActions.jsx";
 import { placeDescription } from "../data/translations.js";
 import { IconMapPin, IconStar, IconStarFilled } from "@tabler/icons-react";
@@ -50,6 +51,8 @@ export default function PlacePopup({
         <ContactActions place={place} specialty={requestSpecialty} user={user} compact />
 
         <OpeningHours place={place} compact />
+
+        <PopularTimes place={place} compact />
 
         {badges.length > 0 && (
           <div className="pp-badges">
