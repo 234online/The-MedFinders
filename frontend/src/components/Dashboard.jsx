@@ -68,6 +68,7 @@ export default function Dashboard({ places, onBack, onOpenPlace }) {
 
 function DashboardContent({ data, places, onOpenPlace }) {
   const byCode = useMemo(() => Object.fromEntries(places.map((p) => [p.id, p])), [places]);
+  const [popularTab, setPopularTab] = useState("views");
   const total = CHANNELS.reduce((sum, c) => sum + data.totals[c.id], 0);
   const previous = CHANNELS.reduce((sum, c) => sum + data.previous[c.id], 0);
   const trend = data.hasPrevious && previous ? Math.round(((total - previous) / previous) * 100) : null;
@@ -75,21 +76,43 @@ function DashboardContent({ data, places, onOpenPlace }) {
   const views = data.views ?? { total: 0, byPlace: {} };
   const favs = data.favorites; // null when the accounts database isn't connected
 
-  // Visits and favourites: shown even before the first contact
+  // Most popular clinics: visits and favourites as two tabs of one card.
+  // Shown even before the first contact.
   const popularity = (
-    <div className="stats-grid">
-      <section className="stats-card">
-        <h2>{TEXT.statsViewed}</h2>
-        <p className="stats-caption">{TEXT.statsViewedNote(views.total)}</p>
-        {views.total > 0 ? (
-          <TopPlaces byPlace={views.byPlace} byCode={byCode} onOpenPlace={onOpenPlace} />
-        ) : (
-          <p className="stats-storage">{TEXT.statsNone}</p>
-        )}
-      </section>
-      <section className="stats-card">
-        <h2>{TEXT.statsFavorites}</h2>
-        {favs == null ? (
+    <section className="stats-card">
+      <h2>{TEXT.statsPopular}</h2>
+      <div className="stats-tabs" role="tablist" aria-label={TEXT.statsPopular}>
+        {[
+          { id: "views", label: TEXT.statsViewed, count: views.total },
+          { id: "favorites", label: TEXT.statsFavorites, count: favs?.total },
+        ].map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            role="tab"
+            id={`popular-tab-${t.id}`}
+            aria-selected={popularTab === t.id}
+            aria-controls="popular-panel"
+            className={popularTab === t.id ? "active" : ""}
+            onClick={() => setPopularTab(t.id)}
+          >
+            {t.label}
+            {t.count != null && <span className="stats-tab-count">{nf.format(t.count)}</span>}
+          </button>
+        ))}
+      </div>
+
+      <div id="popular-panel" role="tabpanel" aria-labelledby={`popular-tab-${popularTab}`}>
+        {popularTab === "views" ? (
+          <>
+            <p className="stats-caption">{TEXT.statsViewedNote(views.total)}</p>
+            {views.total > 0 ? (
+              <TopPlaces byPlace={views.byPlace} byCode={byCode} onOpenPlace={onOpenPlace} />
+            ) : (
+              <p className="stats-storage">{TEXT.statsNone}</p>
+            )}
+          </>
+        ) : favs == null ? (
           <p className="stats-storage">{TEXT.statsFavoritesOff}</p>
         ) : (
           <>
@@ -101,8 +124,8 @@ function DashboardContent({ data, places, onOpenPlace }) {
             )}
           </>
         )}
-      </section>
-    </div>
+      </div>
+    </section>
   );
 
   if (total === 0) {
