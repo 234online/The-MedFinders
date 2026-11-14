@@ -3,7 +3,7 @@ import { SPECIALTY_GROUPS, CATEGORIES, FEATURES } from "../config/placeTypes.js"
 import { TEXT } from "../config/texts.js";
 import LanguageSwitcher from "./LanguageSwitcher.jsx";
 import AccessibleToggle from "../accessibility/AccessibleToggle.jsx";
-import { IconSearch, IconStethoscope } from "@tabler/icons-react";
+import { IconChartBar, IconSearch, IconStethoscope } from "@tabler/icons-react";
 import { GroupIcon, CategoryIcon, LogoIcon } from "./MedIcon.jsx";
 import { DTEXT } from "../doctor/doctorTexts.js";
 import "./Landing.css";
@@ -32,6 +32,7 @@ export default function Landing({
   onFeature,
   onShowAll,
   onSymptoms,
+  onStats,
   lang,
   onLanguage,
   accessible,
@@ -139,6 +140,12 @@ export default function Landing({
         <button type="button" className="landing-all" onClick={onShowAll}>
           {TEXT.showAllMap}
         </button>
+
+        {onStats && (
+          <button type="button" className="landing-stats" onClick={onStats}>
+            <IconChartBar size={18} stroke={1.8} aria-hidden="true" /> {TEXT.statsLink}
+          </button>
+        )}
 
         {onDoctorPortal && (
           <button type="button" className="landing-doctor-link" onClick={onDoctorPortal}>

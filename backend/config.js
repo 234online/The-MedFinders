@@ -24,5 +24,10 @@ module.exports = {
       : null,
 
   // Optional: lets scripts change clinics with the "x-admin-key" header
-  adminApiKey: process.env.ADMIN_API_KEY || null
+  adminApiKey: process.env.ADMIN_API_KEY || null,
+
+  // Optional: Tiger Data (TimescaleDB) for the statistics ("ore aglomerate",
+  // /#statistici). Tiger Cloud -> service -> Connect -> Service URL.
+  // Without it the statistics are off and the website hides them.
+  tigerDatabaseUrl: (process.env.TIGER_DATABASE_URL || '').trim() || null
 };

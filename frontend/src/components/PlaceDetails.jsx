@@ -8,6 +8,7 @@ import { TEXT } from "../config/texts.js";
 import { ratingBreakdown } from "../reviews/score.js";
 import { Stars, StarInput } from "./Stars.jsx";
 import OpeningHours from "./OpeningHours.jsx";
+import PopularTimes from "./PopularTimes.jsx";
 import { IconMapPin, IconStar, IconStarFilled } from "@tabler/icons-react";
 import { CategoryIcon } from "./MedIcon.jsx";
 import "./panels.css";
@@ -75,6 +76,7 @@ export default function PlaceDetails({
           )}
         </div>
         <OpeningHours place={place} />
+        <PopularTimes place={place} />
       </div>
 
       <ContactActions place={place} specialty={requestSpecialty} user={user} />

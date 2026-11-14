@@ -1,0 +1,11 @@
+ISSUER_BASE_URL=https://dev-ry2iux361x1rvvv4.us.auth0.com
+CLIENT_ID=WIYxMhJcRHvXJUQ1QSJGuKTiHpqZUmjV
+
+# 32+ character random string to encrypt the session cookie
+#
+# We're generating a secret for your convenience, but for production,
+# generate your own secret using `openssl rand -hex 32`
+SECRET=d334a9222e855e210ac22317d36c83b9f291d0115e4dc049d5a617c53b789453
+
+BASE_URL=http://localhost:3000
+PORT=3000

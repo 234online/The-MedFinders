@@ -5,6 +5,7 @@ import SearchBar from "./SearchBar.jsx";
 import FilterPanel from "./filters/FilterPanel.jsx";
 import Landing from "./components/Landing.jsx";
 import DoctorDashboard from "./doctor/DoctorDashboard.jsx";
+import Dashboard from "./components/Dashboard.jsx";
 import FloatingButton from "./components/FloatingButton.jsx";
 import Modal from "./components/Modal.jsx";
 import PlacePopup from "./components/PlacePopup.jsx";
@@ -43,6 +44,8 @@ const ACCOUNT_ICON = "/user-icon.svg";
 export default function App() {
   // false = start page, true = map
   const [started, setStarted] = useState(false);
+  // Demand dashboard; also opens directly at /#statistici
+  const [showStats, setShowStats] = useState(() => window.location.hash === "#statistici");
 
   // The doctor dashboard lives at "#doctor" (a hash, so it works on
   // Vercel without extra rewrites and the back button works)
@@ -142,6 +145,19 @@ export default function App() {
   function goHome() {
     setStarted(false);
     setMap(null);
+  }
+
+  function openStats(open) {
+    setShowStats(open);
+    window.history.replaceState(null, "", open ? "#statistici" : window.location.pathname);
+    window.scrollTo(0, 0);
+  }
+
+  // From the dashboard: open one clinic on the map
+  function openFromStats(place) {
+    openStats(false);
+    startWith();
+    selectPlace(place);
   }
 
   // Zoom the map to fit whatever matches the current search and filters
@@ -299,6 +315,8 @@ export default function App() {
           accessible={accessible}
           onToggleAccessible={toggleAccessible}
         />
+      ) : showStats ? (
+        <Dashboard places={allPlaces} onBack={() => openStats(false)} onOpenPlace={openFromStats} />
       ) : !started ? (
         <Landing
           counts={countsByGroup}
@@ -309,6 +327,7 @@ export default function App() {
           onFeature={(id) => startWith({ filters: { [id]: true } })}
           onShowAll={() => startWith()}
           onSymptoms={() => setModal({ type: "symptoms" })}
+          onStats={() => openStats(true)}
           lang={lang}
           onLanguage={changeLanguage}
           accessible={accessible}

@@ -241,6 +241,25 @@
   align-self: start;
 }
 
+/* Landing page link to the dashboard */
+.landing-stats {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 6px;
+  border: none;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.landing-stats:hover {
+  text-decoration: underline;
+}
+
 /* ---------- Quick filters ---------- */
 .landing-quick {
   display: flex;

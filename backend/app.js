@@ -43,6 +43,7 @@ function createApp(options = {}) {
   app.use(require('./routes/places')(auth));
   app.use(require('./routes/account')(auth));
   app.use(require('./routes/contacts')(auth));
+  app.use(require('./routes/analytics')(auth));
 
   // ---------- 404 and errors ----------
   app.use((req, res) => {

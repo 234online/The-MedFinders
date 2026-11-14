@@ -28,6 +28,13 @@ function sendJson(res, status, body) {
 }
 
 function readRaw(req, limit) {
+  // On Vercel the body may already have been read for us (req.body)
+  if (req.readableEnded && req.body != null) {
+    const body = Buffer.isBuffer(req.body)
+      ? req.body
+      : Buffer.from(typeof req.body === "string" ? req.body : JSON.stringify(req.body));
+    return body.length > limit ? Promise.reject(new Error("too_large")) : Promise.resolve(body);
+  }
   return new Promise((resolve, reject) => {
     let size = 0;
     const chunks = [];
