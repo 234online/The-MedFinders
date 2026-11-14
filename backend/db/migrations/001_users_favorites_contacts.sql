@@ -1,9 +1,7 @@
 -- =====================================================================
---  USER DATA (PostgreSQL on Render)
---  Runs automatically every time the backend starts (safe to repeat:
---  it only creates what is missing, it never deletes data).
---  The clinics themselves stay in database/timisoara_clinics.sql;
---  place_id below is the "id" field from frontend/src/data/places.json.
+--  MIGRATION 001: users, favourite clinics, contact history
+--  Written so it also works on a database where the "users" table
+--  already existed (created by the first user-sync endpoint).
 -- =====================================================================
 
 -- One row per person who logged in with Auth0

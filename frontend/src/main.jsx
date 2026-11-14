@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { Auth0Provider } from "@auth0/auth0-react";
 import "leaflet/dist/leaflet.css";
 import App from "./App.jsx";
+import AuthErrorBanner from "./components/AuthErrorBanner.jsx";
 import { AUTH0_ENABLED, AUTH0_DOMAIN, AUTH0_CLIENT_ID, AUTH0_AUDIENCE } from "./account/auth0Config.js";
 
 const app = <App />;
@@ -21,6 +22,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         // Keeps you logged in after refreshing the page
         cacheLocation="localstorage"
       >
+        <AuthErrorBanner />
         {app}
       </Auth0Provider>
     ) : (

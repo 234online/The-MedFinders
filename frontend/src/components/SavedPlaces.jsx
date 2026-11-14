@@ -1,8 +1,11 @@
 import { getCategory } from "../config/placeTypes.js";
 import { TEXT } from "../config/texts.js";
+import { SERVER_ACCOUNT } from "../account/useAccount.js";
+import AccountProfile from "./AccountProfile.jsx";
 import "./panels.css";
 
-// The "my account" page: saved places + log out
+// The "my account" page: saved places, profile + contact history
+// (when the backend is set up), log out
 export default function SavedPlaces({ user, places, onSelect, onRemove, onLogout }) {
   return (
     <div className="saved">
@@ -52,6 +55,8 @@ export default function SavedPlaces({ user, places, onSelect, onRemove, onLogout
           })}
         </ul>
       )}
+
+      {SERVER_ACCOUNT && <AccountProfile onDeleted={onLogout} />}
 
       <button type="button" className="btn-secondary" onClick={onLogout}>
         {TEXT.logout}
