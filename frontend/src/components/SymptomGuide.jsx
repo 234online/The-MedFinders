@@ -3,6 +3,8 @@ import { SYMPTOMS } from "../config/symptoms.js";
 import { specialtyName } from "../config/placeTypes.js";
 import { TEXT, pick } from "../config/texts.js";
 import { normalize } from "../filters/filterEngine.js";
+import { IconAlertTriangle, IconBuildingHospital, IconClock, IconMapPin, IconPhone } from "@tabler/icons-react";
+import { SymptomIcon } from "./MedIcon.jsx";
 import "./panels.css";
 import "./SymptomGuide.css";
 
@@ -27,13 +29,17 @@ export default function SymptomGuide({ places, onShow }) {
         </button>
 
         <h3 className="symptom-title">
-          <span>{selected.icon}</span> {pick(selected.labels)}
+          <span className={"symptom-icon " + selected.level}>
+            <SymptomIcon id={selected.id} size={26} />
+          </span>{" "}
+          {pick(selected.labels)}
         </h3>
 
         {selected.level === "emergency" && (
           <div className="symptom-emergency">
             <p>{TEXT.symptomEmergencyText}</p>
             <a className="symptom-112" href="tel:112">
+              <IconPhone size={22} stroke={2} aria-hidden="true" />
               {TEXT.symptomCall112}
             </a>
             <button
@@ -41,12 +47,18 @@ export default function SymptomGuide({ places, onShow }) {
               className="btn-secondary"
               onClick={() => onShow({ filters: { emergency: true } })}
             >
-              🏥 {TEXT.symptomShowEmergency}
+              <IconBuildingHospital size={18} stroke={1.8} aria-hidden="true" />
+              {TEXT.symptomShowEmergency}
             </button>
           </div>
         )}
 
-        {urgent && <p className="symptom-urgent">⏱️ {TEXT.symptomUrgentText}</p>}
+        {urgent && (
+          <p className="symptom-urgent">
+            <IconClock size={18} stroke={1.8} aria-hidden="true" />
+            {TEXT.symptomUrgentText}
+          </p>
+        )}
 
         <div className="symptom-specialties">
           <h4>{TEXT.symptomRecommend}</h4>
@@ -67,7 +79,8 @@ export default function SymptomGuide({ places, onShow }) {
               onShow({ filters: { specialties: selected.specialties, ...(urgent && { openNow: true }) } })
             }
           >
-            📍 {TEXT.symptomShowClinics(clinicCount)}
+            <IconMapPin size={18} stroke={1.8} aria-hidden="true" />
+            {TEXT.symptomShowClinics(clinicCount)}
           </button>
         )}
 
@@ -103,11 +116,16 @@ export default function SymptomGuide({ places, onShow }) {
 
       {emergencies.length > 0 && (
         <>
-          <h4 className="symptom-group emergency">🚨 {TEXT.symptomEmergencyGroup}</h4>
+          <h4 className="symptom-group emergency">
+            <IconAlertTriangle size={16} stroke={2} aria-hidden="true" />
+            {TEXT.symptomEmergencyGroup}
+          </h4>
           <div className="symptom-list">
             {emergencies.map((s) => (
               <button key={s.id} type="button" className="symptom-item emergency" onClick={() => setSelected(s)}>
-                <span className="symptom-icon">{s.icon}</span>
+                <span className="symptom-icon emergency">
+                  <SymptomIcon id={s.id} />
+                </span>
                 {pick(s.labels)}
               </button>
             ))}
@@ -126,7 +144,9 @@ export default function SymptomGuide({ places, onShow }) {
                 className={"symptom-item" + (s.level === "urgent" ? " urgent" : "")}
                 onClick={() => setSelected(s)}
               >
-                <span className="symptom-icon">{s.icon}</span>
+                <span className={"symptom-icon " + s.level}>
+                  <SymptomIcon id={s.id} />
+                </span>
                 {pick(s.labels)}
               </button>
             ))}

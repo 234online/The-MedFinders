@@ -94,9 +94,11 @@ const TEXTS = {
     logout: "Deconectare",
 
     // Place popup & details
-    save: "☆ Salvează la favorite",
-    saved: "★ Salvat la favorite",
+    save: "Salvează la favorite",
+    saved: "Salvat la favorite",
     hoursTitle: "Program",
+    hoursToday: "Azi",
+    hoursWeek: "Tot programul",
     openNow: "Deschis acum",
     closedNow: "Închis acum",
     closed: "Închis",
@@ -143,7 +145,7 @@ const TEXTS = {
     // Contact actions
     callButton: "Sună",
     whatsappButton: "WhatsApp",
-    appointmentButton: "✉️ Cere o programare",
+    appointmentButton: "Cere o programare",
     appointmentHint: "Se deschide aplicația de email cu un mesaj gata scris.",
     appointmentSubject: (clinic) => `Cerere programare – ${clinic}`,
     appointmentBody: ({ clinic, specialty, name, email }) =>
@@ -200,7 +202,7 @@ const TEXTS = {
     symptomNoMatch: "Nu am găsit acest simptom. Încearcă alt cuvânt sau începe cu medicul de familie.",
     symptomRecommend: "Specialități recomandate",
     symptomShowClinics: (n) => `Arată ${n === 1 ? "clinica" : `cele ${n} clinici`} pe hartă`,
-    symptomCall112: "📞 Sună la 112",
+    symptomCall112: "Sună la 112",
     symptomEmergencyText:
       "Acesta poate fi un semn de urgență medicală. Sună imediat la 112 și nu te deplasa singur(ă) dacă nu te simți bine.",
     symptomShowEmergency: "Vezi spitalele de urgență",
@@ -277,8 +279,10 @@ const TEXTS = {
     removeFavorite: "Remove from favourites",
     logout: "Log out",
 
-    save: "☆ Save to favourites",
-    saved: "★ Saved",
+    save: "Save to favourites",
+    saved: "Saved",
+    hoursToday: "Today",
+    hoursWeek: "Full week",
     hoursTitle: "Opening hours",
     openNow: "Open now",
     closedNow: "Closed now",
@@ -323,7 +327,7 @@ const TEXTS = {
 
     callButton: "Call",
     whatsappButton: "WhatsApp",
-    appointmentButton: "✉️ Request an appointment",
+    appointmentButton: "Request an appointment",
     appointmentHint: "Opens your email app with a ready-written message.",
     appointmentSubject: (clinic) => `Appointment request – ${clinic}`,
     appointmentBody: ({ clinic, specialty, name, email }) =>
@@ -377,7 +381,7 @@ const TEXTS = {
     symptomNoMatch: "We couldn't find this symptom. Try another word, or start with a family doctor.",
     symptomRecommend: "Recommended specialties",
     symptomShowClinics: (n) => `Show ${n === 1 ? "the clinic" : `the ${n} clinics`} on the map`,
-    symptomCall112: "📞 Call 112",
+    symptomCall112: "Call 112",
     symptomEmergencyText:
       "This may be a sign of a medical emergency. Call 112 now and don't travel alone if you feel unwell.",
     symptomShowEmergency: "See emergency hospitals",
@@ -454,8 +458,10 @@ const TEXTS = {
     removeFavorite: "Eltávolítás a kedvencek közül",
     logout: "Kijelentkezés",
 
-    save: "☆ Mentés a kedvencek közé",
-    saved: "★ Elmentve",
+    save: "Mentés a kedvencek közé",
+    saved: "Elmentve",
+    hoursToday: "Ma",
+    hoursWeek: "Teljes heti program",
     hoursTitle: "Nyitvatartás",
     openNow: "Most nyitva",
     closedNow: "Most zárva",
@@ -500,7 +506,7 @@ const TEXTS = {
 
     callButton: "Hívás",
     whatsappButton: "WhatsApp",
-    appointmentButton: "✉️ Időpontkérés",
+    appointmentButton: "Időpontkérés",
     appointmentHint: "Megnyitja az e-mail-alkalmazást egy előre megírt üzenettel.",
     appointmentSubject: (clinic) => `Időpontkérés – ${clinic}`,
     appointmentBody: ({ clinic, specialty, name, email }) =>
@@ -554,7 +560,7 @@ const TEXTS = {
     symptomNoMatch: "Nem találtuk ezt a tünetet. Próbálj más szót, vagy kezdd a háziorvosnál.",
     symptomRecommend: "Javasolt szakterületek",
     symptomShowClinics: (n) => `${n} klinika megjelenítése a térképen`,
-    symptomCall112: "📞 Hívd a 112-t",
+    symptomCall112: "Hívd a 112-t",
     symptomEmergencyText:
       "Ez orvosi vészhelyzet jele lehet. Azonnal hívd a 112-t, és ne indulj el egyedül, ha rosszul érzed magad.",
     symptomShowEmergency: "Sürgősségi kórházak",

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { TEXT } from "../config/texts.js";
 import { normalize } from "./filterEngine.js";
+import { GroupIcon } from "../components/MedIcon.jsx";
 
 // Two-level filter: domains (groups) that open to show their items.
 //   filter.groups: [{ id, label, icon, items: ["...", ...] }]
@@ -88,7 +89,9 @@ export default function TreeFilter({ filter, value, onChange }) {
                 {state === "all" ? "✓" : state === "some" ? "–" : ""}
               </button>
               <button type="button" className="tree-label" onClick={() => toggleOpen(group.id)}>
-                <span className="tree-icon">{group.icon}</span>
+                <span className="tree-icon">
+                  <GroupIcon id={group.id} size={17} />
+                </span>
                 <span className="tree-name">{group.label}</span>
                 {count > 0 && <span className="tree-selected-count">{count}</span>}
                 {filter.groupCounts && (

@@ -28,13 +28,18 @@
   flex: 1;
   justify-content: flex-start;
   min-width: 0;
-  border: 1px solid var(--accent);
+  border: 1px solid var(--line);
   background: #fff;
-  color: var(--accent-dark) !important;
+  color: var(--ink) !important;
 }
 
 .contact-btn.call:hover {
-  background: var(--accent-soft);
+  background: var(--paper);
+}
+
+.contact-btn.call svg {
+  flex-shrink: 0;
+  color: var(--accent);
 }
 
 .contact-number {
@@ -42,26 +47,35 @@
   text-overflow: ellipsis;
 }
 
-/* WhatsApp green */
+/* WhatsApp: outlined, only the icon keeps WhatsApp's green */
 .contact-btn.whatsapp {
-  border: 1px solid #25d366;
-  background: #25d366;
-  color: #fff !important;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink) !important;
+}
+
+.contact-btn.whatsapp svg {
+  color: #1f9d55;
 }
 
 .contact-btn.whatsapp:hover {
-  background: #1ebe5b;
+  background: var(--paper);
 }
 
-/* Appointment by email */
+/* Appointment by email: outlined too, so the green "details"
+   button stays the one main action */
 .contact-btn.appointment {
-  border: none;
-  background: var(--accent);
-  color: #fff !important;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink) !important;
+}
+
+.contact-btn.appointment svg {
+  color: var(--accent);
 }
 
 .contact-btn.appointment:hover {
-  background: var(--accent-hover);
+  background: var(--paper);
 }
 
 /* Smaller in the map popup */

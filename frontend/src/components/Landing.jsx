@@ -3,6 +3,8 @@ import { SPECIALTY_GROUPS, CATEGORIES, FEATURES } from "../config/placeTypes.js"
 import { TEXT } from "../config/texts.js";
 import LanguageSwitcher from "./LanguageSwitcher.jsx";
 import AccessibleToggle from "../accessibility/AccessibleToggle.jsx";
+import { IconSearch, IconStethoscope } from "@tabler/icons-react";
+import { GroupIcon, CategoryIcon, LogoIcon } from "./MedIcon.jsx";
 import "./Landing.css";
 
 // Quick buttons on the start page: filter ids from config/filters.js
@@ -53,16 +55,19 @@ export default function Landing({
       </div>
       {children}
 
-      <div className="landing-content">
+      {/* Deep green band at the top: name, title and search */}
+      <header className="landing-hero">
         <div className="landing-brand">
-          <span className="landing-logo">🩺</span>
+          <span className="landing-logo">
+            <LogoIcon />
+          </span>
           <span>{TEXT.brand}</span>
         </div>
         <h1>{TEXT.landingTitle}</h1>
         <p className="landing-subtitle">{TEXT.landingSubtitle}</p>
 
         <form className="landing-search" onSubmit={handleSubmit}>
-          <img src="/search-icon.svg" alt="" />
+          <IconSearch className="landing-search-icon" size={22} stroke={1.8} aria-hidden="true" />
           <input
             type="text"
             value={text}
@@ -74,8 +79,12 @@ export default function Landing({
         </form>
 
         <button type="button" className="landing-symptom" onClick={onSymptoms}>
-          🩺 {TEXT.symptomButton}
+          <IconStethoscope size={20} stroke={1.8} aria-hidden="true" /> {TEXT.symptomButton}
         </button>
+      </header>
+
+      {/* Cream area below: ways to browse */}
+      <div className="landing-content">
 
         <p className="landing-section">{TEXT.landingCategoriesTitle}</p>
         <div className="landing-tiles">
@@ -87,7 +96,9 @@ export default function Landing({
               style={{ "--tile-color": g.color }}
               onClick={() => onGroup(g)}
             >
-              <span className="landing-tile-icon">{g.icon}</span>
+              <span className="landing-tile-icon">
+                <GroupIcon id={g.id} />
+              </span>
               <span className="landing-tile-label">{g.label}</span>
               <span className="landing-tile-count">{TEXT.placesCount(counts[g.id] ?? 0)}</span>
             </button>
@@ -104,7 +115,9 @@ export default function Landing({
               style={{ "--tile-color": c.color }}
               onClick={() => onCategory(c.id)}
             >
-              <span className="landing-tile-icon">{c.icon}</span>
+              <span className="landing-tile-icon">
+                <CategoryIcon id={c.id} size={22} />
+              </span>
               <span className="landing-tile-label">{c.label}</span>
               <span className="landing-tile-count">{TEXT.placesCount(typeCounts[c.id] ?? 0)}</span>
             </button>

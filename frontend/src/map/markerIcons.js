@@ -1,7 +1,8 @@
 import L from "leaflet";
+import { categoryIconHtml } from "../components/MedIcon.jsx";
 
 // =============================================================
-//  MAP PINS: round coloured pins with the category's emoji.
+//  MAP PINS: round coloured pins with the category's line icon.
 //    "match"    -> place matches the search/filters
 //    "selected" -> the place you clicked (bigger)
 //    "dim"      -> doesn't match: small grey dot
@@ -19,7 +20,7 @@ export function markerIcon(category, state) {
   const html =
     state === "dim"
       ? `<div class="pin pin-dim"></div>`
-      : `<div class="pin pin-${state}" style="--pin-color:${category.color}"><span>${category.icon}</span></div>`;
+      : `<div class="pin pin-${state}" style="--pin-color:${category.color}">${categoryIconHtml(category.id, state === "selected" ? 24 : 18)}</div>`;
 
   const icon = L.divIcon({
     html,

@@ -2,6 +2,7 @@ import { TEXT } from "../config/texts.js";
 import { specialtyName } from "../config/placeTypes.js";
 import { splitPhones, whatsappLink, mailtoLink } from "../utils/contact.js";
 import { trackContact } from "../account/api.js";
+import { IconPhone, IconBrandWhatsapp, IconMail } from "@tabler/icons-react";
 import "./ContactActions.css";
 
 // Call / WhatsApp / appointment-by-email buttons for one place.
@@ -40,7 +41,8 @@ export default function ContactActions({ place, specialty = null, user = null, c
               href={`tel:${p.tel}`}
               onClick={() => trackContact(place.id, "call", p.label)}
               title={`${TEXT.callButton} ${p.label}`}>
-              📞 <span className="contact-number">{p.label}</span>
+              <IconPhone size={16} stroke={1.8} aria-hidden="true" />
+              <span className="contact-number">{p.label}</span>
             </a>
             {wa && (
               <a
@@ -51,7 +53,8 @@ export default function ContactActions({ place, specialty = null, user = null, c
                 rel="noreferrer"
                 title={`${TEXT.whatsappButton} ${p.label}`}
               >
-                💬 {TEXT.whatsappButton}
+                <IconBrandWhatsapp size={16} stroke={1.8} aria-hidden="true" />
+                {TEXT.whatsappButton}
               </a>
             )}
           </div>
@@ -64,6 +67,7 @@ export default function ContactActions({ place, specialty = null, user = null, c
           href={mail}
           onClick={() => trackContact(place.id, "email", place.email)}
           title={TEXT.appointmentHint}>
+          <IconMail size={16} stroke={1.8} aria-hidden="true" />
           {TEXT.appointmentButton}
         </a>
       )}

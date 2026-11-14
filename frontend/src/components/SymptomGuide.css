@@ -1,18 +1,26 @@
+/* =============================================================
+   "Ce te doare?" guide — colours come from the theme in App.css.
+   Each symptom has a line icon in a pale circle:
+   green = common, amber = see a doctor soon, red = emergency.
+   ============================================================= */
 .symptom {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  color: var(--ink);
 }
 
 .symptom-intro {
   margin: 0;
-  color: #4b5563;
+  color: var(--ink-soft);
 }
 
 .symptom-search {
   padding: 11px 14px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--line);
   border-radius: 10px;
+  background: #fff;
+  color: var(--ink);
   font-size: 16px;
 }
 
@@ -23,20 +31,22 @@
 
 .symptom-none {
   margin: 0;
-  color: #6b7280;
+  color: var(--ink-soft);
 }
 
 .symptom-group {
-  margin: 6px 0 0;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
 }
 
 .symptom-group.emergency {
-  color: #b91c1c;
+  color: #a61b1b;
 }
 
 .symptom-list {
@@ -48,11 +58,12 @@
 .symptom-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
+  gap: 12px;
+  padding: 8px 12px 8px 8px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
   background: #fff;
+  color: var(--ink);
   font: inherit;
   font-size: 0.9rem;
   text-align: left;
@@ -61,28 +72,45 @@
 }
 
 .symptom-item:hover {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 2px var(--accent-soft);
+  border-color: #cfc5b2;
+  box-shadow: var(--shadow);
 }
 
+.symptom-item:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Emergencies keep a pale red card so they stand out */
 .symptom-item.emergency {
-  border-color: #fecaca;
-  background: #fef2f2;
+  border-color: #f3c9c4;
+  background: #fdf3f1;
 }
 
 .symptom-item.emergency:hover {
-  border-color: #dc2626;
-  box-shadow: 0 0 0 2px #fee2e2;
+  border-color: #d9534f;
 }
 
-.symptom-item.urgent {
-  border-color: #fde68a;
-  background: #fffbeb;
-}
-
+/* ---------- Icon circle ---------- */
 .symptom-icon {
-  font-size: 1.3rem;
+  width: 40px;
+  height: 40px;
   flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.symptom-icon.urgent {
+  background: #fbefd5;
+  color: #9a5b00;
+}
+
+.symptom-icon.emergency {
+  background: #f9dcd8;
+  color: #b3261e;
 }
 
 /* ---------- One symptom ---------- */
@@ -94,13 +122,16 @@
 .symptom-title {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   margin: 0;
-  font-size: 1.2rem;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 600;
 }
 
-.symptom-title span {
-  font-size: 1.8rem;
+.symptom-title .symptom-icon {
+  width: 52px;
+  height: 52px;
 }
 
 .symptom-emergency {
@@ -108,49 +139,59 @@
   flex-direction: column;
   gap: 10px;
   padding: 14px;
-  border: 2px solid #dc2626;
+  border: 1px solid #f3c9c4;
   border-radius: 12px;
-  background: #fef2f2;
+  background: #fdf3f1;
 }
 
 .symptom-emergency p {
   margin: 0;
-  color: #7f1d1d;
+  color: #7a1c16;
   font-weight: 600;
 }
 
+/* The 112 button stays big and red: it must be impossible to miss */
 .symptom-112 {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   padding: 14px;
   border-radius: 10px;
-  background: #dc2626;
+  background: #c62828;
   color: #fff;
   font-size: 1.2rem;
-  font-weight: 800;
-  text-align: center;
+  font-weight: 700;
   text-decoration: none;
 }
 
 .symptom-112:hover {
-  background: #b91c1c;
+  background: #a61b1b;
 }
 
 .symptom-urgent {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
   margin: 0;
   padding: 10px 12px;
+  border: 1px solid #f1dfb4;
   border-radius: 10px;
-  background: #fffbeb;
-  color: #92400e;
+  background: #fdf6e3;
+  color: #7a4a00;
   font-weight: 600;
 }
 
+.symptom-urgent svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
 .symptom-specialties h4 {
-  margin: 0 0 6px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: #6b7280;
+  margin: 0 0 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-soft);
 }
 
 .symptom-chip {
@@ -165,9 +206,9 @@
 .symptom-disclaimer {
   margin: 4px 0 0;
   padding-top: 10px;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--line);
   font-size: 0.78rem;
-  color: #6b7280;
+  color: var(--ink-soft);
 }
 
 /* "Ce te doare?" button on the start page */

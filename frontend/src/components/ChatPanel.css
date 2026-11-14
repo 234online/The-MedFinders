@@ -14,14 +14,15 @@
   background: var(--accent);
   color: #fff;
   font-size: 1.35rem;
-  box-shadow: 0 6px 20px rgba(15, 118, 110, 0.45);
+  box-shadow: var(--shadow);
   cursor: pointer;
   transition: transform 0.15s, box-shadow 0.2s;
 }
 
 .chat-fab:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 0 3px var(--accent-glow), 0 8px 24px rgba(15, 118, 110, 0.5);
+  background: var(--accent-hover);
+  box-shadow: var(--shadow);
 }
 
 .chat-fab.open {
@@ -33,7 +34,7 @@
 
 .chat-fab-label {
   font-size: 0.95rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 /* ---------- Panel ---------- */
