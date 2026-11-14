@@ -5,7 +5,8 @@
 //
 //  The rest of the app uses TEXT.someKey, which always gives the
 //  text in the language currently chosen (see setLanguage below).
-//  (Category, specialty and service names are in placeTypes.js,
+//  (Doctor dashboard text is in doctor/doctorTexts.js.
+//   Category, specialty and service names are in placeTypes.js,
 //   symptoms in symptoms.js, documentation in Documentation.jsx.)
 // =============================================================
 

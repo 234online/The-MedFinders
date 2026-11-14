@@ -4,6 +4,7 @@ import { places } from "./data/loadPlaces.js";
 import SearchBar from "./SearchBar.jsx";
 import FilterPanel from "./filters/FilterPanel.jsx";
 import Landing from "./components/Landing.jsx";
+import DoctorDashboard from "./doctor/DoctorDashboard.jsx";
 import FloatingButton from "./components/FloatingButton.jsx";
 import Modal from "./components/Modal.jsx";
 import PlacePopup from "./components/PlacePopup.jsx";
@@ -42,6 +43,20 @@ const ACCOUNT_ICON = "/user-icon.svg";
 export default function App() {
   // false = start page, true = map
   const [started, setStarted] = useState(false);
+
+  // The doctor dashboard lives at "#doctor" (a hash, so it works on
+  // Vercel without extra rewrites and the back button works)
+  const [doctorPage, setDoctorPage] = useState(() => window.location.hash === "#doctor");
+  useEffect(() => {
+    const onHash = () => setDoctorPage(window.location.hash === "#doctor");
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+  function openDoctorPage(open) {
+    if (open) window.location.hash = "doctor";
+    else history.pushState(null, "", window.location.pathname + window.location.search);
+    setDoctorPage(open);
+  }
 
   // Interface language ("ro" | "en" | "hu"); changing it re-draws everything
   const [lang, setLang] = useState(getLanguage);
@@ -274,7 +289,17 @@ export default function App() {
 
   return (
     <>
-      {!started ? (
+      {doctorPage ? (
+        <DoctorDashboard
+          user={account.user}
+          onLogin={() => setModal({ type: "login" })}
+          onExit={() => openDoctorPage(false)}
+          lang={lang}
+          onLanguage={changeLanguage}
+          accessible={accessible}
+          onToggleAccessible={toggleAccessible}
+        />
+      ) : !started ? (
         <Landing
           counts={countsByGroup}
           onSearch={(text) => startWith({ text })}
@@ -288,6 +313,7 @@ export default function App() {
           onLanguage={changeLanguage}
           accessible={accessible}
           onToggleAccessible={toggleAccessible}
+          onDoctorPortal={() => openDoctorPage(true)}
         >
           {floatingButtons}
         </Landing>
@@ -408,17 +434,19 @@ export default function App() {
         </div>
       )}
 
-      {/* ---------- Chat assistant (on every page) ---------- */}
-      <ChatPanel
-        places={allPlaces}
-        onSelectPlace={(id) => {
-          const place = allPlaces.find((p) => p.id === id);
-          if (!place) return;
-          if (!started) startWith();
-          selectPlace(place);
-        }}
-        onShowResults={({ filters, text }) => startWith({ filters, text })}
-      />
+      {/* ---------- Chat assistant (on every public page) ---------- */}
+      {!doctorPage && (
+        <ChatPanel
+          places={allPlaces}
+          onSelectPlace={(id) => {
+            const place = allPlaces.find((p) => p.id === id);
+            if (!place) return;
+            if (!started) startWith();
+            selectPlace(place);
+          }}
+          onShowResults={({ filters, text }) => startWith({ filters, text })}
+        />
+      )}
 
       {/* ---------- Windows ---------- */}
       {modal?.type === "symptoms" && (

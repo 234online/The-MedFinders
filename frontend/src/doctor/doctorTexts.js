@@ -1,0 +1,148 @@
+import { getLanguage } from "../config/texts.js";
+
+// =============================================================
+//  DOCTOR DASHBOARD TEXT (ro, en, hu). Same rules as config/texts.js:
+//  every key must exist in "ro"; missing keys fall back to Romanian.
+//  Use it as DTEXT.someKey.
+// =============================================================
+
+const TEXTS = {
+  ro: {
+    portal: "Portal medici",
+    doctorLink: "Ești medic? Intră în portalul pentru medici →",
+    backToSite: "← Înapoi la site",
+    greeting: (name) => `Bună ziua, ${name}`,
+    demoNote: "Date demonstrative: panoul nu este încă legat de server. Toți pacienții sunt fictivi.",
+    loading: "Se încarcă…",
+    loadError: "Datele nu au putut fi încărcate.",
+    needLogin: "Autentifică-te cu un cont de medic pentru a vedea panoul.",
+    loginButton: "Autentificare",
+    noAccess: "Contul tău nu are rol de medic. Contactează administratorul clinicii.",
+    searchPlaceholder: "Caută pacient sau motivul programării…",
+
+    statToday: "Programări azi",
+    statUpcoming: "Următoarele 7 zile",
+    statPending: "De confirmat",
+    statPatients: "Pacienți",
+
+    tabToday: "Azi",
+    tabUpcoming: "Viitoare",
+    tabPast: "Trecute",
+    tabAll: "Toate",
+    appointmentsTitle: "Programări",
+    noAppointments: "Nicio programare aici.",
+
+    status: { pending: "De confirmat", confirmed: "Confirmată", completed: "Finalizată", cancelled: "Anulată" },
+    years: (n) => (n === 1 ? "1 an" : n >= 20 ? `${n} de ani` : `${n} ani`),
+    sex: { M: "Bărbat", F: "Femeie" },
+    allergyAlert: "Alergii",
+    openRecord: "Vezi fișa medicală",
+
+    recordTitle: "Fișă medicală",
+    contact: "Contact",
+    bloodType: "Grupa sanguină",
+    born: "Data nașterii",
+    allergies: "Alergii",
+    conditions: "Afecțiuni cronice",
+    medications: "Tratament curent",
+    visits: "Istoric consultații",
+    none: "Nimic înregistrat",
+    diagnosis: "Diagnostic",
+    notes: "Observații",
+  },
+
+  en: {
+    portal: "Doctor portal",
+    doctorLink: "Are you a doctor? Open the doctor portal →",
+    backToSite: "← Back to the site",
+    greeting: (name) => `Hello, ${name}`,
+    demoNote: "Demo data: this dashboard isn't connected to the server yet. All patients are fictional.",
+    loading: "Loading…",
+    loadError: "The data couldn't be loaded.",
+    needLogin: "Log in with a doctor account to see the dashboard.",
+    loginButton: "Log in",
+    noAccess: "Your account doesn't have the doctor role. Contact your clinic's administrator.",
+    searchPlaceholder: "Search for a patient or appointment reason…",
+
+    statToday: "Appointments today",
+    statUpcoming: "Next 7 days",
+    statPending: "To confirm",
+    statPatients: "Patients",
+
+    tabToday: "Today",
+    tabUpcoming: "Upcoming",
+    tabPast: "Past",
+    tabAll: "All",
+    appointmentsTitle: "Appointments",
+    noAppointments: "No appointments here.",
+
+    status: { pending: "To confirm", confirmed: "Confirmed", completed: "Completed", cancelled: "Cancelled" },
+    years: (n) => (n === 1 ? "1 year" : `${n} years`),
+    sex: { M: "Male", F: "Female" },
+    allergyAlert: "Allergies",
+    openRecord: "Open medical record",
+
+    recordTitle: "Medical record",
+    contact: "Contact",
+    bloodType: "Blood type",
+    born: "Date of birth",
+    allergies: "Allergies",
+    conditions: "Chronic conditions",
+    medications: "Current medication",
+    visits: "Visit history",
+    none: "Nothing recorded",
+    diagnosis: "Diagnosis",
+    notes: "Notes",
+  },
+
+  hu: {
+    portal: "Orvosi portál",
+    doctorLink: "Orvos vagy? Lépj be az orvosi portálra →",
+    backToSite: "← Vissza az oldalra",
+    greeting: (name) => `Jó napot, ${name}`,
+    demoNote: "Bemutató adatok: a felület még nincs a szerverhez kötve. Minden beteg kitalált.",
+    loading: "Betöltés…",
+    loadError: "Az adatokat nem sikerült betölteni.",
+    needLogin: "Jelentkezz be orvosi fiókkal a felület megtekintéséhez.",
+    loginButton: "Bejelentkezés",
+    noAccess: "A fiókodnak nincs orvosi szerepköre. Fordulj a klinika adminisztrátorához.",
+    searchPlaceholder: "Beteg vagy az időpont oka keresése…",
+
+    statToday: "Mai időpontok",
+    statUpcoming: "Következő 7 nap",
+    statPending: "Megerősítésre vár",
+    statPatients: "Betegek",
+
+    tabToday: "Ma",
+    tabUpcoming: "Közelgő",
+    tabPast: "Korábbi",
+    tabAll: "Összes",
+    appointmentsTitle: "Időpontok",
+    noAppointments: "Nincs itt időpont.",
+
+    status: { pending: "Megerősítésre vár", confirmed: "Megerősítve", completed: "Lezárva", cancelled: "Lemondva" },
+    years: (n) => `${n} éves`,
+    sex: { M: "Férfi", F: "Nő" },
+    allergyAlert: "Allergiák",
+    openRecord: "Kórlap megnyitása",
+
+    recordTitle: "Kórlap",
+    contact: "Elérhetőség",
+    bloodType: "Vércsoport",
+    born: "Születési dátum",
+    allergies: "Allergiák",
+    conditions: "Krónikus betegségek",
+    medications: "Jelenlegi kezelés",
+    visits: "Korábbi vizsgálatok",
+    none: "Nincs rögzítve",
+    diagnosis: "Diagnózis",
+    notes: "Megjegyzések",
+  },
+};
+
+export const DTEXT = new Proxy(
+  {},
+  {
+    get: (_, key) => TEXTS[getLanguage()]?.[key] ?? TEXTS.ro[key],
+  }
+);
