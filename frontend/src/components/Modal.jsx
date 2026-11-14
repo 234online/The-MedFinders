@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Component, useEffect } from "react";
 import { TEXT } from "../config/texts.js";
 import "./Modal.css";
 
@@ -27,8 +27,29 @@ export default function Modal({ title, onClose, children, width = 520 }) {
             ×
           </button>
         </div>
-        <div className="modal-body">{children}</div>
+        <div className="modal-body">
+          <WindowErrorBoundary>{children}</WindowErrorBoundary>
+        </div>
       </div>
     </div>
   );
+}
+
+// If something inside a window crashes, show a message in the window
+// instead of React removing the whole page (white screen).
+class WindowErrorBoundary extends Component {
+  state = { error: null };
+
+  static getDerivedStateFromError(error) {
+    return { error };
+  }
+
+  componentDidCatch(error, info) {
+    console.error("[window] Crashed:", error, info.componentStack);
+  }
+
+  render() {
+    if (this.state.error) return <p className="modal-error">{TEXT.windowError}</p>;
+    return this.props.children;
+  }
 }

@@ -65,3 +65,8 @@
 @keyframes modal-pop {
   from { opacity: 0; transform: translateY(8px) scale(0.98); }
 }
+
+.modal-error {
+  margin: 0;
+  color: #b91c1c;
+}

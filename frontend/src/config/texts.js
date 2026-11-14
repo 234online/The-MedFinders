@@ -67,6 +67,7 @@ const TEXTS = {
     infoButton: "Despre aplicație",
     accountButton: "Contul meu",
     close: "Închide",
+    windowError: "A apărut o eroare în această fereastră. Închide-o și încearcă din nou.",
     docsTitle: "Despre MedFinders",
     loginTitle: "Autentificare",
     accountTitle: "Contul meu",
@@ -93,7 +94,6 @@ const TEXTS = {
     savedEmpty: "Nu ai salvat nicio locație încă. Apasă „Salvează la favorite” în fereastra unei locații de pe hartă.",
     removeFavorite: "Elimină de la favorite",
     logout: "Deconectare",
-    authErrorTitle: "Autentificarea nu a reușit:",
     // My account: profile + contact history (database)
     profileLoading: "Se încarcă datele contului…",
     profileLoadError: "Nu am putut încărca datele contului. Încearcă din nou mai târziu.",
@@ -154,6 +154,7 @@ const TEXTS = {
     bookDone: "Cererea a fost trimisă medicilor clinicii! Vezi răspunsul în „Contul meu” → „Programările mele”.",
     bookError: "Programarea nu a putut fi trimisă. Încearcă din nou.",
     loginToBook: "Autentifică-te pentru a face o programare.",
+    authErrorTitle: "Autentificarea nu a reușit:",
 
     // Place popup & details
     save: "☆ Salvează la favorite",
@@ -193,6 +194,8 @@ const TEXTS = {
     statsLink: "Statistici în timp real",
     statsTitle: "Cererea de îngrijire medicală",
     statsSubtitle: "De câte ori sunt contactate clinicile din Timișoara, oră cu oră.",
+    statsLive: "Date reale, în timp real",
+    statsCredit: "Panou realizat cu Tiger Data",
     statsBack: "Înapoi",
     statsRange: { 1: "24 de ore", 7: "7 zile", 30: "30 de zile" },
     statsTotal: "Contactări",
@@ -220,9 +223,6 @@ const TEXTS = {
     statsEmpty: "Încă nu sunt contactări în această perioadă. Fiecare apăsare pe Sună, WhatsApp sau Cere o programare apare aici în câteva secunde.",
     statsNoTrend: "Prima perioadă cu date",
     statsError: "Nu am putut încărca statisticile. Încearcă din nou.",
-    statsStorage: "Stocare Tiger Data",
-    statsStorageText: (chunks, compressed, pct) =>
-      `${chunks} bucăți de date (chunks), ${compressed} comprimate${pct != null ? `, cu ${pct}% mai puțin spațiu` : ""}.`,
 
     // Score & reviews
     noScore: "Nou",
@@ -363,6 +363,7 @@ const TEXTS = {
     infoButton: "About",
     accountButton: "My account",
     close: "Close",
+    windowError: "Something went wrong in this window. Close it and try again.",
     docsTitle: "About MedFinders",
     loginTitle: "Log in",
     accountTitle: "My account",
@@ -387,7 +388,6 @@ const TEXTS = {
     savedEmpty: "You haven't saved any places yet. Press “Save to favourites” in a place's window on the map.",
     removeFavorite: "Remove from favourites",
     logout: "Log out",
-    authErrorTitle: "Login failed:",
     // My account: profile + contact history (database)
     profileLoading: "Loading your account…",
     profileLoadError: "Couldn’t load your account. Please try again later.",
@@ -448,6 +448,7 @@ const TEXTS = {
     bookDone: "Request sent to the clinic's doctors! See their answer in “My account” → “My appointments”.",
     bookError: "The appointment couldn't be sent. Please try again.",
     loginToBook: "Log in to book an appointment.",
+    authErrorTitle: "Login failed:",
 
     save: "☆ Save to favourites",
     saved: "★ Saved",
@@ -486,6 +487,8 @@ const TEXTS = {
     statsLink: "Real-time statistics",
     statsTitle: "Demand for medical care",
     statsSubtitle: "How often clinics in Timișoara are contacted, hour by hour.",
+    statsLive: "Real data, in real time",
+    statsCredit: "Dashboard built with Tiger Data",
     statsBack: "Back",
     statsRange: { 1: "24 hours", 7: "7 days", 30: "30 days" },
     statsTotal: "Contacts",
@@ -513,9 +516,6 @@ const TEXTS = {
     statsEmpty: "No contacts in this period yet. Every press on Call, WhatsApp or Request an appointment shows up here within seconds.",
     statsNoTrend: "First period with data",
     statsError: "Couldn't load the statistics. Try again.",
-    statsStorage: "Tiger Data storage",
-    statsStorageText: (chunks, compressed, pct) =>
-      `${chunks} data chunks, ${compressed} compressed${pct != null ? `, using ${pct}% less space` : ""}.`,
 
     noScore: "New",
     reviewsButton: "Reviews & details",
@@ -650,6 +650,7 @@ const TEXTS = {
     infoButton: "Az alkalmazásról",
     accountButton: "Fiókom",
     close: "Bezárás",
+    windowError: "Hiba történt ebben az ablakban. Zárd be, és próbáld újra.",
     docsTitle: "A MedFinders-ről",
     loginTitle: "Bejelentkezés",
     accountTitle: "Fiókom",
@@ -674,7 +675,6 @@ const TEXTS = {
     savedEmpty: "Még nem mentettél helyet. Nyomd meg a „Mentés a kedvencek közé” gombot egy hely ablakában.",
     removeFavorite: "Eltávolítás a kedvencek közül",
     logout: "Kijelentkezés",
-    authErrorTitle: "A bejelentkezés nem sikerült:",
     // My account: profile + contact history (database)
     profileLoading: "Fiókadatok betöltése…",
     profileLoadError: "Nem sikerült betölteni a fiókadatokat. Próbáld újra később.",
@@ -735,6 +735,7 @@ const TEXTS = {
     bookDone: "Elküldve a klinika orvosainak! A választ a „Fiókom” → „Időpontjaim” alatt látod.",
     bookError: "Nem sikerült elküldeni. Próbáld újra.",
     loginToBook: "Jelentkezz be az időpontfoglaláshoz.",
+    authErrorTitle: "A bejelentkezés nem sikerült:",
 
     save: "☆ Mentés a kedvencek közé",
     saved: "★ Elmentve",
