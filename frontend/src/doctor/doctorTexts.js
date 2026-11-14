@@ -34,6 +34,7 @@ const TEXTS = {
     declineConfirm: "Refuzi cererea? Pacientul o va vedea ca anulată.",
     allClinics: "Toate clinicile",
     handledBy: (name) => `Preluată de ${name}`,
+    forYou: "Cerută la dumneavoastră",
     requestedFor: "Dorește programare pe",
     searchPlaceholder: "Caută pacient sau motivul programării…",
 
@@ -95,6 +96,7 @@ const TEXTS = {
     declineConfirm: "Decline this request? The patient will see it as cancelled.",
     allClinics: "All clinics",
     handledBy: (name) => `Handled by ${name}`,
+    forYou: "Requested with you",
     requestedFor: "Wants an appointment on",
     searchPlaceholder: "Search for a patient or appointment reason…",
 
@@ -156,6 +158,7 @@ const TEXTS = {
     declineConfirm: "Elutasítod a kérést? A beteg lemondottként látja majd.",
     allClinics: "Minden klinika",
     handledBy: (name) => `Átvette: ${name}`,
+    forYou: "Önhöz kérték",
     requestedFor: "Időpontot kér:",
     searchPlaceholder: "Beteg vagy az időpont oka keresése…",
 

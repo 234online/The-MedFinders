@@ -6,6 +6,7 @@ import FilterPanel from "./filters/FilterPanel.jsx";
 import Landing from "./components/Landing.jsx";
 import DoctorDashboard from "./doctor/DoctorDashboard.jsx";
 import BookAppointment from "./components/BookAppointment.jsx";
+import DoctorRequestForm from "./components/DoctorRequestForm.jsx";
 import Dashboard from "./components/Dashboard.jsx";
 import FloatingButton from "./components/FloatingButton.jsx";
 import Modal from "./components/Modal.jsx";
@@ -207,13 +208,17 @@ export default function App() {
       setModal({ type: "details", placeId: action.placeId, writing: true });
     } else if (action?.type === "book") {
       setModal({ type: "book", placeId: action.placeId });
+    } else if (action?.type === "doctorRequest") {
+      setModal({ type: "doctorRequest" });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account.isLoading, account.user]);
 
   // Auth0: go to the login page, remembering what to do afterwards
-  function auth0Login(options = {}) {
-    account.redirectToLogin({ ...options, pending: { action: pendingAction, started } });
+  // { doctor: true } = "I'm a doctor": open the doctor account request afterwards
+  function auth0Login({ doctor = false, ...options } = {}) {
+    const action = doctor ? { type: "doctorRequest" } : pendingAction;
+    account.redirectToLogin({ ...options, pending: { action, started } });
   }
 
   // ---------- Account, favourites, reviews ----------
@@ -506,13 +511,19 @@ export default function App() {
           {account.mode === "auth0" ? (
             <Auth0Login
               notice={loginNotice}
-              onLogin={() => auth0Login()}
-              onSignup={() => auth0Login({ signup: true })}
-              onGoogle={() => auth0Login({ google: true })}
+              onLogin={({ doctor }) => auth0Login({ doctor })}
+              onSignup={({ doctor }) => auth0Login({ signup: true, doctor })}
+              onGoogle={({ doctor }) => auth0Login({ google: true, doctor })}
             />
           ) : (
             <LoginForm notice={loginNotice} onSubmit={handleLogin} />
           )}
+        </Modal>
+      )}
+
+      {modal?.type === "doctorRequest" && account.user && (
+        <Modal title={TEXT.doctorRequestTitle} onClose={closeModal} width={480}>
+          <DoctorRequestForm />
         </Modal>
       )}
 

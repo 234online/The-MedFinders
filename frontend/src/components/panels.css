@@ -434,3 +434,162 @@
   padding: 8px 10px;
   font-size: 0.9rem;
 }
+
+/* ---------- Doctor sign-up: account type, request form, status ---------- */
+.account-type {
+  display: flex;
+  gap: 16px;
+  margin: 0;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+
+.account-type legend {
+  padding: 0 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.login-form .account-type label {
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.doctor-request {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.doctor-request-status {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #fef9c3;
+  color: #713f12;
+}
+
+.doctor-request-status.approved {
+  background: #dcfce7;
+  color: #14532d;
+}
+
+.doctor-request-status.rejected {
+  background: #fee2e2;
+  color: #7f1d1d;
+}
+
+.clinic-picker {
+  margin: -6px 0 0;
+  padding: 4px;
+  list-style: none;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.clinic-picker button {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 6px 8px;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.clinic-picker button:hover,
+.clinic-picker button:focus-visible {
+  background: var(--accent-soft);
+}
+
+.clinic-picker small {
+  color: #6b7280;
+}
+
+.clinic-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.clinic-chips li {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px 4px 10px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+  font-size: 0.85rem;
+}
+
+.clinic-chips button {
+  border: none;
+  background: none;
+  color: inherit;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.login-form textarea {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 16px;
+  resize: vertical;
+}
+
+/* ---------- Admin: doctor requests ---------- */
+.admin-request-list li {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  padding: 10px;
+}
+
+.admin-request-list li > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-request-list small {
+  color: #6b7280;
+}
+
+.admin-request-message {
+  font-style: italic;
+}
+
+.admin-request-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-request-actions button {
+  flex: 1;
+}
+
+/* ---------- Booking: clinic without doctors on the site ---------- */
+.book-unavailable {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #6b7280;
+}

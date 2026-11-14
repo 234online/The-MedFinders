@@ -38,14 +38,14 @@ module.exports = function doctorRoutes({ requireRole }) {
   router.get('/api/doctor/appointments', wrap(async (req, res) => {
     const clinics = clinicsOf(req.user);
     if (clinics.length === 0) return res.json([]);
-    res.json(await appointments.listForClinics(clinics));
+    res.json(await appointments.listForClinics(clinics, req.user.id));
   }));
 
   router.get('/api/doctor/patients/:id', wrap(async (req, res) => {
     const id = Number(req.params.id);
     const clinics = clinicsOf(req.user);
     // Same answer for "doesn't exist" and "not your patient": reveals nothing
-    if (!Number.isInteger(id) || clinics.length === 0 || !(await appointments.patientHasClinicAppointment(id, clinics))) {
+    if (!Number.isInteger(id) || clinics.length === 0 || !(await appointments.patientHasClinicAppointment(id, clinics, req.user.id))) {
       return res.status(404).json({ error: 'Pacientul nu a fost găsit' });
     }
     const [patient, med, history] = await Promise.all([

@@ -97,6 +97,30 @@ async function setAccess(id, { role, clinicIds = [], specialty = null }) {
   return findById(id);
 }
 
+// ---------- Doctors per clinic (for booking) ----------
+// Approved doctors working at a clinic: only what a patient needs to choose
+async function doctorsAtClinic(placeId) {
+  const { rows } = await db.query(
+    `SELECT u.id, u.name, u.specialty
+     FROM doctor_clinics dc JOIN users u ON u.id = dc.doctor_id
+     WHERE dc.place_id = $1 AND u.role = 'doctor'
+     ORDER BY u.name NULLS LAST, u.id`,
+    [placeId]
+  );
+  return rows.map((r) => ({ id: r.id, name: r.name || 'Medic', specialty: r.specialty }));
+}
+
+// { 'medlife-spital': 2, ... }: clinics that take online appointments
+async function doctorCountsByClinic() {
+  const { rows } = await db.query(
+    `SELECT dc.place_id, count(*)::int AS n
+     FROM doctor_clinics dc JOIN users u ON u.id = dc.doctor_id
+     WHERE u.role = 'doctor'
+     GROUP BY dc.place_id`
+  );
+  return Object.fromEntries(rows.map((r) => [r.place_id, r.n]));
+}
+
 async function findById(id) {
   const { rows } = await db.query(`SELECT ${PUBLIC_COLUMNS} FROM users WHERE id = $1`, [id]);
   return rows[0] || null;
@@ -128,6 +152,8 @@ module.exports = {
   upsertFromAuth0,
   findById,
   findByEmail,
+  doctorsAtClinic,
+  doctorCountsByClinic,
   setAccess,
   setClinics,
   cleanClinicIds,

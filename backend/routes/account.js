@@ -13,7 +13,8 @@
  *   GET    /api/me/medical            my medical details
  *   PUT    /api/me/medical            save them { bloodType, allergies[], conditions[], medications[{name,dose}] }
  *   GET    /api/me/appointments       my appointments
- *   POST   /api/me/appointments       book { placeId, date: "YYYY-MM-DD", time: "HH:MM", reason }
+ *   POST   /api/me/appointments       book { placeId, date: "YYYY-MM-DD", time: "HH:MM", reason, doctorId? }
+ *                                     (doctorId = a doctor of that clinic; empty = any of them)
  *   POST   /api/me/appointments/:id/cancel
  *
  * New features for the user (e.g. appointments) can follow the same
@@ -27,7 +28,7 @@ const contacts = require('../repositories/contacts');
 const medical = require('../repositories/medical');
 const appointments = require('../repositories/appointments');
 const places = require('../db/database');
-const { placeId, profileChanges, medicalProfile, newAppointment } = require('./validate');
+const { placeId, profileChanges, medicalProfile, newAppointment, chosenDoctor } = require('./validate');
 
 const wrap = (fn) => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
 
@@ -106,11 +107,24 @@ module.exports = function accountRoutes({ requireUser }) {
   router.post('/api/me/appointments', wrap(async (req, res) => {
     const { value, error } = newAppointment(req.body);
     if (error) return res.status(400).json({ error });
+    const doctor = chosenDoctor(req.body.doctorId);
+    if (doctor.error) return res.status(400).json({ error: doctor.error });
     if (!(await places.getPlaceById(value.placeId))) return res.status(404).json({ error: 'Clinica nu a fost găsită' });
+
+    // Only clinics with doctors on the site take online appointments;
+    // a chosen doctor must work at that clinic
+    const doctors = await users.doctorsAtClinic(value.placeId);
+    if (doctors.length === 0) {
+      return res.status(409).json({ error: 'Această clinică nu primește încă programări online' });
+    }
+    if (doctor.value && !doctors.some((d) => d.id === doctor.value)) {
+      return res.status(400).json({ error: 'Medicul ales nu lucrează la această clinică' });
+    }
+    if (doctor.value === req.user.id) return res.status(400).json({ error: 'Nu îți poți face o programare la tine' });
     if ((await appointments.countOpen(req.user.id)) >= appointments.MAX_OPEN_PER_PATIENT) {
       return res.status(429).json({ error: `Poți avea cel mult ${appointments.MAX_OPEN_PER_PATIENT} programări active` });
     }
-    res.status(201).json(await appointments.create({ patientId: req.user.id, ...value }));
+    res.status(201).json(await appointments.create({ patientId: req.user.id, ...value, doctorId: doctor.value }));
   }));
 
   router.post('/api/me/appointments/:id/cancel', wrap(async (req, res) => {

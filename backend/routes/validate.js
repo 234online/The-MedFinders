@@ -141,4 +141,74 @@ function doctorAppointmentChanges(body, statuses) {
   return { value: changes };
 }
 
-module.exports = { placeId, profileChanges, medicalProfile, newAppointment, doctorAppointmentChanges };
+// ---------- Doctor sign-up requests ----------
+// Romanian doctors have a registration number with the College of
+// Physicians (CMR) / a stamp code ("cod parafă"): letters, digits, - and spaces
+const LICENSE = /^[A-Za-z0-9][A-Za-z0-9 -]{2,29}$/;
+
+function placeIdList(raw, { min = 1, max = 10 } = {}) {
+  if (!Array.isArray(raw)) return { error: 'Alege cel puțin o clinică' };
+  const ids = [...new Set(raw.map((v) => placeId(v).value).filter(Boolean))];
+  if (ids.length !== raw.length) return { error: 'Lista de clinici conține un ID invalid sau repetat' };
+  if (ids.length < min || ids.length > max) return { error: `Alege între ${min} și ${max} clinici` };
+  return { value: ids };
+}
+
+function specialtyText(v) {
+  const s = typeof v === 'string' ? v.trim() : '';
+  return s.length >= 2 && s.length <= 120 ? { value: s } : { error: 'Specialitatea trebuie să aibă 2–120 de caractere' };
+}
+
+function doctorRequest(body) {
+  if (!body || typeof body !== 'object' || Array.isArray(body)) return { error: 'Corpul cererii trebuie să fie un obiect JSON' };
+  const places = placeIdList(body.placeIds);
+  if (places.error) return places;
+  const specialty = specialtyText(body.specialty);
+  if (specialty.error) return specialty;
+  const license = typeof body.licenseNumber === 'string' ? body.licenseNumber.trim() : '';
+  if (!LICENSE.test(license)) return { error: 'Numărul de înregistrare (CMR / cod parafă) trebuie să aibă 3–30 de litere sau cifre' };
+  const message = typeof body.message === 'string' ? body.message.trim() : '';
+  if (message.length > 500) return { error: 'Mesajul poate avea cel mult 500 de caractere' };
+  return { value: { placeIds: places.value, specialty: specialty.value, licenseNumber: license, message: message || null } };
+}
+
+// An admin may correct the clinics / specialty while approving
+function doctorApproval(body) {
+  const b = body && typeof body === 'object' && !Array.isArray(body) ? body : {};
+  const value = {};
+  if (b.placeIds !== undefined) {
+    const places = placeIdList(b.placeIds);
+    if (places.error) return places;
+    value.placeIds = places.value;
+  }
+  if (b.specialty !== undefined) {
+    const specialty = specialtyText(b.specialty);
+    if (specialty.error) return specialty;
+    value.specialty = specialty.value;
+  }
+  return { value };
+}
+
+function reviewNote(body) {
+  const note = typeof body?.note === 'string' ? body.note.trim() : '';
+  return note.length <= 300 ? { value: note || null } : { error: 'Nota poate avea cel mult 300 de caractere' };
+}
+
+// Optional chosen doctor when booking: a positive integer, or nothing = any doctor
+function chosenDoctor(v) {
+  if (v === undefined || v === null || v === '') return { value: null };
+  const n = Number(v);
+  return Number.isInteger(n) && n > 0 ? { value: n } : { error: 'Medicul ales nu este valid' };
+}
+
+module.exports = {
+  placeId,
+  profileChanges,
+  medicalProfile,
+  newAppointment,
+  doctorAppointmentChanges,
+  doctorRequest,
+  doctorApproval,
+  reviewNote,
+  chosenDoctor
+};
