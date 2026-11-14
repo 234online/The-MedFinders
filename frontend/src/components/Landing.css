@@ -58,6 +58,11 @@
 }
 
 /* ---------- Big search bar ---------- */
+/* Room between the title and the search when there is no subtitle */
+.landing h1 + .landing-search {
+  margin-top: 18px;
+}
+
 .landing-search {
   width: 100%;
   max-width: 620px;

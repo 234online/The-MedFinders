@@ -26,7 +26,6 @@ const TEXTS = {
 
     // Start page
     landingTitle: "Găsește ajutorul medical de care ai nevoie",
-    landingSubtitle: "Toate informațiile de care ai nevoie într-un singur loc.",
     landingSearchPlaceholder: "Ex: cardiologie, laborator analize, stomatolog, Dr. …",
     landingSearchButton: "Caută",
     landingCategoriesTitle: "Sau alege un domeniu medical",
@@ -256,7 +255,6 @@ const TEXTS = {
     backHome: "Back to the start page",
     languageLabel: "Language",
 
-    landingSubtitle: "All the information you need, in one place.",
     landingSearchPlaceholder: "E.g. cardiology, blood tests, dentist, Dr. …",
     landingSearchButton: "Search",
     landingCategoriesTitle: "Or choose a medical field",
@@ -473,7 +471,6 @@ const TEXTS = {
     backHome: "Vissza a kezdőlapra",
     languageLabel: "Nyelv",
 
-    landingSubtitle: "Minden információ, amire szükséged van, egy helyen.",
     landingSearchPlaceholder: "Pl. kardiológia, vérvétel, fogorvos, Dr. …",
     landingSearchButton: "Keresés",
     landingCategoriesTitle: "Vagy válassz egy orvosi területet",

@@ -68,7 +68,6 @@ export default function Landing({
           <span>{TEXT.brand}</span>
         </div>
         <h1>{TEXT.landingTitle}</h1>
-        <p className="landing-subtitle">{TEXT.landingSubtitle}</p>
 
         <form className="landing-search" onSubmit={handleSubmit}>
           <IconSearch className="landing-search-icon" size={22} stroke={1.8} aria-hidden="true" />
