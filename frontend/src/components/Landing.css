@@ -207,27 +207,38 @@
   color: var(--ink-soft);
 }
 
-/* Second row of tiles (types of places): smaller, icon beside text */
+/* Second row of tiles (types of places): smaller, icon on the left,
+   name with the number of places underneath (so long names like
+   "Clinici stomatologice" never push the count out of the card) */
 .landing-types {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
 .landing-types .landing-tile {
-  flex-direction: row;
-  justify-content: flex-start;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 0;
   padding: 12px 14px;
   text-align: left;
 }
 
 .landing-types .landing-tile-icon {
+  grid-row: 1 / 3;
   width: 40px;
   height: 40px;
-  flex-shrink: 0;
 }
 
 .landing-types .landing-tile-label {
-  flex: 1;
+  align-self: end;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.landing-types .landing-tile-count {
+  align-self: start;
 }
 
 /* ---------- Quick filters ---------- */
