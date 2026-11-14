@@ -130,7 +130,11 @@ export async function chatHandler(req, res, env = process.env) {
 
   let payload;
   try {
-    payload = JSON.parse(await readBody(req));
+    // Vercel has already read and parsed the JSON body; Vite gives the raw stream
+    payload =
+      req.body && typeof req.body === "object" && !Buffer.isBuffer(req.body)
+        ? req.body
+        : JSON.parse(await readBody(req));
   } catch {
     return send(res, 400, { error: "bad_request" });
   }
