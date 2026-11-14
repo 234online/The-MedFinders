@@ -378,22 +378,22 @@ async function start() {
 
   if (users.isEnabled()) {
     try {
-      await users.init();
-      console.log('[PG] Conectat la PostgreSQL, tabelele sunt pregătite');
+      await migrate();
+      console.log('[PG] Conectat la PostgreSQL, baza de date este la zi');
     } catch (err) {
-      console.error('[PG] Nu m-am putut conecta la PostgreSQL:', err.message);
+      console.error('[PG] Problemă cu PostgreSQL:', err.message);
     }
   } else {
     console.warn('[PG] DATABASE_URL lipsește: conturile, favoritele și istoricul sunt dezactivate');
   }
 
-  if (!AUTH0_DOMAIN || !AUTH0_AUDIENCE) {
+  if (!config.authConfig) {
     console.warn('[Auth0] AUTH0_DOMAIN / AUTH0_AUDIENCE lipsesc: rutele cu login răspund 503');
   }
 
-  createApp().listen(PORT, () => {
-    console.log(`[API] Server pornit pe portul ${PORT}`);
-    console.log(`[API] CORS permis pentru: ${FRONTEND_URL}`);
+  createApp().listen(config.port, () => {
+    console.log(`[API] Server pornit pe portul ${config.port}`);
+    console.log(`[API] CORS permis pentru: ${config.frontendUrls.join(', ')}`);
   });
 }
 

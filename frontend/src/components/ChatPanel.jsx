@@ -3,10 +3,10 @@ import { TEXT } from "../config/texts.js";
 import { getCategory } from "../config/placeTypes.js";
 import { isOpenAt } from "../services/hoursLogic.js";
 import { useChat } from "../chat/useChat.js";
+import { useVoice, voiceText } from "../chat/useVoice.js";
 import { ScoreBadge } from "./Stars.jsx";
-import { CategoryIcon } from "./MedIcon.jsx";
-import { IconMessageCircle, IconX } from "@tabler/icons-react";
 import "./ChatPanel.css";
+import "./VoiceControls.css";
 
 // Turns the assistant's text into safe React elements:
 // paragraphs, "- " bullet lists and **bold**. (No HTML is injected.)
@@ -54,6 +54,10 @@ export default function ChatPanel({ places, onSelectPlace, onShowResults }) {
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState("");
   const { messages, send, busy, aiAvailable, reset } = useChat(places);
+  const voice = useVoice();
+  const [autoRead, setAutoRead] = useState(false); // read every answer aloud
+  const askedByVoice = useRef(false); // last question was spoken -> read the answer
+  const lastSpoken = useRef(-1);
   const endRef = useRef(null);
   const inputRef = useRef(null);
   const byId = (id) => places.find((p) => p.id === id);
@@ -64,7 +68,32 @@ export default function ChatPanel({ places, onSelectPlace, onShowResults }) {
 
   useEffect(() => {
     if (open) inputRef.current?.focus();
+    if (!open) voice.stopSpeaking();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
+
+  // Read a new answer aloud if the question was spoken, or if auto-read is on
+  useEffect(() => {
+    const i = messages.length - 1;
+    const last = messages[i];
+    if (!voice.enabled || !last || last.role !== "assistant" || i === lastSpoken.current) return;
+    lastSpoken.current = i;
+    if (askedByVoice.current || autoRead) voice.speak(last.text, i);
+    askedByVoice.current = false;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages]);
+
+  async function toggleMic() {
+    if (voice.recording) {
+      const text = await voice.stopRecording();
+      if (text) {
+        askedByVoice.current = true;
+        send(text);
+      }
+    } else {
+      voice.startRecording();
+    }
+  }
 
   function submit(e) {
     e?.preventDefault();
@@ -82,11 +111,7 @@ export default function ChatPanel({ places, onSelectPlace, onShowResults }) {
         aria-expanded={open}
         aria-label={TEXT.chatButton}
       >
-        {open ? (
-          <IconX size={22} stroke={2} aria-hidden="true" />
-        ) : (
-          <IconMessageCircle size={22} stroke={1.8} aria-hidden="true" />
-        )}
+        {open ? "✕" : "💬"}
         {!open && <span className="chat-fab-label">{TEXT.chatButton}</span>}
       </button>
 
@@ -97,11 +122,27 @@ export default function ChatPanel({ places, onSelectPlace, onShowResults }) {
               <strong>{TEXT.chatTitle}</strong>
               <small>{aiAvailable ? TEXT.chatAiNote : TEXT.chatLocalNote}</small>
             </div>
-            {messages.length > 0 && (
-              <button type="button" className="chat-reset" onClick={reset} title={TEXT.chatClear}>
-                ↺
-              </button>
-            )}
+            <div className="chat-header-actions">
+              {voice.enabled && (
+                <button
+                  type="button"
+                  className={"chat-reset voice-auto" + (autoRead ? " on" : "")}
+                  onClick={() => {
+                    if (autoRead) voice.stopSpeaking();
+                    setAutoRead((a) => !a);
+                  }}
+                  title={autoRead ? voiceText("autoOn") : voiceText("autoOff")}
+                  aria-pressed={autoRead}
+                >
+                  {autoRead ? "🔊" : "🔈"}
+                </button>
+              )}
+              {messages.length > 0 && (
+                <button type="button" className="chat-reset" onClick={reset} title={TEXT.chatClear}>
+                  ↺
+                </button>
+              )}
+            </div>
           </header>
 
           <div className="chat-messages">
@@ -123,6 +164,16 @@ export default function ChatPanel({ places, onSelectPlace, onShowResults }) {
               <div key={i} className={`chat-msg ${m.role}${m.emergency ? " emergency" : ""}`}>
                 {m.role === "assistant" ? <FormattedText text={m.text} /> : <p>{m.text}</p>}
 
+                {m.role === "assistant" && voice.enabled && (
+                  <button
+                    type="button"
+                    className={"voice-play" + (voice.speakingId === i ? " playing" : "")}
+                    onClick={() => (voice.speakingId === i ? voice.stopSpeaking() : voice.speak(m.text, i))}
+                  >
+                    {voice.speakingId === i ? `⏹ ${voiceText("stopPlay")}` : `🔊 ${voiceText("play")}`}
+                  </button>
+                )}
+
                 {m.emergency && (
                   <a className="chat-112" href="tel:112">
                     📞 112
@@ -136,8 +187,8 @@ export default function ChatPanel({ places, onSelectPlace, onShowResults }) {
                       const openNow = isOpenAt(p.hours);
                       return (
                         <button key={p.id} type="button" className="chat-card" onClick={() => onSelectPlace(p.id)}>
-                          <span className="chat-card-icon" style={{ background: `color-mix(in srgb, ${category.color} 14%, white)`, color: category.color }}>
-                            <CategoryIcon id={category.id} size={18} />
+                          <span className="chat-card-icon" style={{ background: category.color }}>
+                            {category.icon}
                           </span>
                           <span className="chat-card-text">
                             <strong>{p.name}</strong>
@@ -178,7 +229,25 @@ export default function ChatPanel({ places, onSelectPlace, onShowResults }) {
             <div ref={endRef} />
           </div>
 
+          {(voice.recording || voice.transcribing || voice.error) && (
+            <p className={"voice-status" + (voice.error ? " error" : "")}>
+              {voice.recording ? `🔴 ${voiceText("listening")}` : voice.transcribing ? voiceText("transcribing") : voice.error}
+            </p>
+          )}
+
           <form className="chat-input" onSubmit={submit}>
+            {voice.enabled && (
+              <button
+                type="button"
+                className={"voice-mic" + (voice.recording ? " recording" : "")}
+                onClick={toggleMic}
+                disabled={busy || voice.transcribing}
+                aria-label={voice.recording ? voiceText("stopMic") : voiceText("mic")}
+                title={voice.recording ? voiceText("stopMic") : voiceText("mic")}
+              >
+                {voice.recording ? "■" : "🎤"}
+              </button>
+            )}
             <input
               ref={inputRef}
               type="text"

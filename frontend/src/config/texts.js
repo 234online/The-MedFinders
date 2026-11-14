@@ -18,13 +18,13 @@ export const LANGUAGES = [
 const TEXTS = {
   // ---------------------------------------------------------- ROMÂNĂ
   ro: {
-    appTitle: "Find the care you need",
+    appTitle: "Găsește ajutorul medical de care ai nevoie",
     brand: "TimiCareNow",
     backHome: "Înapoi la pagina principală",
     languageLabel: "Limbă",
 
     // Start page
-    landingTitle: "Find the care you need",
+    landingTitle: "Găsește ajutorul medical de care ai nevoie",
     landingSubtitle: "Toate informațiile de care ai nevoie într-un singur loc.",
     landingSearchPlaceholder: "Ex: cardiologie, laborator analize, stomatolog, Dr. …",
     landingSearchButton: "Caută",
@@ -67,7 +67,7 @@ const TEXTS = {
     infoButton: "Despre aplicație",
     accountButton: "Contul meu",
     close: "Închide",
-    docsTitle: "Despre TimiCareNow",
+    docsTitle: "Despre MedFinders",
     loginTitle: "Autentificare",
     accountTitle: "Contul meu",
 
@@ -94,15 +94,13 @@ const TEXTS = {
     logout: "Deconectare",
 
     // Place popup & details
-    save: "Salvează la favorite",
-    saved: "Salvat la favorite",
+    save: "☆ Salvează la favorite",
+    saved: "★ Salvat la favorite",
     hoursTitle: "Program",
-    hoursToday: "Azi",
-    hoursWeek: "Tot programul",
     openNow: "Deschis acum",
     closedNow: "Închis acum",
     closed: "Închis",
-    notStated: "Sună înainte",
+    notStated: "Nespecificat",
     nextDay: "(a doua zi)",
     nonstop: "Non-stop",
     hoursLoading: "Se încarcă programul…",
@@ -183,7 +181,7 @@ const TEXTS = {
     // Contact actions
     callButton: "Sună",
     whatsappButton: "WhatsApp",
-    appointmentButton: "Cere o programare",
+    appointmentButton: "✉️ Cere o programare",
     appointmentHint: "Se deschide aplicația de email cu un mesaj gata scris.",
     appointmentSubject: (clinic) => `Cerere programare – ${clinic}`,
     appointmentBody: ({ clinic, specialty, name, email }) =>
@@ -224,6 +222,8 @@ const TEXTS = {
     chatDisclaimer: "Nu înlocuiește un medic. În caz de urgență, sună la 112.",
     localFound: (n, names) =>
       `Am găsit ${n === 1 ? "o locație" : n >= 20 ? `${n} de locații` : `${n} locații`}${names.length ? ` pentru ${names.join(", ")}` : ""}. Apasă pe una ca s-o vezi pe hartă.`,
+    localGeneric: (n) =>
+      `Pentru o durere sau o stare de rău fără alte detalii, cel mai bine începi cu medicul de familie sau un medic de medicină internă. Am găsit ${n >= 20 ? `${n} de locații` : `${n} locații`}. Dacă îmi spui unde te doare (ex. „genunchiul”, „capul”, „burta”), îți recomand un specialist. Dacă durerea e foarte puternică sau a apărut brusc, sună la 112.`,
     localNone: "Nu am găsit nicio locație pentru asta. Încearcă altă formulare sau elimină „acum” / „weekend”.",
     localHelp:
       "Nu am înțeles exact. Poți scrie o specialitate (ex. „cardiologie”), un simptom (ex. „mă doare spatele”), numele unei clinici sau al unui medic.",
@@ -240,7 +240,7 @@ const TEXTS = {
     symptomNoMatch: "Nu am găsit acest simptom. Încearcă alt cuvânt sau începe cu medicul de familie.",
     symptomRecommend: "Specialități recomandate",
     symptomShowClinics: (n) => `Arată ${n === 1 ? "clinica" : `cele ${n} clinici`} pe hartă`,
-    symptomCall112: "Sună la 112",
+    symptomCall112: "📞 Sună la 112",
     symptomEmergencyText:
       "Acesta poate fi un semn de urgență medicală. Sună imediat la 112 și nu te deplasa singur(ă) dacă nu te simți bine.",
     symptomShowEmergency: "Vezi spitalele de urgență",
@@ -293,7 +293,7 @@ const TEXTS = {
     infoButton: "About",
     accountButton: "My account",
     close: "Close",
-    docsTitle: "About TimiCareNow",
+    docsTitle: "About MedFinders",
     loginTitle: "Log in",
     accountTitle: "My account",
 
@@ -317,15 +317,13 @@ const TEXTS = {
     removeFavorite: "Remove from favourites",
     logout: "Log out",
 
-    save: "Save to favourites",
-    saved: "Saved",
-    hoursToday: "Today",
-    hoursWeek: "Full week",
+    save: "☆ Save to favourites",
+    saved: "★ Saved",
     hoursTitle: "Opening hours",
     openNow: "Open now",
     closedNow: "Closed now",
     closed: "Closed",
-    notStated: "Call ahead",
+    notStated: "Not stated",
     nextDay: "(next day)",
     nonstop: "24 hours",
     hoursLoading: "Loading opening hours…",
@@ -403,7 +401,7 @@ const TEXTS = {
 
     callButton: "Call",
     whatsappButton: "WhatsApp",
-    appointmentButton: "Request an appointment",
+    appointmentButton: "✉️ Request an appointment",
     appointmentHint: "Opens your email app with a ready-written message.",
     appointmentSubject: (clinic) => `Appointment request – ${clinic}`,
     appointmentBody: ({ clinic, specialty, name, email }) =>
@@ -442,6 +440,8 @@ const TEXTS = {
     chatDisclaimer: "Not a substitute for a doctor. In an emergency, call 112.",
     localFound: (n, names) =>
       `I found ${n === 1 ? "1 place" : `${n} places`}${names.length ? ` for ${names.join(", ")}` : ""}. Tap one to see it on the map.`,
+    localGeneric: (n) =>
+      `For pain or feeling unwell without more details, it's best to start with a family doctor or an internal medicine doctor. I found ${n} places. If you tell me where it hurts (e.g. “knee”, “head”, “stomach”), I'll suggest a specialist. If the pain is very strong or came on suddenly, call 112.`,
     localNone: "I couldn't find any place for that. Try different words, or remove “now” / “weekend”.",
     localHelp:
       "I didn't quite understand. You can write a specialty (e.g. “cardiology”), a symptom (e.g. “back pain”), or the name of a clinic or doctor.",
@@ -457,7 +457,7 @@ const TEXTS = {
     symptomNoMatch: "We couldn't find this symptom. Try another word, or start with a family doctor.",
     symptomRecommend: "Recommended specialties",
     symptomShowClinics: (n) => `Show ${n === 1 ? "the clinic" : `the ${n} clinics`} on the map`,
-    symptomCall112: "Call 112",
+    symptomCall112: "📞 Call 112",
     symptomEmergencyText:
       "This may be a sign of a medical emergency. Call 112 now and don't travel alone if you feel unwell.",
     symptomShowEmergency: "See emergency hospitals",
@@ -510,7 +510,7 @@ const TEXTS = {
     infoButton: "Az alkalmazásról",
     accountButton: "Fiókom",
     close: "Bezárás",
-    docsTitle: "A TimiCareNow-ról",
+    docsTitle: "A MedFinders-ről",
     loginTitle: "Bejelentkezés",
     accountTitle: "Fiókom",
 
@@ -534,15 +534,13 @@ const TEXTS = {
     removeFavorite: "Eltávolítás a kedvencek közül",
     logout: "Kijelentkezés",
 
-    save: "Mentés a kedvencek közé",
-    saved: "Elmentve",
-    hoursToday: "Ma",
-    hoursWeek: "Teljes heti program",
+    save: "☆ Mentés a kedvencek közé",
+    saved: "★ Elmentve",
     hoursTitle: "Nyitvatartás",
     openNow: "Most nyitva",
     closedNow: "Most zárva",
     closed: "Zárva",
-    notStated: "Telefonálj előtte",
+    notStated: "Nincs megadva",
     nextDay: "(másnap)",
     nonstop: "Éjjel-nappal",
     hoursLoading: "Nyitvatartás betöltése…",
@@ -582,7 +580,7 @@ const TEXTS = {
 
     callButton: "Hívás",
     whatsappButton: "WhatsApp",
-    appointmentButton: "Időpontkérés",
+    appointmentButton: "✉️ Időpontkérés",
     appointmentHint: "Megnyitja az e-mail-alkalmazást egy előre megírt üzenettel.",
     appointmentSubject: (clinic) => `Időpontkérés – ${clinic}`,
     appointmentBody: ({ clinic, specialty, name, email }) =>
@@ -621,6 +619,8 @@ const TEXTS = {
     chatDisclaimer: "Nem helyettesíti az orvost. Vészhelyzetben hívd a 112-t.",
     localFound: (n, names) =>
       `${n} helyet találtam${names.length ? ` (${names.join(", ")})` : ""}. Koppints egyre, hogy lásd a térképen.`,
+    localGeneric: (n) =>
+      `Fájdalom vagy rossz közérzet esetén, további részletek nélkül, érdemes háziorvossal vagy belgyógyásszal kezdeni. ${n} helyet találtam. Ha megírod, hol fáj (pl. „térd”, „fej”, „has”), szakorvost ajánlok. Ha a fájdalom nagyon erős vagy hirtelen jelentkezett, hívd a 112-t.`,
     localNone: "Nem találtam ilyen helyet. Próbálj más szavakat, vagy hagyd el a „most” / „hétvége” szót.",
     localHelp:
       "Nem egészen értettem. Írhatsz szakterületet (pl. „kardiológia”), tünetet (pl. „hátfájás”), vagy egy klinika vagy orvos nevét.",
@@ -636,7 +636,7 @@ const TEXTS = {
     symptomNoMatch: "Nem találtuk ezt a tünetet. Próbálj más szót, vagy kezdd a háziorvosnál.",
     symptomRecommend: "Javasolt szakterületek",
     symptomShowClinics: (n) => `${n} klinika megjelenítése a térképen`,
-    symptomCall112: "Hívd a 112-t",
+    symptomCall112: "📞 Hívd a 112-t",
     symptomEmergencyText:
       "Ez orvosi vészhelyzet jele lehet. Azonnal hívd a 112-t, és ne indulj el egyedül, ha rosszul érzed magad.",
     symptomShowEmergency: "Sürgősségi kórházak",
