@@ -30,7 +30,7 @@ const clinicsPerGroup = Object.fromEntries(
 //
 //  Fields:
 //    id        unique name; the filter's current value is stored under it
-//    type      which control to draw: "chips" | "toggle" | "select" | "tree"
+//    type      which control to draw: "chips" | "toggle" | "select" | "tree" | "slider"
 //    label     text shown for the filter (a getter, so it follows the language)
 //    group     optional: filters with the same group share one section
 //    groupLabel  heading shown for that group
@@ -41,6 +41,7 @@ const clinicsPerGroup = Object.fromEntries(
 //    groups    for "tree": [{ id, label, icon, items: [...] }]
 //    itemCounts / groupCounts  for "tree": number shown next to each item / group
 //    itemLabel for "tree": (item) => text shown for an item
+//    min, max, step, format  for "slider": range and how the value is shown
 //    test      (place, value) => true if the place should be shown
 //
 //  The place fields come from src/data/loadPlaces.js. Places also get
@@ -128,22 +129,16 @@ export const FILTERS = [
 
   {
     id: "minScore",
-    type: "chips",
+    type: "slider",
     get label() {
       return TEXT.filterMinScore;
     },
-    multiple: false,
-    default: "any",
-    options: [
-      {
-        value: "any",
-        get label() {
-          return TEXT.scoreAny;
-        },
-      },
-      { value: "4", label: "4+ ★" },
-      { value: "4.5", label: "4.5+ ★" },
-    ],
-    test: (place, min) => min === "any" || (place.score ?? 0) >= Number(min),
+    min: 0,
+    max: 5,
+    step: 0.5,
+    default: 0,
+    // 0 = any score (also places without ratings)
+    format: (v) => (v === 0 ? TEXT.scoreAny : `${v.toFixed(1)}+ ★`),
+    test: (place, min) => min === 0 || (place.score ?? 0) >= min,
   },
 ];

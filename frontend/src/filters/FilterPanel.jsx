@@ -2,6 +2,7 @@ import ChipsFilter from "./ChipsFilter.jsx";
 import ToggleFilter from "./ToggleFilter.jsx";
 import SelectFilter from "./SelectFilter.jsx";
 import TreeFilter from "./TreeFilter.jsx";
+import SliderFilter from "./SliderFilter.jsx";
 import { countActive } from "./filterEngine.js";
 import { TEXT } from "../config/texts.js";
 import "./filters.css";
@@ -14,6 +15,7 @@ const COMPONENTS = {
   toggle: ToggleFilter,
   select: SelectFilter,
   tree: TreeFilter,
+  slider: SliderFilter,
 };
 
 export default function FilterPanel({ filters, values, onChange, onReset }) {

@@ -14,6 +14,7 @@ import SavedPlaces from "./components/SavedPlaces.jsx";
 import { ScoreBadge } from "./components/Stars.jsx";
 import Documentation from "./content/Documentation.jsx";
 import SymptomGuide from "./components/SymptomGuide.jsx";
+import ChatPanel from "./components/ChatPanel.jsx";
 import LanguageSwitcher from "./components/LanguageSwitcher.jsx";
 import AccessibleToggle from "./accessibility/AccessibleToggle.jsx";
 import { useAccessibleMode } from "./accessibility/useAccessibleMode.js";
@@ -250,7 +251,8 @@ export default function App() {
       <FloatingButton
         icon={INFO_ICON}
         label={TEXT.infoButton}
-        position="bottom-right"
+        // Map page: above the chat button. Start page: bottom left.
+        position={started ? "above-chat" : "bottom-left"}
         onClick={() => setModal({ type: "docs" })}
       />
     </>
@@ -396,6 +398,18 @@ export default function App() {
           </div>
         </div>
       )}
+
+      {/* ---------- Chat assistant (on every page) ---------- */}
+      <ChatPanel
+        places={allPlaces}
+        onSelectPlace={(id) => {
+          const place = allPlaces.find((p) => p.id === id);
+          if (!place) return;
+          if (!started) startWith();
+          selectPlace(place);
+        }}
+        onShowResults={({ filters, text }) => startWith({ filters, text })}
+      />
 
       {/* ---------- Windows ---------- */}
       {modal?.type === "symptoms" && (

@@ -169,6 +169,27 @@ const TEXTS = {
     a11yOn: "Mod accesibil: pornit",
     a11yOff: "Mod accesibil: oprit",
 
+    // Chat assistant
+    chatButton: "Asistent",
+    chatTitle: "Asistent TimiCareNow",
+    chatWelcome: "Bună! Spune-mi ce cauți sau ce te doare și îți găsesc clinica potrivită din Timișoara.",
+    chatSuggestions: ["Pediatru deschis acum", "Mă doare o măsea", "Analize de sânge sâmbătă", "Spitale de urgență"],
+    chatPlaceholder: "Scrie un mesaj…",
+    chatSend: "Trimite",
+    chatClear: "Conversație nouă",
+    chatShowAll: (n) => (n === 1 ? "Arată pe hartă" : `Arată toate cele ${n} pe hartă`),
+    chatAiNote: "Asistent AI · poate greși, verifică informațiile",
+    chatLocalNote: "Mod simplu (fără AI)",
+    chatError: "Asistentul AI nu a răspuns, așa că am căutat în modul simplu.",
+    chatDisclaimer: "Nu înlocuiește un medic. În caz de urgență, sună la 112.",
+    localFound: (n, names) =>
+      `Am găsit ${n === 1 ? "o locație" : n >= 20 ? `${n} de locații` : `${n} locații`}${names.length ? ` pentru ${names.join(", ")}` : ""}. Apasă pe una ca s-o vezi pe hartă.`,
+    localNone: "Nu am găsit nicio locație pentru asta. Încearcă altă formulare sau elimină „acum” / „weekend”.",
+    localHelp:
+      "Nu am înțeles exact. Poți scrie o specialitate (ex. „cardiologie”), un simptom (ex. „mă doare spatele”), numele unei clinici sau al unui medic.",
+    localEmergency:
+      "Ce descrii poate fi o urgență medicală. **Sună imediat la 112.** Mai jos sunt spitalele de urgență din Timișoara.",
+
     // Symptom guide
     symptomButton: "Ce te doare?",
     symptomTitle: "Ce te doare?",
@@ -327,6 +348,26 @@ const TEXTS = {
     a11yOn: "Accessible mode: on",
     a11yOff: "Accessible mode: off",
 
+    chatButton: "Assistant",
+    chatTitle: "TimiCareNow assistant",
+    chatWelcome: "Hi! Tell me what you're looking for or what's wrong, and I'll find the right clinic in Timișoara.",
+    chatSuggestions: ["Pediatrician open now", "I have a toothache", "Blood tests on Saturday", "Emergency hospitals"],
+    chatPlaceholder: "Write a message…",
+    chatSend: "Send",
+    chatClear: "New conversation",
+    chatShowAll: (n) => (n === 1 ? "Show on the map" : `Show all ${n} on the map`),
+    chatAiNote: "AI assistant · can make mistakes, check the details",
+    chatLocalNote: "Simple mode (no AI)",
+    chatError: "The AI assistant didn't answer, so I searched in simple mode.",
+    chatDisclaimer: "Not a substitute for a doctor. In an emergency, call 112.",
+    localFound: (n, names) =>
+      `I found ${n === 1 ? "1 place" : `${n} places`}${names.length ? ` for ${names.join(", ")}` : ""}. Tap one to see it on the map.`,
+    localNone: "I couldn't find any place for that. Try different words, or remove “now” / “weekend”.",
+    localHelp:
+      "I didn't quite understand. You can write a specialty (e.g. “cardiology”), a symptom (e.g. “back pain”), or the name of a clinic or doctor.",
+    localEmergency:
+      "What you describe may be a medical emergency. **Call 112 now.** Below are the emergency hospitals in Timișoara.",
+
     symptomButton: "What's wrong?",
     symptomTitle: "What's wrong?",
     symptomIntro: "Pick or type what you feel and we'll show you which specialist to see.",
@@ -483,6 +524,26 @@ const TEXTS = {
     a11yButton: "Akadálymentes mód",
     a11yOn: "Akadálymentes mód: be",
     a11yOff: "Akadálymentes mód: ki",
+
+    chatButton: "Asszisztens",
+    chatTitle: "TimiCareNow asszisztens",
+    chatWelcome: "Szia! Mondd el, mit keresel vagy mi a panaszod, és megkeresem a megfelelő temesvári klinikát.",
+    chatSuggestions: ["Most nyitva tartó gyermekorvos", "Fáj a fogam", "Vérvétel szombaton", "Sürgősségi kórházak"],
+    chatPlaceholder: "Írj egy üzenetet…",
+    chatSend: "Küldés",
+    chatClear: "Új beszélgetés",
+    chatShowAll: (n) => (n === 1 ? "Megjelenítés a térképen" : `Mind a ${n} megjelenítése a térképen`),
+    chatAiNote: "MI-asszisztens · tévedhet, ellenőrizd az adatokat",
+    chatLocalNote: "Egyszerű mód (MI nélkül)",
+    chatError: "Az MI-asszisztens nem válaszolt, ezért egyszerű módban kerestem.",
+    chatDisclaimer: "Nem helyettesíti az orvost. Vészhelyzetben hívd a 112-t.",
+    localFound: (n, names) =>
+      `${n} helyet találtam${names.length ? ` (${names.join(", ")})` : ""}. Koppints egyre, hogy lásd a térképen.`,
+    localNone: "Nem találtam ilyen helyet. Próbálj más szavakat, vagy hagyd el a „most” / „hétvége” szót.",
+    localHelp:
+      "Nem egészen értettem. Írhatsz szakterületet (pl. „kardiológia”), tünetet (pl. „hátfájás”), vagy egy klinika vagy orvos nevét.",
+    localEmergency:
+      "Amit leírsz, orvosi vészhelyzet lehet. **Azonnal hívd a 112-t.** Lent a temesvári sürgősségi kórházak láthatók.",
 
     symptomButton: "Mi a panaszod?",
     symptomTitle: "Mi a panaszod?",

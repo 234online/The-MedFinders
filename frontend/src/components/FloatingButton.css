@@ -46,6 +46,18 @@
   right: 16px;
 }
 
+/* Map page: right above the chat button (see ChatPanel.css) */
+.floating-btn.above-chat {
+  bottom: 98px;
+  right: 17px;
+}
+
+/* Start page: bottom left */
+.floating-btn.bottom-left {
+  bottom: 24px;
+  left: 20px;
+}
+
 /* Small green dot (e.g. "logged in") */
 .floating-dot {
   position: absolute;
