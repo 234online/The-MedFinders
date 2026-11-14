@@ -78,7 +78,7 @@ export function searchClinics(places, input) {
         phone: p.phone,
         open_now: isOpenAt(p.hours),
         hours_today: todayHours(p),
-        open_24h: p.open24h,
+        open_24h_every_day: p.open24h, // true only if it's open all day, every day
         emergency_hospital: p.emergency,
         score: p.score,
         ratings: p.reviewCount,
@@ -123,7 +123,7 @@ export function getClinicDetails(places, input = {}) {
         description: p.notes,
         open_now: isOpenAt(p.hours),
         opening_hours: Object.fromEntries(DAY_NAMES.map((d, i) => [d, dayText(p.hours?.[i])])),
-        open_24h: p.open24h,
+        open_24h_every_day: p.open24h, // true only if it's open all day, every day
         emergency_hospital: p.emergency,
         for_children: p.kids,
         specialties: p.specialties,
