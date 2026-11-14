@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { FEATURES, getCategory } from "../config/placeTypes.js";
+import { trackView } from "../services/analytics.js";
 import { TEXT } from "../config/texts.js";
 import { Stars, ScoreBadge } from "./Stars.jsx";
 import OpeningHours from "./OpeningHours.jsx";
@@ -20,6 +22,9 @@ export default function PlacePopup({
 }) {
   const category = getCategory(place.category);
   const badges = FEATURES.filter((f) => place[f.id] === true);
+
+  // Statistics: count this as a visit (the popup only renders while open)
+  useEffect(() => trackView(place.id, "popup"), [place.id]);
 
   return (
     <div className="place-popup" style={{ "--cat": category.color }}>
