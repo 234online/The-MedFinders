@@ -45,12 +45,14 @@ module.exports = function doctorRoutes({ requireRole }) {
     res.json(await appointments.listForClinics(clinics, req.user.id));
   }));
 
-  // A patient who sent a request to one of my clinics (patient id or null)
+  // A patient who sent a request to one of my clinics, for me or for
+  // "any doctor" (patient id or null). Requests addressed to a colleague
+  // don't give access to the record or the documents.
   const myPatient = async (req) => {
     const id = Number(req.params.id);
     const clinics = clinicsOf(req.user);
     if (!Number.isInteger(id) || clinics.length === 0) return null;
-    return (await appointments.patientHasClinicAppointment(id, clinics)) ? id : null;
+    return (await appointments.patientHasClinicAppointment(id, clinics, req.user.id)) ? id : null;
   };
 
   router.get('/api/doctor/patients/:id', wrap(async (req, res) => {

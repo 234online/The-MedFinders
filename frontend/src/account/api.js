@@ -96,6 +96,24 @@ export const accountApi = {
   updateDocument: (id, changes) => apiFetch(`/api/me/documents/${id}`, { method: "PATCH", body: changes }),
   deleteDocument: (id) => apiFetch(`/api/me/documents/${id}`, { method: "DELETE" }),
   getDocumentFile: (id) => apiBlob(`/api/me/documents/${id}/file`),
+  // "I'm a doctor" request: { placeIds: [...], specialty, licenseNumber, message }
+  getDoctorRequest: () => apiFetch("/api/me/doctor-request"),
+  sendDoctorRequest: (request) => apiFetch("/api/me/doctor-request", { method: "POST", body: request }),
+};
+
+// ---------- Admins: approve / reject doctor requests ----------
+export const adminApi = {
+  listDoctorRequests: (status = "pending") => apiFetch(`/api/admin/doctor-requests?status=${status}`),
+  approve: (id, changes = {}) => apiFetch(`/api/admin/doctor-requests/${id}/approve`, { method: "POST", body: changes }),
+  reject: (id, note) => apiFetch(`/api/admin/doctor-requests/${id}/reject`, { method: "POST", body: { note } }),
+};
+
+// ---------- Which clinics take online appointments (public) ----------
+export const bookingApi = {
+  // { "medlife-spital": 2, ... } = number of doctors on the site per clinic
+  clinics: () => apiFetch("/api/booking/clinics"),
+  // [{ id, name, specialty }]
+  doctors: (placeId) => apiFetch(`/api/places/${encodeURIComponent(placeId)}/doctors`),
 };
 
 // Records a Call / WhatsApp / Email click (never blocks or breaks the link).
