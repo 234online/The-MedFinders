@@ -255,3 +255,64 @@
   border-radius: 50%;
   object-fit: cover;
 }
+
+/* ---------- My account: profile + contact history ---------- */
+.login-form select {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 400;
+  background: #fff;
+}
+
+.account-note {
+  text-align: left;
+}
+
+.contact-history li {
+  padding: 8px 10px;
+}
+
+.contact-history strong {
+  display: block;
+}
+
+.contact-history small {
+  color: #6b7280;
+}
+
+.account-delete {
+  color: #b91c1c;
+  align-self: center;
+}
+
+/* ---------- Auth0 refused the login ---------- */
+.auth-error-banner {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3000;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  max-width: min(640px, calc(100vw - 24px));
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  font-size: 0.9rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.auth-error-banner button {
+  margin-left: auto;
+  border: none;
+  background: none;
+  color: inherit;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+}

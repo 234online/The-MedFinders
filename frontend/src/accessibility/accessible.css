@@ -5,7 +5,10 @@
 /* Bigger text everywhere (sizes written in rem grow with this) */
 html.a11y {
   font-size: 118%;
+<<<<<<< HEAD
   /* Colours come from the site theme, not overridden here */
+=======
+>>>>>>> 07006ef65def2be3e3ea933b93c4042defd67e51
 }
 
 html.a11y body {
