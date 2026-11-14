@@ -13,8 +13,9 @@
 const fs = require('fs');
 const path = require('path');
 const { Pool } = require('pg');
+const config = require('../config');
 
-const TIGER_URL = (process.env.TIGER_DATABASE_URL || '').trim();
+const TIGER_URL = config.tigerDatabaseUrl;
 const TIME_ZONE = 'Europe/Bucharest';
 const KINDS = ['call', 'whatsapp', 'email'];
 const MAX_WEEKS = 8; // popular times look at up to the last 8 weeks

@@ -1,11 +1,13 @@
 /**
  * POST /api/contacts  { placeId, kind: "call" | "whatsapp" | "email", target }
  * Records a click on Call / WhatsApp / Email. Works without login too
- * (saved without a user).
+ * (saved without a user). The click also goes to the statistics in
+ * Tiger Data (db/analytics.js), when that is configured.
  */
 
 const express = require('express');
 const contacts = require('../repositories/contacts');
+const analytics = require('../db/analytics');
 const { placeId } = require('./validate');
 
 const wrap = (fn) => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
@@ -20,6 +22,11 @@ module.exports = function contactRoutes({ optionalUser }) {
     if (!contacts.KINDS.includes(kind)) {
       return res.status(400).json({ error: `Câmpul "kind" trebuie să fie unul din: ${contacts.KINDS.join(', ')}` });
     }
+    // Statistics: never block or break the click if Tiger is unavailable
+    await analytics
+      .record({ placeCode: id, kind, userId: req.user?.id ?? null })
+      .catch((err) => console.error('[Tiger] Clic neînregistrat:', err.message));
+
     const event = await contacts.add({
       userId: req.user?.id ?? null,
       placeId: id,
