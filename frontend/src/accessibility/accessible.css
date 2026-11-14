@@ -5,13 +5,6 @@
 /* Bigger text everywhere (sizes written in rem grow with this) */
 html.a11y {
   font-size: 118%;
-
-  /* Darker theme colours = more contrast */
-  --accent: #0b4f4a;
-  --accent-hover: #083b37;
-  --accent-dark: #042f2c;
-  --accent-soft: #d5f5ef;
-  --sidebar-bg: #ffffff;
 }
 
 html.a11y body {
