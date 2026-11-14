@@ -326,30 +326,6 @@ Things to know about the data:
 
 ---
 
-## Deployment
-
-| Part | Where | Settings |
-|---|---|---|
-| Website + AI/voice functions | **Vercel** | Root directory `frontend`, framework Vite. Add the frontend variables above, then redeploy. Add the Vercel URL to the Auth0 application's callback, logout and web origin URLs. |
-| Backend | **Render** Web Service | Root directory `backend`, build `npm install`, start `npm start`, health check `/api/health`. Same region as the database. Add the backend variables above. |
-| Database | **Render** PostgreSQL | Use its **Internal** Database URL as `DATABASE_URL` on the backend. Tables are created automatically. |
-
-Both Vercel and Render redeploy automatically when `main` changes. Check <https://your-backend.onrender.com/api/health> after a deploy.
-
----
-
-## Troubleshooting
-
-| Problem | Cause / fix |
-|---|---|
-| Clicking **Log in** just reloads the page | Auth0 refused the login; a red banner shows why. Usually the Single Page Application isn't allowed to use your API (Auth0 → APIs → your API → Application Access), or the site's URL is missing from *Allowed Callback URLs*. |
-| Logged in, but favourites / appointments don't save | `VITE_API_URL` is wrong, or the backend's `FRONTEND_URL` doesn't include the site's address, or `VITE_AUTH0_AUDIENCE` ≠ `AUTH0_AUDIENCE`. Check `/api/health`. |
-| A new doctor is still a patient | They must log out and in again. If they become a patient again later, the backend is missing `AUTH0_MGMT_CLIENT_ID` / `AUTH0_MGMT_CLIENT_SECRET`. |
-| The chat has no AI / voice buttons are missing | No AI or ElevenLabs key; after adding one, restart `npm run dev` (locally) or redeploy (Vercel). |
-| The Render backend is slow to answer the first time | Free Render services sleep when idle; the first request wakes them (~30 s). |
-
----
-
 ## License
 
 [MIT](LICENSE)
