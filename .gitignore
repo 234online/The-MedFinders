@@ -2,6 +2,7 @@
 .env
 .env.local
 .env.*.local
+.claude
 
 # Dependențe (fiecare le instalează local cu npm install / pip install)
 node_modules/
