@@ -1,0 +1,77 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R /F2 5 0 R /F3 6 0 R >> >> /Contents 7 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
+6 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>
+endobj
+7 0 obj
+<< /Length 864 >>
+stream
+BT
+/F2 17 Tf
+50 785 Td
+(SCRISOARE MEDICALA) Tj
+/F1 10 Tf
+0 -18 Td
+(Clinica Demo Timisoara - Cardiologie) Tj
+ET
+0.6 G 1 w 50 755 m 545 755 l S
+BT
+50 740 Td
+14 TL
+/F1 10.5 Tf
+T* (Pacient: Ion Ionescu, M, n. 14.03.1961) Tj
+/F1 10.5 Tf
+T* () Tj
+/F1 10.5 Tf
+T* (Diagnostic: HTA grad II, controlata. Diabet zaharat tip 2.) Tj
+/F1 10.5 Tf
+T* (Alergii: penicilina.) Tj
+/F1 10.5 Tf
+T* () Tj
+/F1 10.5 Tf
+T* (EKG: ritm sinusal, AV 72/min, fara modificari de faza terminala.) Tj
+/F1 10.5 Tf
+T* (TA la cabinet: 135/85 mmHg.) Tj
+/F1 10.5 Tf
+T* () Tj
+/F1 10.5 Tf
+T* (Tratament: Perindopril 5 mg dimineata, Metformin 1000 mg x 2/zi.) Tj
+/F1 10.5 Tf
+T* (Recomandari: dieta hiposodata, control peste 4 luni.) Tj
+/F1 10.5 Tf
+T* () Tj
+/F1 10.5 Tf
+T* (Dr. Ana Popescu, Cardiologie) Tj
+ET
+BT /F1 8 Tf 0.5 g 50 40 Td (Document demonstrativ TimiCareNow - toate datele sunt fictive.) Tj ET
+endstream
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000261 00000 n 
+0000000358 00000 n 
+0000000460 00000 n 
+0000000555 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R >>
+startxref
+1470
+%%EOF

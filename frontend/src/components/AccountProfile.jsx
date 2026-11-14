@@ -3,6 +3,7 @@ import { accountApi } from "../account/api.js";
 import { places } from "../data/loadPlaces.js";
 import { TEXT, getLanguage } from "../config/texts.js";
 import MedicalForm from "./MedicalForm.jsx";
+import MedicalDocuments from "./MedicalDocuments.jsx";
 import MyAppointments from "./MyAppointments.jsx";
 import "./panels.css";
 
@@ -143,11 +144,12 @@ export default function AccountProfile({ onDeleted }) {
         </button>
       </form>
 
-      {/* Patients: medical record + appointments (doctors see them on their dashboard) */}
+      {/* Patients: medical record, documents + appointments (doctors see them on their dashboard) */}
       {profile.role !== "doctor" && (
         <>
           <MyAppointments />
           <MedicalForm />
+          <MedicalDocuments />
         </>
       )}
 

@@ -3,6 +3,7 @@ import { IconAlertTriangle, IconDroplet, IconMail, IconPhone } from "@tabler/ico
 import { DTEXT } from "./doctorTexts.js";
 import { doctorApi, useDoctorData } from "./doctorApi.js";
 import { ageFrom, formatDate } from "./dates.js";
+import DocumentList from "../components/DocumentList.jsx";
 
 // A patient's medical record (opened from the doctor dashboard).
 //   id             patient id
@@ -65,6 +66,15 @@ export default function PatientRecord({ id, lang, appointments = [], onUpdate })
           <List items={p.medications?.map((m) => `${m.name}${m.dose ? ` — ${m.dose}` : ""}`)} />
         </section>
       </div>
+
+      <section>
+        <h4>{DTEXT.documents}</h4>
+        {p.documents?.length ? (
+          <DocumentList documents={p.documents} loadFile={(d) => doctorApi.getPatientDocumentFile(p.id, d.id)} />
+        ) : (
+          <p className="doc-none">{DTEXT.documentsNone}</p>
+        )}
+      </section>
 
       {appointments.length > 0 && (
         <section>

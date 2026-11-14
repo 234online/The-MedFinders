@@ -42,7 +42,7 @@ function createApp(options = {}) {
   // ---------- Feature modules ----------
   app.use(require('./routes/booking')(auth));
   app.use(require('./routes/places')(auth));
-  app.use(require('./routes/doctorRequests')(auth));
+  app.use(require('./routes/documents')(auth)); // before account: both guard /api/me
   app.use(require('./routes/account')(auth));
   app.use(require('./routes/doctor')(auth));
   app.use(require('./routes/contacts')(auth));
@@ -56,6 +56,7 @@ function createApp(options = {}) {
   // eslint-disable-next-line no-unused-vars
   app.use((err, _req, res, _next) => {
     if (err.type === 'entity.parse.failed') return res.status(400).json({ error: 'JSON invalid în corpul cererii' });
+    if (err.type === 'entity.too.large') return res.status(413).json({ error: 'Fișierul sau cererea este prea mare' });
     // Auth0: token missing / expired / invalid
     if (err.status === 401 || err.status === 403 || err.name === 'UnauthorizedError' || err.name === 'InvalidTokenError') {
       return res.status(err.status || 401).json({ error: 'Trebuie să fii autentificat', detail: err.message });

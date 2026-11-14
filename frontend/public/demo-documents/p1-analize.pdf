@@ -1,0 +1,79 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R /F2 5 0 R /F3 6 0 R >> >> /Contents 7 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
+6 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>
+endobj
+7 0 obj
+<< /Length 1045 >>
+stream
+BT
+/F2 17 Tf
+50 785 Td
+(BULETIN DE ANALIZE MEDICALE) Tj
+/F1 10 Tf
+0 -18 Td
+(Laborator Demo Timisoara) Tj
+ET
+0.6 G 1 w 50 755 m 545 755 l S
+BT
+50 740 Td
+14 TL
+/F1 10.5 Tf
+T* (Pacient: Ion Ionescu, M, n. 14.03.1961) Tj
+/F1 10.5 Tf
+T* () Tj
+/F3 9.5 Tf
+T* (Analiza                Rezultat   U.M.     Interval) Tj
+/F3 9.5 Tf
+T* (----------------------------------------------------) Tj
+/F3 9.5 Tf
+T* (Glicemie a jeun        138 *      mg/dL    70-100) Tj
+/F3 9.5 Tf
+T* (HbA1c                  7.1 *      %        < 5.7) Tj
+/F3 9.5 Tf
+T* (Colesterol total       212 *      mg/dL    < 200) Tj
+/F3 9.5 Tf
+T* (LDL colesterol         131 *      mg/dL    < 100) Tj
+/F3 9.5 Tf
+T* (HDL colesterol         46         mg/dL    > 40) Tj
+/F3 9.5 Tf
+T* (Trigliceride           174 *      mg/dL    < 150) Tj
+/F3 9.5 Tf
+T* (Creatinina             0.98       mg/dL    0.7-1.2) Tj
+/F1 10.5 Tf
+T* () Tj
+/F1 10.5 Tf
+T* (* valoare in afara intervalului de referinta) Tj
+ET
+BT /F1 8 Tf 0.5 g 50 40 Td (Document demonstrativ TimiCareNow - toate datele sunt fictive.) Tj ET
+endstream
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000261 00000 n 
+0000000358 00000 n 
+0000000460 00000 n 
+0000000555 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R >>
+startxref
+1652
+%%EOF

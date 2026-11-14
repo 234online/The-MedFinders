@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { apiFetch } from "../account/api.js";
+import { apiBlob, apiFetch } from "../account/api.js";
 import { SERVER_ACCOUNT } from "../account/useAccount.js";
-import { MOCK_DOCTOR, MOCK_APPOINTMENTS, mockPatient } from "./mockData.js";
+import { MOCK_DOCTOR, MOCK_APPOINTMENTS, mockPatient, mockDocumentFile } from "./mockData.js";
 
 // =============================================================
 //  DOCTOR DASHBOARD <-> BACKEND (backend/routes/doctor.js)
@@ -18,7 +18,9 @@ import { MOCK_DOCTOR, MOCK_APPOINTMENTS, mockPatient } from "./mockData.js";
 //                                    doctor of a clinic sees the same requests
 //    GET /api/doctor/patients/:id    { id, name, birthDate, sex, phone, email, bloodType,
 //                                      allergies[], conditions[], medications[{ name, dose }],
-//                                      visits[{ date, clinic, doctor, reason, diagnosis, notes }] }
+//                                      visits[{ date, clinic, doctor, reason, diagnosis, notes }],
+//                                      documents[{ id, category, title, fileName, mimeType, size, date }] }
+//    GET /api/doctor/patients/:id/documents/:docId/file   one of the patient's uploaded files
 //    PATCH /api/doctor/appointments/:id  { status?, diagnosis?, notes? }
 //  A doctor only gets patients who sent a request to one of their clinics.
 // =============================================================
@@ -33,6 +35,10 @@ export const doctorApi = {
   getAppointments: () => (DOCTOR_API ? apiFetch("/api/doctor/appointments") : demo(MOCK_APPOINTMENTS)),
   getPatient: (id) =>
     DOCTOR_API ? apiFetch(`/api/doctor/patients/${encodeURIComponent(id)}`) : demo(mockPatient(id)),
+  getPatientDocumentFile: (patientId, docId) =>
+    DOCTOR_API
+      ? apiBlob(`/api/doctor/patients/${encodeURIComponent(patientId)}/documents/${docId}/file`)
+      : mockDocumentFile(patientId, docId),
   // Demo: nothing is saved, the dashboard just updates its own copy
   updateAppointment: (id, changes) =>
     DOCTOR_API ? apiFetch(`/api/doctor/appointments/${id}`, { method: "PATCH", body: changes }) : demo(changes),

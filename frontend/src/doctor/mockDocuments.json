@@ -1,0 +1,100 @@
+{
+  "p1": [
+    {
+      "id": 1,
+      "category": "lab",
+      "title": "Analize – HbA1c și profil lipidic",
+      "fileName": "p1-analize.pdf",
+      "mimeType": "application/pdf",
+      "dayOffset": -125,
+      "size": 1876
+    },
+    {
+      "id": 2,
+      "category": "other",
+      "title": "EKG de repaus",
+      "fileName": "p1-ekg.png",
+      "mimeType": "image/png",
+      "dayOffset": -120,
+      "size": 4143
+    },
+    {
+      "id": 3,
+      "category": "letter",
+      "title": "Scrisoare medicală – control cardiologic",
+      "fileName": "p1-scrisoare.pdf",
+      "mimeType": "application/pdf",
+      "dayOffset": -120,
+      "size": 1694
+    }
+  ],
+  "p3": [
+    {
+      "id": 4,
+      "category": "other",
+      "title": "Holter EKG 24h",
+      "fileName": "p3-holter.pdf",
+      "mimeType": "application/pdf",
+      "dayOffset": -40,
+      "size": 1625
+    },
+    {
+      "id": 5,
+      "category": "letter",
+      "title": "Bilet de externare – Spital Demo",
+      "fileName": "p3-externare.pdf",
+      "mimeType": "application/pdf",
+      "dayOffset": -400,
+      "size": 1562
+    }
+  ],
+  "p4": [
+    {
+      "id": 6,
+      "category": "ultrasound",
+      "title": "Ecocardiografie transtoracică",
+      "fileName": "p4-ecocardiografie.pdf",
+      "mimeType": "application/pdf",
+      "dayOffset": -95,
+      "size": 1580
+    },
+    {
+      "id": 7,
+      "category": "xray",
+      "title": "Radiografie toracică",
+      "fileName": "p4-radiografie.png",
+      "mimeType": "image/png",
+      "dayOffset": -95,
+      "size": 108089
+    },
+    {
+      "id": 8,
+      "category": "other",
+      "title": "Osteodensitometrie DXA",
+      "fileName": "p4-dxa.pdf",
+      "mimeType": "application/pdf",
+      "dayOffset": -210,
+      "size": 1467
+    }
+  ],
+  "p5": [
+    {
+      "id": 9,
+      "category": "other",
+      "title": "Spirometrie",
+      "fileName": "p5-spirometrie.pdf",
+      "mimeType": "application/pdf",
+      "dayOffset": -200,
+      "size": 1520
+    },
+    {
+      "id": 10,
+      "category": "prescription",
+      "title": "Rețetă – Salbutamol",
+      "fileName": "p5-reteta.pdf",
+      "mimeType": "application/pdf",
+      "dayOffset": -200,
+      "size": 1354
+    }
+  ]
+}

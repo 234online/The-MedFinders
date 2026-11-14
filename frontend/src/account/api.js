@@ -44,6 +44,35 @@ export async function apiFetch(path, { method = "GET", body, keepalive = false }
   return response.status === 204 ? null : response.json();
 }
 
+// Uploads a File as the raw request body (its type in Content-Type,
+// other details in the query string). Returns the JSON answer.
+export async function apiUpload(path, file, { contentType, query = {} } = {}) {
+  const params = new URLSearchParams(Object.entries(query).filter(([, v]) => v != null && v !== ""));
+  const response = await fetch(`${API_URL}${path}?${params}`, {
+    method: "POST",
+    headers: { ...(await authHeader()), "Content-Type": contentType || file.type },
+    body: file,
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    const error = new Error(data.error || `API POST ${path}: ${response.status}`);
+    error.status = response.status;
+    throw error;
+  }
+  return data;
+}
+
+// A file from the backend (logged-in requests can't use a plain <a href>)
+export async function apiBlob(path) {
+  const response = await fetch(`${API_URL}${path}`, { headers: await authHeader() });
+  if (!response.ok) {
+    const error = new Error(`API GET ${path}: ${response.status}`);
+    error.status = response.status;
+    throw error;
+  }
+  return response.blob();
+}
+
 // ---------- "My account" (profile in the PostgreSQL database) ----------
 export const accountApi = {
   getProfile: () => apiFetch("/api/me"),
@@ -59,24 +88,14 @@ export const accountApi = {
   // { placeId, date: "YYYY-MM-DD", time: "HH:MM", reason }
   bookAppointment: (appointment) => apiFetch("/api/me/appointments", { method: "POST", body: appointment }),
   cancelAppointment: (id) => apiFetch(`/api/me/appointments/${id}/cancel`, { method: "POST" }),
-  // "I'm a doctor" request: { placeIds: [...], specialty, licenseNumber, message }
-  getDoctorRequest: () => apiFetch("/api/me/doctor-request"),
-  sendDoctorRequest: (request) => apiFetch("/api/me/doctor-request", { method: "POST", body: request }),
-};
-
-// ---------- Admins: approve / reject doctor requests ----------
-export const adminApi = {
-  listDoctorRequests: (status = "pending") => apiFetch(`/api/admin/doctor-requests?status=${status}`),
-  approve: (id, changes = {}) => apiFetch(`/api/admin/doctor-requests/${id}/approve`, { method: "POST", body: changes }),
-  reject: (id, note) => apiFetch(`/api/admin/doctor-requests/${id}/reject`, { method: "POST", body: { note } }),
-};
-
-// ---------- Which clinics take online appointments (public) ----------
-export const bookingApi = {
-  // { "medlife-spital": 2, ... } = number of doctors on the site per clinic
-  clinics: () => apiFetch("/api/booking/clinics"),
-  // [{ id, name, specialty }]
-  doctors: (placeId) => apiFetch(`/api/places/${encodeURIComponent(placeId)}/doctors`),
+  // Medical documents (letters, MRI, X-ray, lab results...): { documents[], usage }
+  getDocuments: () => apiFetch("/api/me/documents"),
+  // details: { category, title, date: "YYYY-MM-DD" }
+  uploadDocument: (file, contentType, details) =>
+    apiUpload("/api/me/documents", file, { contentType, query: { fileName: file.name, ...details } }),
+  updateDocument: (id, changes) => apiFetch(`/api/me/documents/${id}`, { method: "PATCH", body: changes }),
+  deleteDocument: (id) => apiFetch(`/api/me/documents/${id}`, { method: "DELETE" }),
+  getDocumentFile: (id) => apiBlob(`/api/me/documents/${id}/file`),
 };
 
 // Records a Call / WhatsApp / Email click (never blocks or breaks the link).
