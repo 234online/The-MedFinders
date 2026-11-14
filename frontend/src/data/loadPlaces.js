@@ -1,11 +1,6 @@
 import data from "./clinics.json";
-import {
-  getCategory,
-  SPECIALTY_BY_CODE,
-  KIDS_SPECIALTIES,
-} from "../config/placeTypes.js";
+import { SPECIALTY_BY_CODE, KIDS_SPECIALTIES, specialtyAllNames } from "../config/placeTypes.js";
 import { isAlways24h, isOpenWeekend } from "../services/hoursLogic.js";
-import { translateClinicNote, ROLES_RO } from "./translations.js";
 
 // =============================================================
 //  DATABASE -> WEBSITE
@@ -36,13 +31,12 @@ function toWeek(rows) {
 function toPlace(c) {
   const specialties = c.specialties.map((code) => SPECIALTY_BY_CODE[code]?.name_ro ?? code);
   const hours = toWeek(c.opening_hours);
-  const category = getCategory(c.kind);
 
   const doctors = c.doctors.map((d) => ({
     name: d.full_name,
     title: d.title,
     specialty: d.specialty ? SPECIALTY_BY_CODE[d.specialty]?.name_ro ?? d.specialty : null,
-    role: d.role ? ROLES_RO[d.role] ?? d.role : null,
+    role: d.role ?? null, // English; shown with translateRole()
     schedule: d.schedule.map((s) => ({ day: s.day_of_week - 1, start: s.start_time, end: s.end_time })),
   }));
 
@@ -63,14 +57,14 @@ function toPlace(c) {
     approximate: c.geo_precision === "street", // pin is only on the right street
     googlePlaceId: c.google_place_id ?? null, // optional column, for live Google hours
 
-    description: translateClinicNote(c.notes, {
-      kindLabel: category.singular,
-      network: c.network,
-      specialtyNames: specialties,
-    }),
-    specialties,
-    // extra words for the search box: network and doctors' names
-    tags: [c.network !== "Independent" ? c.network : null, ...doctors.map((d) => d.name)].filter(Boolean),
+    notes: c.notes, // English; shown with placeDescription() in the chosen language
+    specialties, // Romanian names (used as ids)
+    // extra words for the search box: network, doctors, specialty names in all languages
+    tags: [
+      c.network !== "Independent" ? c.network : null,
+      ...doctors.map((d) => d.name),
+      ...specialties.flatMap(specialtyAllNames),
+    ].filter(Boolean),
 
     hours,
     open24h: isAlways24h(hours),

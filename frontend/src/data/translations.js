@@ -1,8 +1,12 @@
+import { getLanguage } from "../config/texts.js";
+import { getCategory, specialtyName } from "../config/placeTypes.js";
+
 // =============================================================
-//  ROMANIAN TEXT FOR THE DATABASE'S ENGLISH NOTES
-//  The database stores notes in English. The site shows them in
-//  Romanian using this file. A note that isn't listed here is shown
-//  as it is (in English), so nothing breaks when the database changes:
+//  THE DATABASE'S NOTES IN THREE LANGUAGES
+//  The database stores notes in English, so English shows them as
+//  they are. Romanian and Hungarian use the tables below. A note
+//  that isn't listed is shown in English (Hungarian falls back to
+//  Romanian first), so nothing breaks when the database changes:
 //  just add the new note here when you want it translated.
 // =============================================================
 
@@ -73,53 +77,83 @@ export const CLINIC_NOTES_RO = {
 };
 
 // Opening-hours notes (opening_hours.notes)
-export const HOUR_NOTES_RO = {
-  "Appointment desk hours": "Program birou programări",
-  "By appointment": "Cu programare",
-  "Emergency department (UPU), non-stop": "UPU, non-stop",
-  "Emergency department, non-stop": "Urgențe, non-stop",
-  "Integrated outpatient consultations": "Consultații ambulatoriu integrat",
-  "Out-of-hours centre, non-stop": "Centru de permanență, non-stop",
-  "Out-of-hours centre, runs overnight until 08:00": "Centru de permanență, până a doua zi la 08:00",
-  "Outpatient appointment line hours": "Program linie programări ambulatoriu",
+const HOUR_NOTES = {
+  "Appointment desk hours": { ro: "Program birou programări", hu: "Előjegyzési iroda nyitvatartása" },
+  "By appointment": { ro: "Cu programare", hu: "Előjegyzéssel" },
+  "Emergency department (UPU), non-stop": { ro: "UPU, non-stop", hu: "Sürgősségi osztály, éjjel-nappal" },
+  "Emergency department, non-stop": { ro: "Urgențe, non-stop", hu: "Sürgősségi osztály, éjjel-nappal" },
+  "Integrated outpatient consultations": { ro: "Consultații ambulatoriu integrat", hu: "Integrált járóbeteg-rendelés" },
+  "Out-of-hours centre, non-stop": { ro: "Centru de permanență, non-stop", hu: "Ügyeleti központ, éjjel-nappal" },
+  "Out-of-hours centre, runs overnight until 08:00": {
+    ro: "Centru de permanență, până a doua zi la 08:00",
+    hu: "Ügyeleti központ, másnap reggel 8-ig",
+  },
+  "Outpatient appointment line hours": {
+    ro: "Program linie programări ambulatoriu",
+    hu: "Járóbeteg-előjegyzési vonal nyitvatartása",
+  },
 };
 
 // Doctor roles (doctor_assignments.role)
-export const ROLES_RO = {
-  "Head of 2nd Pediatrics Clinic": "Șef Clinica Pediatrie II",
-  "Head of Endocrinology Clinic": "Șef Clinica de Endocrinologie",
-  "Head of palliative care": "Șef îngrijiri paliative",
-  Manager: "Manager",
-  "Practice owner": "Titularul cabinetului",
-  President: "Președinte",
+const ROLES = {
+  "Head of 2nd Pediatrics Clinic": { ro: "Șef Clinica Pediatrie II", hu: "A II. sz. Gyermekklinika vezetője" },
+  "Head of Endocrinology Clinic": { ro: "Șef Clinica de Endocrinologie", hu: "Az Endokrinológiai Klinika vezetője" },
+  "Head of palliative care": { ro: "Șef îngrijiri paliative", hu: "A palliatív ellátás vezetője" },
+  Manager: { ro: "Manager", hu: "Igazgató" },
+  "Practice owner": { ro: "Titularul cabinetului", hu: "A rendelő tulajdonosa" },
+  President: { ro: "Președinte", hu: "Elnök" },
 };
 
-// "Break 13:30-17:30" -> "Pauză 13:30–17:30"
-export function translateHourNote(note) {
-  if (!note) return "";
-  const brk = note.match(/^Break (\d{1,2}:\d{2})-(\d{1,2}:\d{2})$/);
-  if (brk) return `Pauză ${brk[1]}–${brk[2]}`;
-  return HOUR_NOTES_RO[note] ?? note;
+export function translateRole(role) {
+  if (!role) return "";
+  const lang = getLanguage();
+  if (lang === "en") return role;
+  return ROLES[role]?.[lang] ?? ROLES[role]?.ro ?? role;
 }
 
-// Clinic note in Romanian. Template notes ("Clinic offering X, Y...")
-// are rebuilt from the clinic's Romanian specialty names.
-export function translateClinicNote(note, { kindLabel, network, specialtyNames }) {
+// "Break 13:30-17:30" -> "Pauză 13:30–17:30"
+const BREAK_WORD = { ro: "Pauză", en: "Break", hu: "Szünet" };
+
+export function translateHourNote(note) {
   if (!note) return "";
-  if (CLINIC_NOTES_RO[note]) return CLINIC_NOTES_RO[note];
+  const lang = getLanguage();
+  const brk = note.match(/^Break (\d{1,2}:\d{2})-(\d{1,2}:\d{2})$/);
+  if (brk) return `${BREAK_WORD[lang]} ${brk[1]}–${brk[2]}`;
+  if (lang === "en") return note;
+  return HOUR_NOTES[note]?.[lang] ?? HOUR_NOTES[note]?.ro ?? note;
+}
 
+// Words for the template notes ("Clinic offering X, Y...")
+const TEMPLATE = {
+  ro: {
+    lab: (network) => `Punct de recoltare și laborator de analize al rețelei ${network}.`,
+    and: (n) => `și încă ${n}`,
+  },
+  hu: {
+    lab: (network) => `A(z) ${network} hálózat vérvételi pontja és orvosi laboratóriuma.`,
+    and: (n) => `és még ${n}`,
+  },
+};
+
+// The clinic's description (database note) in the current language.
+// Template notes are rebuilt from the clinic's specialty names.
+export function placeDescription(place) {
+  const note = place.notes;
+  if (!note) return "";
+  const lang = getLanguage();
+  if (lang === "en") return note;
+
+  const t = TEMPLATE[lang] ?? TEMPLATE.ro;
+  const names = place.specialties.map(specialtyName);
   const list = (n) => {
-    const shown = specialtyNames.slice(0, n).join(", ");
-    const more = specialtyNames.length - n;
-    return more > 0 ? `${shown} și încă ${more}` : shown;
+    const more = names.length - n;
+    return more > 0 ? `${names.slice(0, n).join(", ")} ${t.and(more)}` : names.join(", ");
   };
+  const kind = getCategory(place.category).singular;
 
-  if (note.startsWith("Blood collection point and medical laboratory of the")) {
-    return `Punct de recoltare și laborator de analize al rețelei ${network}.`;
-  }
-  if (note.startsWith("Individual practice offering")) return `Cabinet individual: ${list(4)}.`;
-  if (note.startsWith("Dental clinic offering")) return `Clinică stomatologică: ${list(4)}.`;
-  if (note.startsWith("Polyclinic offering")) return `Policlinică: ${list(4)}.`;
-  if (note.startsWith("Clinic offering")) return `${kindLabel}: ${list(4)}.`;
-  return note;
+  if (note.startsWith("Blood collection point and medical laboratory of the")) return t.lab(place.network);
+  if (/^(Individual practice|Dental clinic|Polyclinic|Clinic) offering/.test(note)) return `${kind}: ${list(4)}.`;
+
+  // Other notes: Romanian table (Hungarian also uses it until translated)
+  return CLINIC_NOTES_RO[note] ?? note;
 }

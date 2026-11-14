@@ -2,11 +2,19 @@ import { FEATURES, getCategory } from "../config/placeTypes.js";
 import { TEXT } from "../config/texts.js";
 import { Stars, ScoreBadge } from "./Stars.jsx";
 import OpeningHours from "./OpeningHours.jsx";
-import { splitPhones } from "../utils/contact.js";
+import ContactActions from "./ContactActions.jsx";
+import { placeDescription } from "../data/translations.js";
 import "./PlacePopup.css";
 
 // What appears above a pin on the map when you click it
-export default function PlacePopup({ place, isFavorite, onToggleFavorite, onOpenDetails }) {
+export default function PlacePopup({
+  place,
+  isFavorite,
+  onToggleFavorite,
+  onOpenDetails,
+  requestSpecialty = null,
+  user = null,
+}) {
   const category = getCategory(place.category);
   const badges = FEATURES.filter((f) => place[f.id] === true);
 
@@ -24,16 +32,11 @@ export default function PlacePopup({ place, isFavorite, onToggleFavorite, onOpen
         <span className="pp-score-count">{TEXT.reviewsCount(place.reviewCount)}</span>
       </button>
 
-      {place.description && <p className="pp-desc">{place.description}</p>}
+      {place.notes && <p className="pp-desc">{placeDescription(place)}</p>}
 
-      <div className="pp-contact">
-        {place.address && <span>📍 {place.address}</span>}
-        {splitPhones(place.phone).map((p) => (
-          <a key={p.label} href={`tel:${p.tel}`}>
-            📞 {p.label}
-          </a>
-        ))}
-      </div>
+      <div className="pp-contact">{place.address && <span>📍 {place.address}</span>}</div>
+
+      <ContactActions place={place} specialty={requestSpecialty} user={user} compact />
 
       <OpeningHours place={place} />
 

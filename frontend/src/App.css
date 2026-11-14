@@ -256,3 +256,10 @@ body,
     border-bottom: 1px solid #e5e7eb;
   }
 }
+
+/* Language switch row in the side panel */
+.sidebar-tools {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -6px;
+}

@@ -1,0 +1,167 @@
+/* =============================================================
+   ACCESSIBLE MODE (html.a11y), switched with the "Aa" button
+   ============================================================= */
+
+/* Bigger text everywhere (sizes written in rem grow with this) */
+html.a11y {
+  font-size: 118%;
+
+  /* Darker theme colours = more contrast */
+  --accent: #0b4f4a;
+  --accent-hover: #083b37;
+  --accent-dark: #042f2c;
+  --accent-soft: #d5f5ef;
+  --sidebar-bg: #ffffff;
+}
+
+html.a11y body {
+  color: #000;
+  line-height: 1.6;
+}
+
+/* Grey helper text becomes dark */
+html.a11y small,
+html.a11y .count,
+html.a11y .pp-muted,
+html.a11y .details-muted,
+html.a11y .filter-sublabel,
+html.a11y .tree-count,
+html.a11y .result-text small,
+html.a11y .review-meta,
+html.a11y .symptom-disclaimer,
+html.a11y .login-note {
+  color: #1f2937 !important;
+}
+
+/* Links are underlined */
+html.a11y a {
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+}
+
+/* Stronger borders on buttons, chips and fields */
+html.a11y .chip,
+html.a11y input,
+html.a11y select,
+html.a11y textarea,
+html.a11y .symptom-item,
+html.a11y .tree-check {
+  border-width: 2px !important;
+  border-color: #374151;
+}
+
+html.a11y .filter-group {
+  border-bottom: 2px solid #9ca3af;
+}
+
+/* Bigger click targets */
+html.a11y .chip {
+  padding: 7px 14px;
+}
+
+html.a11y .toggle-track {
+  width: 44px;
+  height: 24px;
+}
+
+html.a11y .toggle-thumb {
+  width: 20px;
+  height: 20px;
+}
+
+html.a11y .toggle input:checked + .toggle-track .toggle-thumb {
+  transform: translateX(20px);
+}
+
+/* Very visible keyboard focus */
+html.a11y *:focus-visible {
+  outline: 3px solid #f59e0b !important;
+  outline-offset: 2px !important;
+}
+
+/* Glass buttons become solid white */
+html.a11y .searchbar,
+html.a11y .floating-btn {
+  background: #fff !important;
+  border: 2px solid #111827 !important;
+  backdrop-filter: none;
+}
+
+/* Dimmed map points are easier to see */
+html.a11y .pin-dim {
+  opacity: 1;
+  background: #6b7280;
+  border: 2px solid #fff;
+}
+
+/* Popups: bigger text */
+html.a11y .leaflet-popup-content {
+  font-size: 1rem;
+}
+
+/* No animations */
+html.a11y *,
+html.a11y *::before,
+html.a11y *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* ---------- The "Aa" button ---------- */
+.a11y-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.a11y-toggle .a11y-icon {
+  font-size: 1rem;
+  font-weight: 800;
+  font-family: Georgia, serif;
+}
+
+/* In the side panel */
+.a11y-toggle.dark {
+  border: 1px solid #d1d5db;
+  background: #fff;
+  color: #374151;
+}
+
+.a11y-toggle.dark.on {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+/* On the dark start page */
+.a11y-toggle.light {
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.a11y-toggle.light.on {
+  background: #fff;
+  color: var(--accent-dark);
+}
+
+/* Start page: language + accessibility at the top left */
+.landing-tools {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar-tools {
+  gap: 8px;
+  align-items: center;
+}

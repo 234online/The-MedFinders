@@ -3,23 +3,37 @@
 //  compare(a, b): negative = a first. null = keep the data's order.
 // =============================================================
 
+import { TEXT } from "./texts.js";
+
 const scoreOf = (p) => p.score ?? 0;
 
 export const SORT_OPTIONS = [
-  { id: "relevance", label: "Relevanță", compare: null },
+  {
+    id: "relevance",
+    get label() {
+      return TEXT.sortRelevance;
+    },
+    compare: null,
+  },
   {
     id: "score",
-    label: "Scor (mare → mic)",
+    get label() {
+      return TEXT.sortScore;
+    },
     compare: (a, b) => scoreOf(b) - scoreOf(a) || b.reviewCount - a.reviewCount,
   },
   {
     id: "reviews",
-    label: "Cele mai multe recenzii",
+    get label() {
+      return TEXT.sortReviews;
+    },
     compare: (a, b) => b.reviewCount - a.reviewCount,
   },
   {
     id: "name",
-    label: "Nume (A–Z)",
+    get label() {
+      return TEXT.sortName;
+    },
     compare: (a, b) => a.name.localeCompare(b.name, "ro"),
   },
 ];

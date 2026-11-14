@@ -36,7 +36,7 @@ export function matchesQuery(place, query) {
       getCategory(place.category).label,
       place.network,
       place.address,
-      place.description,
+      place.notes,
       ...(place.tags ?? []),
       ...(place.specialties ?? []),
       // services the place has, so e.g. "non-stop" can be searched

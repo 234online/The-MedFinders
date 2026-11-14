@@ -8,6 +8,7 @@ import { normalize } from "./filterEngine.js";
 // Tick a domain's box to select/unselect all its items,
 // click its name to open/close it. The search box finds items directly.
 export default function TreeFilter({ filter, value, onChange }) {
+  const labelOf = (item) => filter.itemLabel?.(item) ?? item;
   const [openIds, setOpenIds] = useState(() => new Set());
   const [search, setSearch] = useState("");
   const selected = new Set(value);
@@ -37,7 +38,12 @@ export default function TreeFilter({ filter, value, onChange }) {
   const q = normalize(search.trim());
   const groups = q
     ? filter.groups
-        .map((g) => ({ ...g, items: g.items.filter((i) => normalize(i).includes(q)) }))
+        .map((g) => ({
+          id: g.id,
+          label: g.label,
+          icon: g.icon,
+          items: g.items.filter((i) => normalize(`${i} ${labelOf(i)}`).includes(q)),
+        }))
         .filter((g) => g.items.length > 0)
     : filter.groups;
 
@@ -55,7 +61,7 @@ export default function TreeFilter({ filter, value, onChange }) {
         <div className="tree-selected">
           {value.map((item) => (
             <button key={item} type="button" className="tree-pill" onClick={() => toggleItem(item)}>
-              {item} ×
+              {labelOf(item)} ×
             </button>
           ))}
         </div>
@@ -103,7 +109,7 @@ export default function TreeFilter({ filter, value, onChange }) {
                     className={"chip" + (selected.has(item) ? " active tree-chip-on" : "")}
                     onClick={() => toggleItem(item)}
                   >
-                    {item}
+                    {labelOf(item)}
                     {filter.itemCounts && (
                       <span className="tree-item-count">{filter.itemCounts[item] ?? 0}</span>
                     )}

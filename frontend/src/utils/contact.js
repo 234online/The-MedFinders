@@ -19,3 +19,20 @@ export function shortUrl(url) {
     return url;
   }
 }
+
+// WhatsApp needs the international number without "+": "0742 107 777" -> "40742107777".
+// Only Romanian mobile numbers (07xx xxx xxx) are returned: landlines can't use WhatsApp.
+export function whatsappNumber(tel) {
+  let digits = String(tel).replace(/\D/g, "");
+  if (digits.startsWith("40")) digits = "0" + digits.slice(2);
+  return /^07\d{8}$/.test(digits) ? "40" + digits.slice(1) : null;
+}
+
+export function whatsappLink(tel, message) {
+  const number = whatsappNumber(tel);
+  return number ? `https://wa.me/${number}?text=${encodeURIComponent(message)}` : null;
+}
+
+export function mailtoLink(email, subject, body) {
+  return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
