@@ -6,7 +6,9 @@ import { API_ENABLED, apiFetch, setTokenGetter } from "./api.js";
 
 // Favourites are saved in the PostgreSQL database (through the backend)
 // when VITE_API_URL and VITE_AUTH0_AUDIENCE are set; otherwise in this browser.
-const SERVER_FAVORITES = AUTH0_ENABLED && API_ENABLED && Boolean(AUTH0_AUDIENCE);
+export const SERVER_FAVORITES = AUTH0_ENABLED && API_ENABLED && Boolean(AUTH0_AUDIENCE);
+// Profile, contact history etc. on the "My account" page need the same setup
+export const SERVER_ACCOUNT = SERVER_FAVORITES;
 
 // =============================================================
 //  ACCOUNTS
@@ -132,7 +134,7 @@ function useServerFavorites(user, enabled) {
     setFavorites(optimistic);
     enqueue(async () => {
       try {
-        setFavorites(await apiFetch(`/api/me/favorites/${placeId}`, { method }));
+        setFavorites(await apiFetch(`/api/me/favorites/${encodeURIComponent(placeId)}`, { method }));
       } catch (err) {
         // Show what the database really has
         apiFetch("/api/me/favorites").then(setFavorites, () => {});
