@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Circle, CircleMarker } from "react-leaflet";
 import { places } from "./data/loadPlaces.js";
 import SearchBar from "./SearchBar.jsx";
 import FilterPanel from "./filters/FilterPanel.jsx";
@@ -8,6 +8,9 @@ import DoctorDashboard from "./doctor/DoctorDashboard.jsx";
 import BookAppointment from "./components/BookAppointment.jsx";
 import DoctorRequestForm from "./components/DoctorRequestForm.jsx";
 import Dashboard from "./components/Dashboard.jsx";
+import NearMe from "./components/NearMe.jsx";
+import { useMyLocation } from "./services/useMyLocation.js";
+import { distanceKm, formatDistance } from "./utils/geo.js";
 import FloatingButton from "./components/FloatingButton.jsx";
 import Modal from "./components/Modal.jsx";
 import PlacePopup from "./components/PlacePopup.jsx";
@@ -31,7 +34,7 @@ import { getCategory, SPECIALTY_GROUPS } from "./config/placeTypes.js";
 import { applyFilters, getDefaults } from "./filters/filterEngine.js";
 import { markerIcon } from "./map/markerIcons.js";
 import { TEXT, getLanguage, setLanguage } from "./config/texts.js";
-import { IconStethoscope } from "@tabler/icons-react";
+import { IconStethoscope, IconCurrentLocation } from "@tabler/icons-react";
 import { LogoIcon, CategoryIcon } from "./components/MedIcon.jsx";
 import "./App.css";
 import "./accessibility/accessible.css";
@@ -97,11 +100,45 @@ export default function App() {
     [reviews.byPlace]
   );
 
+  // ---------- "Lângă mine": the visitor's location (stays in the browser) ----------
+  const myLocation = useMyLocation();
+  const myPosition = myLocation.position;
+
   const results = useMemo(
-    () => sortPlaces(applyFilters(allPlaces, FILTERS, filterValues, query), sortId),
-    [allPlaces, filterValues, query, sortId]
+    () => sortPlaces(applyFilters(allPlaces, FILTERS, filterValues, query), sortId, myPosition),
+    [allPlaces, filterValues, query, sortId, myPosition]
   );
   const resultIds = useMemo(() => new Set(results.map((p) => p.id)), [results]);
+
+  // Distance to every result, and the closest one. It is picked among the
+  // current results, so it follows what the visitor searched and filtered.
+  const distances = useMemo(() => {
+    if (!myPosition) return null;
+    return Object.fromEntries(results.map((p) => [p.id, distanceKm(myPosition, p)]));
+  }, [results, myPosition]);
+  const nearest = useMemo(() => {
+    if (!distances || results.length === 0) return null;
+    const place = results.reduce((best, p) => (distances[p.id] < distances[best.id] ? p : best));
+    return { place, km: distances[place.id] };
+  }, [results, distances]);
+
+  // Ask for the location; once it arrives, sort by distance and show the
+  // visitor together with the nearest place
+  const [wantNearest, setWantNearest] = useState(false);
+  function locateMe() {
+    setWantNearest(true);
+    myLocation.request();
+  }
+  useEffect(() => {
+    if (!wantNearest || myLocation.status === "locating" || myLocation.status === "idle") return;
+    if (myLocation.status !== "ok") return setWantNearest(false);
+    if (!map) return; // the map isn't there yet: try again when it is
+    setWantNearest(false);
+    setSortId("distance");
+    const me = [myPosition.lat, myPosition.lng];
+    if (nearest) map.flyToBounds([me, [nearest.place.lat, nearest.place.lng]], { padding: [80, 80], maxZoom: 16, duration: 0.8 });
+    else map.flyTo(me, 15, { duration: 0.8 });
+  }, [wantNearest, myLocation.status, myPosition, nearest, map]);
   const favoritePlaces = allPlaces.filter((p) => account.favorites.includes(p.id));
 
   // How many places offer each specialty domain (for the start page tiles)
@@ -346,6 +383,10 @@ export default function App() {
           onFeature={(id) => startWith({ filters: { [id]: true } })}
           onShowAll={() => startWith()}
           onSymptoms={() => setModal({ type: "symptoms" })}
+          onNearMe={() => {
+            startWith();
+            locateMe();
+          }}
           onStats={() => openStats(true)}
           lang={lang}
           onLanguage={changeLanguage}
@@ -377,6 +418,12 @@ export default function App() {
               <IconStethoscope size={18} stroke={1.8} aria-hidden="true" /> {TEXT.symptomButton}
             </button>
 
+            <NearMe
+              location={{ ...myLocation, request: locateMe }}
+              nearest={nearest}
+              onShow={selectPlace}
+            />
+
             <FilterPanel
               filters={FILTERS}
               values={filterValues}
@@ -392,7 +439,7 @@ export default function App() {
                 onChange={(e) => setSortId(e.target.value)}
                 aria-label={TEXT.sortLabel}
               >
-                {SORT_OPTIONS.map((o) => (
+                {SORT_OPTIONS.filter((o) => !o.needsLocation || myPosition).map((o) => (
                   <option key={o.id} value={o.id}>
                     {o.label}
                   </option>
@@ -415,6 +462,7 @@ export default function App() {
                     <div className="result-text">
                       <strong>{p.name}</strong>
                       <small>
+                        {distances && <span className="result-distance">{formatDistance(distances[p.id])} · </span>}
                         {category.singular}
                         {p.network !== "Independent" && ` · ${p.network}`}
                       </small>
@@ -429,6 +477,15 @@ export default function App() {
 
           <div className="map-wrap">
             <SearchBar value={query} onChange={setQuery} />
+            <button
+              type="button"
+              className={"floating-btn locate" + (myPosition ? " on" : "")}
+              onClick={locateMe}
+              aria-label={TEXT.nearMeButton}
+              title={TEXT.nearMeButton}
+            >
+              <IconCurrentLocation size={22} stroke={1.8} aria-hidden="true" />
+            </button>
             {floatingButtons}
 
             <MapContainer ref={setMap} center={CENTER} zoom={14} className="map">
@@ -468,6 +525,25 @@ export default function App() {
                   </Marker>
                 );
               })}
+
+              {/* The visitor: how precise the location is, and a blue dot */}
+              {myPosition && (
+                <>
+                  <Circle
+                    center={[myPosition.lat, myPosition.lng]}
+                    radius={Math.min(myPosition.accuracy, 1500)}
+                    pathOptions={{ color: "#2a78d6", weight: 1, fillColor: "#2a78d6", fillOpacity: 0.08 }}
+                    interactive={false}
+                  />
+                  <CircleMarker
+                    center={[myPosition.lat, myPosition.lng]}
+                    radius={8}
+                    pathOptions={{ color: "#ffffff", weight: 3, fillColor: "#2a78d6", fillOpacity: 1 }}
+                  >
+                    <Popup>{TEXT.nearMeYou}</Popup>
+                  </CircleMarker>
+                </>
+              )}
             </MapContainer>
           </div>
         </div>

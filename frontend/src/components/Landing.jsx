@@ -3,7 +3,7 @@ import { SPECIALTY_GROUPS, CATEGORIES, FEATURES } from "../config/placeTypes.js"
 import { TEXT } from "../config/texts.js";
 import LanguageSwitcher from "./LanguageSwitcher.jsx";
 import AccessibleToggle from "../accessibility/AccessibleToggle.jsx";
-import { IconChartBar, IconSearch, IconStethoscope } from "@tabler/icons-react";
+import { IconChartBar, IconCurrentLocation, IconSearch, IconStethoscope } from "@tabler/icons-react";
 import { GroupIcon, CategoryIcon, LogoIcon } from "./MedIcon.jsx";
 import { DTEXT } from "../doctor/doctorTexts.js";
 import "./Landing.css";
@@ -32,6 +32,7 @@ export default function Landing({
   onFeature,
   onShowAll,
   onSymptoms,
+  onNearMe,
   onStats,
   lang,
   onLanguage,
@@ -81,9 +82,16 @@ export default function Landing({
           <button type="submit">{TEXT.landingSearchButton}</button>
         </form>
 
-        <button type="button" className="landing-symptom" onClick={onSymptoms}>
-          <IconStethoscope size={20} stroke={1.8} aria-hidden="true" /> {TEXT.symptomButton}
-        </button>
+        <div className="landing-hero-actions">
+          <button type="button" className="landing-symptom" onClick={onSymptoms}>
+            <IconStethoscope size={20} stroke={1.8} aria-hidden="true" /> {TEXT.symptomButton}
+          </button>
+          {onNearMe && (
+            <button type="button" className="landing-symptom" onClick={onNearMe}>
+              <IconCurrentLocation size={20} stroke={1.8} aria-hidden="true" /> {TEXT.nearMeButton}
+            </button>
+          )}
+        </div>
       </header>
 
       {/* Cream area below: ways to browse */}
