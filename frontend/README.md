@@ -32,6 +32,21 @@ places are highlighted on the map.
 - Specialty groups come from `specialties.category_ro`; icons/colours are in
   `src/config/placeTypes.js`. Filters are in `src/config/filters.js`.
 
+## Chat assistant
+
+- Works out of the box in **simple mode** (no AI): it understands symptoms, specialties,
+  "acum", "weekend", "copil", "urgență"… in Romanian, English and Hungarian.
+- For the **AI mode** (Claude), add to `.env` (no `VITE_` prefix, so it never reaches the browser):
+
+  ```
+  ANTHROPIC_API_KEY=sk-ant-...
+  ```
+
+  and restart `npm run dev`. The key is used only by `server/chatProxy.js`, which runs inside
+  the Vite dev/preview server. The AI searches the clinics with a `search_clinics` tool that
+  runs in the browser on the same data as the map (`src/chat/chatTools.js`).
+- For a real deployment, run `chatHandler` from `server/chatProxy.js` on your backend at `/api/chat`.
+
 ## Notes
 
 - The map tiles come from OpenStreetMap's public server, which is fine for development.

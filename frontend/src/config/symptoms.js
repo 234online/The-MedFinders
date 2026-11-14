@@ -4,6 +4,9 @@
 //    id          unique name
 //    icon        emoji
 //    level       "emergency" -> shows "Call 112" first
+//    alarm       (emergencies only) exact phrases that trigger the 112
+//                message in the chat's simple mode. Keep them specific:
+//                a common word like "sange" would also catch "analize de sange".
 //                "urgent"    -> see a doctor today (shows places open now)
 //                "normal"    -> regular appointment
 //    labels      { ro, en, hu } text shown on the button
@@ -22,6 +25,7 @@ export const SYMPTOMS = [
     id: "chest-pain",
     icon: "💔",
     level: "emergency",
+    alarm: ["durere in piept", "apasare in piept", "ma doare pieptul", "infarct", "chest pain", "heart attack", "mellkasi fajdalom", "infarktus"],
     labels: { ro: "Durere sau apăsare în piept", en: "Chest pain or pressure", hu: "Mellkasi fájdalom vagy nyomás" },
     keywords: ["piept", "inima", "infarct", "chest", "heart attack", "mellkas", "sziv", "infarktus"],
     specialties: ["Cardiologie"],
@@ -30,6 +34,7 @@ export const SYMPTOMS = [
     id: "breathing",
     icon: "😮‍💨",
     level: "emergency",
+    alarm: ["nu pot respira", "ma sufoc", "nu am aer", "can't breathe", "cannot breathe", "choking", "nem kapok levegot", "fulladok"],
     labels: { ro: "Nu pot respira / mă sufoc", en: "Can't breathe / choking", hu: "Nem kapok levegőt / fulladás" },
     keywords: ["respir", "sufoc", "aer", "breath", "choking", "levego", "fullad"],
     specialties: ["Pneumologie"],
@@ -38,6 +43,7 @@ export const SYMPTOMS = [
     id: "stroke",
     icon: "🧠",
     level: "emergency",
+    alarm: ["avc", "accident vascular", "fata stramba", "nu pot vorbi", "stroke", "szelutes"],
     labels: {
       ro: "Față strâmbă, slăbiciune pe o parte, vorbire neclară",
       en: "Face drooping, weakness on one side, slurred speech",
@@ -50,6 +56,7 @@ export const SYMPTOMS = [
     id: "unconscious",
     icon: "😵",
     level: "emergency",
+    alarm: ["lesin", "lesinat", "inconstient", "convulsii", "fainted", "unconscious", "seizure", "elajult", "eszmeletlen"],
     labels: { ro: "Leșin / pierderea cunoștinței", en: "Fainting / loss of consciousness", hu: "Ájulás / eszméletvesztés" },
     keywords: ["lesin", "lesinat", "inconstient", "convulsii", "faint", "unconscious", "seizure", "ajul", "eszmelet", "gorcs"],
     specialties: ["Neurologie", "Cardiologie"],
@@ -58,6 +65,7 @@ export const SYMPTOMS = [
     id: "bleeding",
     icon: "🩸",
     level: "emergency",
+    alarm: ["sangerare puternica", "sangerare abundenta", "sangereaza tare", "accident grav", "heavy bleeding", "bleeding heavily", "serious accident", "eros verzes", "sulyos baleset"],
     labels: {
       ro: "Sângerare puternică sau accident grav",
       en: "Heavy bleeding or serious accident",
@@ -70,6 +78,7 @@ export const SYMPTOMS = [
     id: "anaphylaxis",
     icon: "🐝",
     level: "emergency",
+    alarm: ["soc anafilactic", "gat umflat", "limba umflata", "buze umflate", "anaphylaxis", "throat swelling", "swollen tongue", "anafilaxia", "torokduzzanat"],
     labels: {
       ro: "Umflarea buzelor, limbii sau gâtului (alergie gravă)",
       en: "Swollen lips, tongue or throat (severe allergy)",
@@ -82,6 +91,7 @@ export const SYMPTOMS = [
     id: "self-harm",
     icon: "🆘",
     level: "emergency",
+    alarm: ["sinucid", "nu mai vreau sa traiesc", "sa ma omor", "imi fac rau", "suicide", "kill myself", "harm myself", "ongyilkos", "megolom magam"],
     labels: {
       ro: "Gânduri de a-mi face rău",
       en: "Thoughts of harming myself",
