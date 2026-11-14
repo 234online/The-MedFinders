@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FEATURES, getCategory, getOwnership, specialtyName } from "../config/placeTypes.js";
 import { placeDescription, translateRole } from "../data/translations.js";
 import { shortUrl } from "../utils/contact.js";
 import ContactActions from "./ContactActions.jsx";
 import { trackContact } from "../account/api.js";
+import { trackView } from "../services/analytics.js";
 import { TEXT } from "../config/texts.js";
 import { ratingBreakdown } from "../reviews/score.js";
 import { Stars, StarInput } from "./Stars.jsx";
@@ -27,6 +28,9 @@ export default function PlaceDetails({
   requestSpecialty = null,
 }) {
   const category = getCategory(place.category);
+
+  // Statistics: count opening the details window as a visit
+  useEffect(() => trackView(place.id, "details"), [place.id]);
   const badges = FEATURES.filter((f) => place[f.id] === true);
   const breakdown = ratingBreakdown(reviews);
   const [writing, setWriting] = useState(startWriting && Boolean(user));

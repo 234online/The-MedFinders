@@ -72,7 +72,47 @@ function DashboardContent({ data, places, onOpenPlace }) {
   const previous = CHANNELS.reduce((sum, c) => sum + data.previous[c.id], 0);
   const trend = data.hasPrevious && previous ? Math.round(((total - previous) / previous) * 100) : null;
 
-  if (total === 0) return <p className="stats-note">{TEXT.statsEmpty}</p>;
+  const views = data.views ?? { total: 0, byPlace: {} };
+  const favs = data.favorites; // null when the accounts database isn't connected
+
+  // Visits and favourites: shown even before the first contact
+  const popularity = (
+    <div className="stats-grid">
+      <section className="stats-card">
+        <h2>{TEXT.statsViewed}</h2>
+        <p className="stats-caption">{TEXT.statsViewedNote(views.total)}</p>
+        {views.total > 0 ? (
+          <TopPlaces byPlace={views.byPlace} byCode={byCode} onOpenPlace={onOpenPlace} />
+        ) : (
+          <p className="stats-storage">{TEXT.statsNone}</p>
+        )}
+      </section>
+      <section className="stats-card">
+        <h2>{TEXT.statsFavorites}</h2>
+        {favs == null ? (
+          <p className="stats-storage">{TEXT.statsFavoritesOff}</p>
+        ) : (
+          <>
+            <p className="stats-caption">{TEXT.statsFavoritesNote(favs.total)}</p>
+            {favs.total > 0 ? (
+              <TopPlaces byPlace={favs.byPlace} byCode={byCode} onOpenPlace={onOpenPlace} />
+            ) : (
+              <p className="stats-storage">{TEXT.statsNone}</p>
+            )}
+          </>
+        )}
+      </section>
+    </div>
+  );
+
+  if (total === 0) {
+    return (
+      <>
+        <p className="stats-note">{TEXT.statsEmpty}</p>
+        {popularity}
+      </>
+    );
+  }
 
   return (
     <>
@@ -104,6 +144,8 @@ function DashboardContent({ data, places, onOpenPlace }) {
         <h2>{TEXT.statsHeat}</h2>
         <Heatmap heat={data.heat} />
       </section>
+
+      {popularity}
 
       <div className="stats-grid">
         <section className="stats-card">

@@ -18,6 +18,7 @@ const config = require('../config');
 const TIGER_URL = config.tigerDatabaseUrl;
 const TIME_ZONE = 'Europe/Bucharest';
 const KINDS = ['call', 'whatsapp', 'email'];
+const VIEW_SOURCES = ['popup', 'details'];
 const MAX_WEEKS = 8; // popular times look at up to the last 8 weeks
 const MIN_CLICKS = 10; // fewer clicks than this for a clinic = "not enough data yet"
 
@@ -58,6 +59,14 @@ async function record({ placeCode, kind, userId = null }) {
     kind,
     userId
   ]);
+}
+
+// ---------------------------------------------------------------------
+// Record one real visit (a clinic opened on the website)
+// ---------------------------------------------------------------------
+async function recordView({ placeCode, source }) {
+  if (!isEnabled() || !placeCode || !VIEW_SOURCES.includes(source)) return;
+  await pool.query('INSERT INTO place_views (time, place_code, source) VALUES (now(), $1, $2)', [placeCode, source]);
 }
 
 // Day of week (1 = Monday) and hour, in Timișoara
@@ -131,7 +140,7 @@ async function dashboard(rangeDays = 7) {
   const nowTs = rows[0].now;
   const prevFrom = new Date(from.getTime() - (nowTs.getTime() - from.getTime()));
 
-  const [tot, prev, places, heatRows, line, rec, firstRow] = await Promise.all([
+  const [tot, prev, places, heatRows, line, rec, firstRow, views] = await Promise.all([
     pool.query('SELECT kind, sum(contacts)::int AS n FROM contact_activity_hourly WHERE bucket >= $1 GROUP BY kind', [from]),
     pool.query(
       'SELECT kind, sum(contacts)::int AS n FROM contact_activity_hourly WHERE bucket >= $1 AND bucket < $2 GROUP BY kind',
@@ -149,7 +158,8 @@ async function dashboard(rangeDays = 7) {
       [from, step === 'hour' ? '1 hour' : '1 day']
     ),
     pool.query('SELECT time, place_code, kind FROM contact_activity ORDER BY time DESC LIMIT 8'),
-    pool.query('SELECT min(time) AS first FROM contact_activity')
+    pool.query('SELECT min(time) AS first FROM contact_activity'),
+    pool.query('SELECT place_code, sum(views)::int AS n FROM place_views_hourly WHERE bucket >= $1 GROUP BY 1', [from])
   ]);
 
   const totals = { call: 0, whatsapp: 0, email: 0 };
@@ -168,6 +178,9 @@ async function dashboard(rangeDays = 7) {
     timeline.set(key, slot);
   });
 
+  const viewsByPlace = {};
+  views.rows.forEach((r) => (viewsByPlace[r.place_code] = r.n));
+
   const first = firstRow.rows[0].first;
   return {
     source: 'tiger',
@@ -182,6 +195,8 @@ async function dashboard(rangeDays = 7) {
     heat,
     timeline: [...timeline.values()].sort((a, b) => a.t - b.t),
     recent: rec.rows.map((r) => ({ t: new Date(r.time).getTime(), placeCode: r.place_code, kind: r.kind })),
+    from: from.getTime(),
+    views: { total: Object.values(viewsByPlace).reduce((a, b) => a + b, 0), byPlace: viewsByPlace },
     storage: await storageStats()
   };
 }
@@ -213,4 +228,4 @@ async function storageStats() {
   }
 }
 
-module.exports = { init, isEnabled, record, popularTimes, dashboard, KINDS };
+module.exports = { init, isEnabled, record, recordView, popularTimes, dashboard, KINDS, VIEW_SOURCES };
