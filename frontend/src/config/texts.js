@@ -129,6 +129,8 @@ const TEXTS = {
     statsLink: "Statistici în timp real",
     statsTitle: "Cererea de îngrijire medicală",
     statsSubtitle: "De câte ori sunt contactate clinicile din Timișoara, oră cu oră.",
+    statsLive: "Date reale, în timp real",
+    statsCredit: "Panou realizat cu Tiger Data",
     statsBack: "Înapoi",
     statsRange: { 1: "24 de ore", 7: "7 zile", 30: "30 de zile" },
     statsTotal: "Contactări",
@@ -156,9 +158,6 @@ const TEXTS = {
     statsEmpty: "Încă nu sunt contactări în această perioadă. Fiecare apăsare pe Sună, WhatsApp sau Cere o programare apare aici în câteva secunde.",
     statsNoTrend: "Prima perioadă cu date",
     statsError: "Nu am putut încărca statisticile. Încearcă din nou.",
-    statsStorage: "Stocare Tiger Data",
-    statsStorageText: (chunks, compressed, pct) =>
-      `${chunks} bucăți de date (chunks), ${compressed} comprimate${pct != null ? `, cu ${pct}% mai puțin spațiu` : ""}.`,
 
     // Score & reviews
     noScore: "Nou",
@@ -359,6 +358,8 @@ const TEXTS = {
     statsLink: "Real-time statistics",
     statsTitle: "Demand for medical care",
     statsSubtitle: "How often clinics in Timișoara are contacted, hour by hour.",
+    statsLive: "Real data, in real time",
+    statsCredit: "Dashboard built with Tiger Data",
     statsBack: "Back",
     statsRange: { 1: "24 hours", 7: "7 days", 30: "30 days" },
     statsTotal: "Contacts",
@@ -386,9 +387,6 @@ const TEXTS = {
     statsEmpty: "No contacts in this period yet. Every press on Call, WhatsApp or Request an appointment shows up here within seconds.",
     statsNoTrend: "First period with data",
     statsError: "Couldn't load the statistics. Try again.",
-    statsStorage: "Tiger Data storage",
-    statsStorageText: (chunks, compressed, pct) =>
-      `${chunks} data chunks, ${compressed} compressed${pct != null ? `, using ${pct}% less space` : ""}.`,
 
     noScore: "New",
     reviewsButton: "Reviews & details",

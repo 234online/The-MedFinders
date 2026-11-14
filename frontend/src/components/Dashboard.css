@@ -530,7 +530,7 @@
   white-space: nowrap;
 }
 
-.stats-storage {
+.stats-muted {
   margin: 0;
   color: var(--ink-soft);
 }
@@ -545,4 +545,12 @@
   .heat-cell {
     height: 14px;
   }
+}
+
+/* "Panou realizat cu Tiger Data" at the bottom of the page */
+.stats-credit {
+  margin: 8px 0 0;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
 }
