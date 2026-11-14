@@ -1,0 +1,26 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "frontend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "frontend", "--", "--port", "5173", "--strictPort"],
+      "port": 5173
+    },
+    {
+      "name": "backend-tiger",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["index.js"],
+      "cwd": "backend",
+      "env": { "PORT": "5055", "FRONTEND_URL": "http://localhost:5174" },
+      "port": 5055
+    },
+    {
+      "name": "frontend-with-api",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "frontend", "--", "--port", "5174", "--strictPort"],
+      "env": { "VITE_API_URL": "http://localhost:5055" },
+      "port": 5174
+    }
+  ]
+}

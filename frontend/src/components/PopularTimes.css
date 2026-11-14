@@ -1,0 +1,112 @@
+/* "Popular times": one green bar per hour (one hue, no legend needed:
+   the title names the series). The current hour is the darker bar. */
+.busy {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.busy-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 8px;
+}
+
+.busy-now {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.busy-now.busier {
+  color: #9a3412;
+}
+
+.busy-now.quieter,
+.busy-now.quiet {
+  color: var(--accent);
+}
+
+/* Day picker (details window only) */
+.busy-days {
+  display: flex;
+  gap: 4px;
+}
+
+.busy-days button {
+  flex: 1;
+  padding: 4px 0;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.busy-days button.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Bars: thin, rounded at the top, anchored to the baseline, 2px apart */
+.busy-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 64px;
+  border-bottom: 1px solid var(--line);
+}
+
+.busy.compact .busy-bars {
+  height: 44px;
+}
+
+.busy-bar {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  cursor: default;
+}
+
+.busy-bar > span {
+  width: 100%;
+  border-radius: 3px 3px 0 0;
+  background: #8fbfa8;
+}
+
+.busy-bar:hover > span {
+  background: #5f9e82;
+}
+
+.busy-bar.now > span {
+  background: var(--accent);
+}
+
+.busy-axis {
+  position: relative;
+  height: 14px;
+  font-size: 0.68rem;
+  color: var(--ink-soft);
+}
+
+.busy-axis span {
+  position: absolute;
+  transform: translateX(-50%);
+}
+
+.busy-source {
+  margin: 0 !important;
+  font-size: 0.68rem;
+  color: var(--ink-soft);
+}

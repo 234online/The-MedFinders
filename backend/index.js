@@ -1,6 +1,7 @@
 /**
  * Starts the backend: loads the clinics, brings the PostgreSQL database
- * up to date (db/migrations), then listens for requests.
+ * up to date (db/migrations), prepares Tiger Data (statistics), then
+ * listens for requests.
  * The app itself (routes, login checks) is in app.js.
  */
 
@@ -8,6 +9,7 @@ const config = require('./config');
 const db = require('./db/pool');
 const places = require('./db/database');
 const { migrate } = require('./db/migrate');
+const analytics = require('./db/analytics');
 const { createApp } = require('./app');
 
 async function start() {
@@ -26,6 +28,12 @@ async function start() {
     }
   } else {
     console.warn('[PG] DATABASE_URL lipsește: conturile, favoritele și istoricul sunt dezactivate');
+  }
+
+  try {
+    await analytics.init();
+  } catch (err) {
+    console.error('[Tiger] Nu m-am putut conecta la Tiger Data:', err.message);
   }
 
   if (!config.authConfig) {

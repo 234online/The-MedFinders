@@ -1,0 +1,496 @@
+/* =============================================================
+   Demand dashboard: green header band like the start page,
+   cream page, white cards. Colours from the theme in App.css.
+   ============================================================= */
+.stats {
+  min-height: 100%;
+  overflow-y: auto;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* ---------- Header ---------- */
+.stats-hero {
+  padding: 20px 24px 28px;
+  background: var(--accent);
+  color: #fff;
+}
+
+.stats-hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.stats-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px 6px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 999px;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.stats-back:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.stats-hero h1 {
+  margin-top: 18px;
+  margin-bottom: 6px;
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
+  font-weight: 600;
+}
+
+.stats-hero p {
+  margin-top: 0;
+  margin-bottom: 18px;
+  color: #cfe5db;
+}
+
+.stats-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.stats-range {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.stats-range button {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #e3efe9;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.stats-range button.active {
+  background: #fff;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.stats-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+/* ---------- Body ---------- */
+.stats-body {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 24px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.stats-msg {
+  color: var(--ink-soft);
+}
+
+.stats-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid #f1dfb4;
+  border-radius: 10px;
+  background: #fdf6e3;
+  color: #6b4a0e;
+  font-size: 0.88rem;
+}
+
+.stats-note svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.stats-card {
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  min-width: 0;
+}
+
+.stats-card h2 {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.stats-caption {
+  margin: -6px 0 10px;
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+}
+
+.swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* ---------- KPI tiles ---------- */
+.stats-kpis {
+  display: grid;
+  grid-template-columns: 1.4fr repeat(3, 1fr);
+  gap: 12px;
+}
+
+.kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.kpi-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.kpi-value {
+  font-size: 1.7rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi.main .kpi-value {
+  font-size: 2.2rem;
+  color: var(--accent);
+}
+
+.kpi-trend {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+/* ---------- Legend ---------- */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ---------- Timeline (stacked bars) ---------- */
+.tl {
+  display: flex;
+  align-items: stretch;
+  gap: 3px;
+  height: 200px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.tl-slot {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.tl-slot:hover {
+  background: var(--paper);
+}
+
+/* Segments of one bar, 2px apart, rounded only at the top */
+.tl-stack {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 2px;
+  min-height: 0;
+}
+
+.tl-stack span {
+  min-height: 1px;
+}
+
+.tl-stack span:last-child {
+  border-radius: 4px 4px 0 0;
+}
+
+.tl-label {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.tip {
+  position: absolute;
+  bottom: calc(100% - 40px);
+  left: 50%;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 140px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: var(--shadow);
+  font-size: 0.8rem;
+  pointer-events: none;
+}
+
+.tip.left {
+  left: auto;
+  right: 50%;
+}
+
+.tip span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ---------- Table view ---------- */
+.stats-table {
+  margin-top: 26px;
+  font-size: 0.85rem;
+}
+
+.stats-table summary {
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.stats-table table {
+  width: 100%;
+  margin-top: 8px;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.stats-table th,
+.stats-table td {
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--line);
+  text-align: right;
+}
+
+.stats-table th:first-child,
+.stats-table td:first-child {
+  text-align: left;
+}
+
+/* ---------- Heatmap ---------- */
+.heat {
+  display: grid;
+  grid-template-columns: 32px repeat(24, minmax(0, 1fr));
+  gap: 2px;
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+}
+
+.heat-hour {
+  text-align: left;
+}
+
+.heat-day {
+  display: flex;
+  align-items: center;
+}
+
+.heat-cell {
+  height: 22px;
+  border-radius: 3px;
+}
+
+.heat-scale {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-top: 10px;
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+
+.heat-scale i {
+  width: 22px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.heat-scale span {
+  margin: 0 4px;
+}
+
+/* ---------- Bar lists ---------- */
+.bars {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bars-row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+}
+
+.bars-row:not(:disabled) {
+  cursor: pointer;
+}
+
+.bars-row:not(:disabled):hover {
+  background: var(--paper);
+}
+
+.bars-icon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--paper-hover);
+}
+
+.bars-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.bars-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 0.9rem;
+}
+
+.bars-track {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--paper-hover);
+}
+
+.bars-track span {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+  background: var(--accent);
+}
+
+.bars-value {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Latest clicks ---------- */
+.recent {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.recent li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.88rem;
+}
+
+.recent li:last-child {
+  border-bottom: none;
+}
+
+.recent-what {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.recent-when {
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.stats-storage {
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 700px) {
+  .stats-kpis {
+    grid-template-columns: 1fr 1fr;
+  }
+  .kpi.main {
+    grid-column: 1 / -1;
+  }
+  .heat-cell {
+    height: 14px;
+  }
+}
