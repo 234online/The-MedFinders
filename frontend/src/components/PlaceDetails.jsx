@@ -3,6 +3,7 @@ import { FEATURES, getCategory, getOwnership, specialtyName } from "../config/pl
 import { placeDescription, translateRole } from "../data/translations.js";
 import { shortUrl } from "../utils/contact.js";
 import ContactActions from "./ContactActions.jsx";
+import { trackContact } from "../account/api.js";
 import { TEXT } from "../config/texts.js";
 import { ratingBreakdown } from "../reviews/score.js";
 import { Stars, StarInput } from "./Stars.jsx";
@@ -57,7 +58,9 @@ export default function PlaceDetails({
           {place.approximate && <p className="details-muted">{TEXT.approximateLocation}</p>}
           {place.email && (
             <p>
-              <a href={`mailto:${place.email}`}>✉️ {place.email}</a>
+              <a href={`mailto:${place.email}`} onClick={() => trackContact(place.id, "email", place.email)}>
+                ✉️ {place.email}
+              </a>
             </p>
           )}
           {place.website && (

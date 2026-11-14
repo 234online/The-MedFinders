@@ -21,6 +21,7 @@
     "cors": "^2.8.6",
     "dotenv": "^16.6.1",
     "express": "^4.22.3",
+    "express-oauth2-jwt-bearer": "^1.11.0",
     "pg": "^8.23.1"
   }
 }

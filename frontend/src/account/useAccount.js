@@ -1,7 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { TEXT } from "../config/texts.js";
-import { AUTH0_ENABLED } from "./auth0Config.js";
+import { AUTH0_ENABLED, AUTH0_AUDIENCE } from "./auth0Config.js";
+import { API_ENABLED, apiFetch, setTokenGetter } from "./api.js";
+
+// Favourites are saved in the PostgreSQL database (through the backend)
+// when VITE_API_URL and VITE_AUTH0_AUDIENCE are set; otherwise in this browser.
+const SERVER_FAVORITES = AUTH0_ENABLED && API_ENABLED && Boolean(AUTH0_AUDIENCE);
 
 // =============================================================
 //  ACCOUNTS
@@ -10,8 +15,9 @@ import { AUTH0_ENABLED } from "./auth0Config.js";
 //      VITE_AUTH0_CLIENT_ID are set in .env
 //    - Prototype (any email + 4-char password, stored in this
 //      browser), when they aren't
-//  Favourites are kept in this browser (localStorage) per user in
-//  both versions. Later they can move to your database.
+//  Favourites: with Auth0 + VITE_API_URL + VITE_AUTH0_AUDIENCE they
+//  are saved in the PostgreSQL database through the backend; otherwise
+//  in this browser (localStorage) per user.
 // =============================================================
 
 const USER_KEY = "medfinders:user";
@@ -81,9 +87,88 @@ function useFavorites(email) {
   };
 }
 
+// ---------- Favourites in the database (Auth0 + backend) ----------
+// Same interface as useFavorites(). Changes show at once and are then
+// confirmed by the server (undone if the request fails). Requests run one
+// after another so a slow answer never overwrites a newer change.
+function useServerFavorites(user, enabled) {
+  const [favorites, setFavorites] = useState([]);
+  const queue = useRef(Promise.resolve());
+
+  function enqueue(task) {
+    queue.current = queue.current.then(task).catch((err) => console.error("[favorites]", err));
+    return queue.current;
+  }
+
+  useEffect(() => {
+    setFavorites([]);
+    if (!enabled || !user) return;
+    let cancelled = false;
+    const apply = (list) => !cancelled && Array.isArray(list) && setFavorites(list);
+
+    enqueue(async () => {
+      // Save the Auth0 profile (name, email, photo) in the users table
+      await apiFetch("/api/me", {
+        method: "POST",
+        body: { email: user.email, name: user.fullName ?? user.name, picture: user.picture },
+      });
+      // Move favourites saved in this browser before the database existed
+      const local = read(favoritesKey(user.email), []);
+      if (local.length > 0) {
+        apply(await apiFetch("/api/me/favorites", { method: "POST", body: { placeIds: local } }));
+        remove(favoritesKey(user.email));
+      } else {
+        apply(await apiFetch("/api/me/favorites"));
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enabled, user?.id]);
+
+  function change(placeId, optimistic, method) {
+    if (!user) return;
+    setFavorites(optimistic);
+    enqueue(async () => {
+      try {
+        setFavorites(await apiFetch(`/api/me/favorites/${placeId}`, { method }));
+      } catch (err) {
+        // Show what the database really has
+        apiFetch("/api/me/favorites").then(setFavorites, () => {});
+        throw err;
+      }
+    });
+  }
+
+  const addFavorite = (placeId) =>
+    change(placeId, (list) => (list.includes(placeId) ? list : [...list, placeId]), "PUT");
+  const removeFavorite = (placeId) =>
+    change(placeId, (list) => list.filter((id) => id !== placeId), "DELETE");
+
+  return {
+    favorites,
+    isFavorite: (placeId) => favorites.includes(placeId),
+    addFavorite,
+    removeFavorite,
+    toggleFavorite: (placeId) =>
+      favorites.includes(placeId) ? removeFavorite(placeId) : addFavorite(placeId),
+  };
+}
+
 // ---------- Auth0 version ----------
 function useAuth0Account() {
-  const { user: auth0User, isAuthenticated, isLoading, loginWithRedirect, logout } = useAuth0();
+  const {
+    user: auth0User,
+    isAuthenticated,
+    isLoading,
+    loginWithRedirect,
+    logout,
+    getAccessTokenSilently,
+  } = useAuth0();
+
+  // Logged-in requests to the backend (favourites, contact history) use this token
+  if (SERVER_FAVORITES) setTokenGetter(isAuthenticated ? () => getAccessTokenSilently() : null);
 
   const user = useMemo(() => {
     if (!isAuthenticated || !auth0User) return null;
@@ -91,11 +176,15 @@ function useAuth0Account() {
       id: auth0User.sub,
       email: auth0User.email ?? auth0User.sub,
       name: auth0User.given_name || auth0User.nickname || auth0User.name || "Utilizator",
+      fullName: auth0User.name,
       picture: auth0User.picture,
     };
   }, [isAuthenticated, auth0User]);
 
-  const favorites = useFavorites(user?.email);
+  // Both hooks always run (React rule); only one is used
+  const localFavorites = useFavorites(SERVER_FAVORITES ? null : user?.email);
+  const serverFavorites = useServerFavorites(user, SERVER_FAVORITES);
+  const favorites = SERVER_FAVORITES ? serverFavorites : localFavorites;
 
   // Goes to Auth0's login page. "pending" = what to do when we come back
   // (e.g. save a place), because the page reloads after logging in.
