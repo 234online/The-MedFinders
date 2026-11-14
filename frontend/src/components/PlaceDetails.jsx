@@ -12,6 +12,7 @@ import OpeningHours from "./OpeningHours.jsx";
 import PopularTimes from "./PopularTimes.jsx";
 import { IconMapPin, IconStar, IconStarFilled } from "@tabler/icons-react";
 import { CategoryIcon } from "./MedIcon.jsx";
+import { SERVER_ACCOUNT } from "../account/useAccount.js";
 import "./panels.css";
 import "./PlaceDetails.css";
 
@@ -26,6 +27,7 @@ export default function PlaceDetails({
   onSubmitReview,
   startWriting = false,
   requestSpecialty = null,
+  onBook,
 }) {
   const category = getCategory(place.category);
 
@@ -84,6 +86,13 @@ export default function PlaceDetails({
       </div>
 
       <ContactActions place={place} specialty={requestSpecialty} user={user} />
+
+      {/* Online booking (saved in the database, seen by the clinic's doctor) */}
+      {SERVER_ACCOUNT && onBook && user?.role !== "doctor" && (
+        <button type="button" className="btn-primary book-button" onClick={() => onBook(place)}>
+          📅 {TEXT.bookButton}
+        </button>
+      )}
 
       {place.specialties?.length > 0 && (
         <div className="details-tags">

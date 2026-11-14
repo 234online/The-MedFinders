@@ -430,6 +430,180 @@
   font-weight: 600;
 }
 
+/* Doctor's actions on an appointment (inside the record window) */
+.doc-mini li.doc-appt-row {
+  display: block;
+}
+
+.doc-appt-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.doc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.doc-action {
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.doc-action:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.doc-action.primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+.doc-action.primary:hover {
+  background: var(--accent-hover);
+  color: #fff;
+}
+
+.doc-action:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.doc-complete {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--paper);
+}
+
+.doc-complete label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.doc-complete input,
+.doc-complete textarea {
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.doc-error {
+  margin: 6px 0 0;
+  color: #b4483c;
+  font-size: 0.85rem;
+}
+
+/* Clinic filter (doctors working at several clinics) */
+.doc-clinics {
+  margin-top: 20px;
+  justify-content: center;
+}
+
+/* New appointment requests */
+.doc-requests {
+  margin-top: 8px;
+}
+
+.doc-requests-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  margin: 28px 0 12px;
+}
+
+.doc-requests-head .landing-section {
+  margin: 0;
+}
+
+.doc-requests-head small {
+  color: var(--ink-soft);
+}
+
+.doc-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #c58a12;
+  color: #fff;
+  font-family: system-ui, sans-serif;
+  font-size: 0.8rem;
+  vertical-align: 3px;
+}
+
+.doc-request-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px;
+}
+
+.doc-request {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border: 1px solid #ecd9a8;
+  border-left: 4px solid #c58a12;
+  border-radius: 12px;
+  background: #fffaf0;
+}
+
+.doc-request-main {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.doc-request-main:hover strong:first-child {
+  text-decoration: underline;
+}
+
+.doc-request-main small {
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+}
+
+.doc-request-when {
+  margin-top: 4px;
+  font-size: 0.9rem;
+}
+
 /* Phones: the back button would cover the language buttons, so it
    moves into the flow; cards stack */
 @media (max-width: 600px) {

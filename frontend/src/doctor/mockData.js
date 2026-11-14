@@ -12,12 +12,15 @@ function day(offset) {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
 
-// GET /api/doctor/me
+// GET /api/doctor/me (a doctor can work at several clinics)
 export const MOCK_DOCTOR = {
   id: 1,
   name: "Dr. Ana Popescu",
   specialty: "Cardiologie",
-  clinic: { id: "demo-clinic", name: "Clinica Demo Timișoara" },
+  clinics: [
+    { id: "medlife-spital", name: "Spitalul MedLife Medici's (Ambulatoriu)" },
+    { id: "medlife-eroilor", name: "Hyperclinica MedLife Timișoara – Eroilor" },
+  ],
 };
 
 // Medical history per patient (GET /api/doctor/patients/:id)
@@ -121,17 +124,20 @@ const PATIENTS = {
   },
 };
 
-// GET /api/doctor/appointments
-// status: "pending" | "confirmed" | "completed" | "cancelled"
+// GET /api/doctor/appointments: requests + appointments at all the doctor's clinics
+// status: "pending" (new request) | "confirmed" | "completed" | "cancelled"
+// handledBy: the doctor of the clinic who accepted / handled it
+const S = "medlife-spital";
+const E = "medlife-eroilor";
 export const MOCK_APPOINTMENTS = [
-  { id: "a1", patientId: "p1", date: day(0), time: "09:00", reason: "Control cardiologic periodic", status: "confirmed" },
-  { id: "a2", patientId: "p3", date: day(0), time: "10:30", reason: "Rezultate Holter", status: "confirmed" },
-  { id: "a3", patientId: "p2", date: day(0), time: "12:00", reason: "Dureri în piept la efort", status: "pending" },
-  { id: "a4", patientId: "p4", date: day(1), time: "08:30", reason: "Control insuficiență cardiacă", status: "confirmed" },
-  { id: "a5", patientId: "p6", date: day(2), time: "14:00", reason: "Palpitații", status: "pending" },
-  { id: "a6", patientId: "p5", date: day(4), time: "11:15", reason: "Aviz medical sport", status: "confirmed" },
-  { id: "a7", patientId: "p1", date: day(-7), time: "09:30", reason: "Analize + EKG", status: "completed" },
-  { id: "a8", patientId: "p5", date: day(-3), time: "16:00", reason: "Consultație", status: "cancelled" },
+  { id: "a1", placeId: S, patientId: "p1", date: day(0), time: "09:00", reason: "Control cardiologic periodic", status: "confirmed", handledBy: "Dr. Ana Popescu" },
+  { id: "a2", placeId: E, patientId: "p3", date: day(0), time: "10:30", reason: "Rezultate Holter", status: "confirmed", handledBy: "Dr. Mihai Stan" },
+  { id: "a3", placeId: S, patientId: "p2", date: day(0), time: "12:00", reason: "Dureri în piept la efort", status: "pending" },
+  { id: "a4", placeId: S, patientId: "p4", date: day(1), time: "08:30", reason: "Control insuficiență cardiacă", status: "confirmed", handledBy: "Dr. Ana Popescu" },
+  { id: "a5", placeId: E, patientId: "p6", date: day(2), time: "14:00", reason: "Palpitații de câteva zile", status: "pending" },
+  { id: "a6", placeId: E, patientId: "p5", date: day(4), time: "11:15", reason: "Aviz medical sport", status: "pending" },
+  { id: "a7", placeId: S, patientId: "p1", date: day(-7), time: "09:30", reason: "Analize + EKG", status: "completed", handledBy: "Dr. Ana Popescu" },
+  { id: "a8", placeId: E, patientId: "p5", date: day(-3), time: "16:00", reason: "Consultație", status: "cancelled" },
 ].map((a) => ({ ...a, patient: summary(PATIENTS[a.patientId]) }));
 
 // The short version of a patient shown in the appointment list

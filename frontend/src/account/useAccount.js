@@ -22,6 +22,19 @@ export const SERVER_ACCOUNT = SERVER_FAVORITES;
 //  in this browser (localStorage) per user.
 // =============================================================
 
+// Account types. Doctors are set in Auth0 (app_metadata.role, see
+// backend/auth0/README.md); the Auth0 Action adds it to the ID token here.
+export const ROLE_CLAIM = "https://timicarenow.app/role";
+export const ROLES = ["patient", "doctor"];
+
+// Placeholder accounts (password "123"), same as backend/scripts/seed_demo.js.
+// In the prototype they log straight in; with Auth0 they are real Auth0 logins.
+export const DEMO_ACCOUNTS = {
+  "doctor@timicarenow.app": { name: "Dr. Andrei Demo", role: "doctor" },
+  "pacient@timicarenow.app": { name: "Maria Demo", role: "patient" },
+};
+export const DEMO_PASSWORD = "123";
+
 const USER_KEY = "medfinders:user";
 const PENDING_KEY = "timicarenow:pending-login";
 const favoritesKey = (email) => `medfinders:favorites:${email}`;
@@ -172,6 +185,22 @@ function useAuth0Account() {
   // Logged-in requests to the backend (favourites, contact history) use this token
   if (SERVER_FAVORITES) setTokenGetter(isAuthenticated ? () => getAccessTokenSilently() : null);
 
+  // Role saved in the database (backend copies it from Auth0 at every login);
+  // used when the ID token has no role claim (Auth0 Action not installed yet)
+  const [serverRole, setServerRole] = useState(null);
+  useEffect(() => {
+    setServerRole(null);
+    if (!SERVER_ACCOUNT || !isAuthenticated || auth0User?.[ROLE_CLAIM]) return;
+    let cancelled = false;
+    apiFetch("/api/me").then(
+      (me) => !cancelled && setServerRole(me?.role ?? null),
+      () => {}
+    );
+    return () => {
+      cancelled = true;
+    };
+  }, [isAuthenticated, auth0User]);
+
   const user = useMemo(() => {
     if (!isAuthenticated || !auth0User) return null;
     return {
@@ -180,8 +209,9 @@ function useAuth0Account() {
       name: auth0User.given_name || auth0User.nickname || auth0User.name || "Utilizator",
       fullName: auth0User.name,
       picture: auth0User.picture,
+      role: auth0User[ROLE_CLAIM] ?? serverRole ?? "patient",
     };
-  }, [isAuthenticated, auth0User]);
+  }, [isAuthenticated, auth0User, serverRole]);
 
   // Both hooks always run (React rule); only one is used
   const localFavorites = useFavorites(SERVER_FAVORITES ? null : user?.email);
@@ -220,16 +250,32 @@ function useAuth0Account() {
 
 // ---------- Prototype version (no Auth0 settings) ----------
 function useLocalAccount() {
-  const [user, setUser] = useState(() => read(USER_KEY, null));
+  const [user, setUser] = useState(() => {
+    const saved = read(USER_KEY, null);
+    return saved ? { role: "patient", ...saved } : null;
+  });
   const favorites = useFavorites(user?.email);
 
-  // Returns { error } if something is wrong, otherwise { user }
-  function login(email, password) {
+  // Returns { error } if something is wrong, otherwise { user }.
+  // role: "patient" | "doctor" (prototype only: lets you try both account types)
+  function login(email, password, role = "patient") {
     const cleanEmail = email.trim().toLowerCase();
+    const demo = DEMO_ACCOUNTS[cleanEmail];
+    if (demo && password === DEMO_PASSWORD) {
+      const demoUser = { id: cleanEmail, email: cleanEmail, ...demo };
+      write(USER_KEY, demoUser);
+      setUser(demoUser);
+      return { user: demoUser };
+    }
     if (!/^\S+@\S+\.\S+$/.test(cleanEmail)) return { error: TEXT.invalidEmail };
     if (password.length < 4) return { error: TEXT.shortPassword };
 
-    const newUser = { id: cleanEmail, email: cleanEmail, name: cleanEmail.split("@")[0] };
+    const newUser = {
+      id: cleanEmail,
+      email: cleanEmail,
+      name: cleanEmail.split("@")[0],
+      role: ROLES.includes(role) ? role : "patient",
+    };
     write(USER_KEY, newUser);
     setUser(newUser);
     return { user: newUser };

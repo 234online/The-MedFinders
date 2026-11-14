@@ -42,6 +42,7 @@ function createApp(options = {}) {
   // ---------- Feature modules ----------
   app.use(require('./routes/places')(auth));
   app.use(require('./routes/account')(auth));
+  app.use(require('./routes/doctor')(auth));
   app.use(require('./routes/contacts')(auth));
   app.use(require('./routes/analytics')(auth));
 

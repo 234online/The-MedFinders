@@ -5,6 +5,7 @@ import SearchBar from "./SearchBar.jsx";
 import FilterPanel from "./filters/FilterPanel.jsx";
 import Landing from "./components/Landing.jsx";
 import DoctorDashboard from "./doctor/DoctorDashboard.jsx";
+import BookAppointment from "./components/BookAppointment.jsx";
 import Dashboard from "./components/Dashboard.jsx";
 import FloatingButton from "./components/FloatingButton.jsx";
 import Modal from "./components/Modal.jsx";
@@ -204,6 +205,8 @@ export default function App() {
       if (place) selectPlace(place);
     } else if (action?.type === "review") {
       setModal({ type: "details", placeId: action.placeId, writing: true });
+    } else if (action?.type === "book") {
+      setModal({ type: "book", placeId: action.placeId });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account.isLoading, account.user]);
@@ -237,13 +240,18 @@ export default function App() {
     setModal({ type: "details", placeId: place.id });
   }
 
+  function handleBook(place) {
+    if (!account.user) return askToLogin({ type: "book", placeId: place.id });
+    setModal({ type: "book", placeId: place.id });
+  }
+
   function handleSubmitReview(place, review) {
     reviews.addReview(place.id, review, account.user);
   }
 
   // Returns an error message, or null if login worked
-  function handleLogin(email, password) {
-    const { error, user } = account.login(email, password);
+  function handleLogin(email, password, role) {
+    const { error, user } = account.login(email, password, role);
     if (error) return error;
 
     const action = pendingAction;
@@ -253,6 +261,8 @@ export default function App() {
       setModal(null);
     } else if (action?.type === "review") {
       setModal({ type: "details", placeId: action.placeId, writing: true });
+    } else if (action?.type === "book") {
+      setModal({ type: "book", placeId: action.placeId });
     } else {
       setModal(null);
     }
@@ -296,18 +306,22 @@ export default function App() {
     (a, b) => Number(resultIds.has(a.id)) - Number(resultIds.has(b.id))
   );
   const detailsPlace = modal?.type === "details" && allPlaces.find((p) => p.id === modal.placeId);
+  const bookPlace = modal?.type === "book" && allPlaces.find((p) => p.id === modal.placeId);
   const loginNotice =
     pendingAction?.type === "save"
       ? TEXT.loginToSave
       : pendingAction?.type === "review"
         ? TEXT.loginToReview
-        : null;
+        : pendingAction?.type === "book"
+          ? TEXT.loginToBook
+          : null;
 
   return (
     <>
       {doctorPage ? (
         <DoctorDashboard
           user={account.user}
+          authLoading={account.isLoading}
           onLogin={() => setModal({ type: "login" })}
           onExit={() => openDoctorPage(false)}
           lang={lang}
@@ -332,7 +346,7 @@ export default function App() {
           onLanguage={changeLanguage}
           accessible={accessible}
           onToggleAccessible={toggleAccessible}
-          onDoctorPortal={() => openDoctorPage(true)}
+          onDoctorPortal={account.user?.role === "doctor" ? () => openDoctorPage(true) : undefined}
         >
           {floatingButtons}
         </Landing>
@@ -443,6 +457,7 @@ export default function App() {
                         onOpenDetails={openDetails}
                         requestSpecialty={requestSpecialtyFor(p)}
                         user={account.user}
+                        onBook={handleBook}
                       />
                     </Popup>
                   </Marker>
@@ -509,6 +524,10 @@ export default function App() {
             onSelect={showSavedPlace}
             onRemove={(p) => account.removeFavorite(p.id)}
             onLogout={handleLogout}
+            onDoctorPortal={() => {
+              closeModal();
+              openDoctorPage(true);
+            }}
           />
         </Modal>
       )}
@@ -526,7 +545,14 @@ export default function App() {
             onSubmitReview={handleSubmitReview}
             startWriting={Boolean(modal.writing)}
             requestSpecialty={requestSpecialtyFor(detailsPlace)}
+            onBook={handleBook}
           />
+        </Modal>
+      )}
+
+      {bookPlace && account.user && (
+        <Modal title={TEXT.bookTitle} onClose={closeModal} width={440}>
+          <BookAppointment place={bookPlace} onDone={closeModal} />
         </Modal>
       )}
     </>

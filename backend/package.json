@@ -8,7 +8,9 @@
     "dev": "node --watch index.js",
     "sync-db": "node scripts/sync_clinics.js",
     "export-frontend": "node scripts/export_frontend.js",
-    "migrate": "node db/migrate.js"
+    "migrate": "node db/migrate.js",
+    "set-role": "node scripts/set_role.js",
+    "seed-demo": "node scripts/seed_demo.js"
   },
   "keywords": [
     "express",
