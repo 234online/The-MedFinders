@@ -1,0 +1,69 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R /F2 5 0 R /F3 6 0 R >> >> /Contents 7 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
+6 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>
+endobj
+7 0 obj
+<< /Length 637 >>
+stream
+BT
+/F2 17 Tf
+50 785 Td
+(OSTEODENSITOMETRIE \(DXA\)) Tj
+/F1 10 Tf
+0 -18 Td
+(Centrul de Imagistica Demo) Tj
+ET
+0.6 G 1 w 50 755 m 545 755 l S
+BT
+50 740 Td
+14 TL
+/F1 10.5 Tf
+T* (Pacient: Elena Dumitrescu, F, n. 30.01.1953) Tj
+/F1 10.5 Tf
+T* () Tj
+/F3 9.5 Tf
+T* (Regiune          DMO \(g/cm2\)   T-score) Tj
+/F3 9.5 Tf
+T* (--------------------------------------) Tj
+/F3 9.5 Tf
+T* (Coloana L1-L4    0.781         -2.9) Tj
+/F3 9.5 Tf
+T* (Col femural      0.642         -2.6) Tj
+/F1 10.5 Tf
+T* () Tj
+/F1 10.5 Tf
+T* (Concluzie: osteoporoza.) Tj
+ET
+BT /F1 8 Tf 0.5 g 50 40 Td (Document demonstrativ TimiCareNow - toate datele sunt fictive.) Tj ET
+endstream
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000261 00000 n 
+0000000358 00000 n 
+0000000460 00000 n 
+0000000555 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R >>
+startxref
+1243
+%%EOF

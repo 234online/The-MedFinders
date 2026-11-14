@@ -4,6 +4,8 @@
 //  The shapes below are what the backend should return.
 // =============================================================
 
+import MOCK_DOCUMENTS from "./mockDocuments.json";
+
 // "YYYY-MM-DD" for today + n days (so "today" always has appointments)
 function day(offset) {
   const d = new Date();
@@ -145,6 +147,19 @@ function summary(p) {
   return { id: p.id, name: p.name, birthDate: p.birthDate, sex: p.sex, allergies: p.allergies };
 }
 
+// Placeholder documents (files in public/demo-documents, made by
+// backend/scripts/demo_documents.js; run it again after changing them)
+const documentsOf = (id) => (MOCK_DOCUMENTS[id] ?? []).map(({ dayOffset, ...d }) => ({ ...d, date: day(dayOffset) }));
+
 export function mockPatient(id) {
-  return PATIENTS[id] ?? null;
+  return PATIENTS[id] ? { ...PATIENTS[id], documents: documentsOf(id) } : null;
+}
+
+// The file of one of those documents, as a Blob
+export async function mockDocumentFile(patientId, docId) {
+  const doc = (MOCK_DOCUMENTS[patientId] ?? []).find((d) => d.id === docId);
+  if (!doc) throw new Error("Document not found");
+  const response = await fetch(`${import.meta.env.BASE_URL}demo-documents/${doc.fileName}`);
+  if (!response.ok) throw new Error(`Demo document: ${response.status}`);
+  return response.blob();
 }

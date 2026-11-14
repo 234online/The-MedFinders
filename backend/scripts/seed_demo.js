@@ -3,7 +3,8 @@
  *
  *   doctor@timicarenow.app   doctor at 2 clinics (medlife-spital, medlife-eroilor)
  *   pacient@timicarenow.app  patient with a medical record, an appointment
- *                            request, a confirmed appointment and a past visit
+ *                            request, a confirmed appointment, a past visit
+ *                            and placeholder documents (scripts/demo_documents.js)
  *
  *   npm run seed-demo              create / reset them
  *   npm run seed-demo -- --remove  delete them (Auth0 + database)
@@ -24,6 +25,8 @@ const db = require('../db/pool');
 const { migrate } = require('../db/migrate');
 const users = require('../repositories/users');
 const medical = require('../repositories/medical');
+const documents = require('../repositories/documents');
+const { seedDocuments } = require('./demo_documents');
 const auth0 = require('./auth0Management');
 
 const PASSWORD = '123';
@@ -137,7 +140,11 @@ async function seedDatabase(ids) {
     diagnosis: 'Astm bronșic ușor, controlat',
     notes: 'Spirometrie normală după bronhodilatator. Continuă tratamentul la nevoie.'
   });
-  console.log(`[PG] pacient users.id=${pat.id}: fișă medicală + 3 programări`);
+  // Placeholder documents (letter, spirometry, X-ray, lab results, prescription), also reset every run
+  await db.query('DELETE FROM medical_documents WHERE user_id = $1', [pat.id]);
+  const docs = seedDocuments(isoDay);
+  for (const d of docs) await documents.create(pat.id, d);
+  console.log(`[PG] pacient users.id=${pat.id}: fișă medicală + 3 programări + ${docs.length} documente`);
 }
 
 async function remove() {

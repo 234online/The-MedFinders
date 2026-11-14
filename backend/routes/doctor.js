@@ -9,6 +9,8 @@
  *   GET   /api/doctor/me                  { id, name, specialty, clinics: [{ id, name }] }
  *   GET   /api/doctor/appointments        requests/appointments at my clinics (+ patient card)
  *   GET   /api/doctor/patients/:id        full medical record of one of my clinics' patients
+ *                                         (incl. the list of documents they uploaded)
+ *   GET   /api/doctor/patients/:id/documents/:docId/file   one of those documents (?download=1)
  *   PATCH /api/doctor/appointments/:id    { status?, diagnosis?, notes? }
  */
 
@@ -16,6 +18,8 @@ const express = require('express');
 const users = require('../repositories/users');
 const medical = require('../repositories/medical');
 const appointments = require('../repositories/appointments');
+const documents = require('../repositories/documents');
+const { sendFile } = require('./documents');
 const places = require('../db/database');
 const { doctorAppointmentChanges } = require('./validate');
 
@@ -41,17 +45,23 @@ module.exports = function doctorRoutes({ requireRole }) {
     res.json(await appointments.listForClinics(clinics));
   }));
 
-  router.get('/api/doctor/patients/:id', wrap(async (req, res) => {
+  // A patient who sent a request to one of my clinics (patient id or null)
+  const myPatient = async (req) => {
     const id = Number(req.params.id);
     const clinics = clinicsOf(req.user);
+    if (!Number.isInteger(id) || clinics.length === 0) return null;
+    return (await appointments.patientHasClinicAppointment(id, clinics)) ? id : null;
+  };
+
+  router.get('/api/doctor/patients/:id', wrap(async (req, res) => {
+    const id = await myPatient(req);
     // Same answer for "doesn't exist" and "not your patient": reveals nothing
-    if (!Number.isInteger(id) || clinics.length === 0 || !(await appointments.patientHasClinicAppointment(id, clinics))) {
-      return res.status(404).json({ error: 'Pacientul nu a fost găsit' });
-    }
-    const [patient, med, history] = await Promise.all([
+    if (id === null) return res.status(404).json({ error: 'Pacientul nu a fost găsit' });
+    const [patient, med, history, docs] = await Promise.all([
       users.findById(id),
       medical.get(id),
-      appointments.historyForPatient(id)
+      appointments.historyForPatient(id),
+      documents.list(id)
     ]);
     if (!patient) return res.status(404).json({ error: 'Pacientul nu a fost găsit' });
 
@@ -73,8 +83,18 @@ module.exports = function doctorRoutes({ requireRole }) {
       phone: patient.phone,
       email: patient.email,
       ...med,
-      visits
+      visits,
+      documents: docs
     });
+  }));
+
+  router.get('/api/doctor/patients/:id/documents/:docId/file', wrap(async (req, res) => {
+    const id = await myPatient(req);
+    const docId = Number(req.params.docId);
+    // getFile only returns a document owned by this patient
+    const file = id !== null && Number.isInteger(docId) ? await documents.getFile(id, docId) : null;
+    if (!file) return res.status(404).json({ error: 'Documentul nu a fost găsit' });
+    sendFile(res, file, Boolean(req.query.download));
   }));
 
   router.patch('/api/doctor/appointments/:id', wrap(async (req, res) => {
