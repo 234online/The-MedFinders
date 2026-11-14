@@ -24,6 +24,7 @@
 
 import { readFileSync } from "node:fs";
 import { SYMPTOMS } from "../src/config/symptoms.js";
+import { voiceHandler } from "./voiceProxy.js";
 
 const CLAUDE_URL = "https://api.anthropic.com/v1/messages";
 const CLAUDE_DEFAULT_MODEL = "claude-sonnet-5-5";
@@ -442,11 +443,12 @@ export async function chatHandler(req, res, env = process.env) {
   }
 }
 
-// Vite plugin: serves /api/chat during `npm run dev` and `npm run preview`
+// Vite plugin: serves /api/chat and /api/voice during `npm run dev` and `npm run preview`
 export function chatApiPlugin(env) {
   // Must not return anything: Vite would treat a returned function as a "post" hook
   const mount = (server) => {
     server.middlewares.use("/api/chat", (req, res) => chatHandler(req, res, env));
+    server.middlewares.use("/api/voice", (req, res) => voiceHandler(req, res, env));
   };
   return { name: "timicarenow-chat-api", configureServer: mount, configurePreviewServer: mount };
 }
