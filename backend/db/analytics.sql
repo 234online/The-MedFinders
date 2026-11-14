@@ -59,3 +59,42 @@ ALTER TABLE contact_activity SET (
 );
 
 SELECT add_compression_policy('contact_activity', INTERVAL '7 days', if_not_exists => TRUE);
+
+-- ---------------------------------------------------------------------
+-- Visits: one row each time someone opens a clinic on the website
+-- (the map popup or the details window). Same idea as contact_activity.
+-- ---------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS place_views (
+    time        TIMESTAMPTZ NOT NULL,
+    place_code  TEXT        NOT NULL,
+    source      TEXT        NOT NULL CHECK (source IN ('popup', 'details'))
+);
+
+SELECT create_hypertable('place_views', by_range('time', INTERVAL '7 days'), if_not_exists => TRUE);
+
+CREATE INDEX IF NOT EXISTS place_views_place_idx ON place_views (place_code, time DESC);
+
+CREATE MATERIALIZED VIEW IF NOT EXISTS place_views_hourly
+WITH (timescaledb.continuous) AS
+SELECT time_bucket(INTERVAL '1 hour', time) AS bucket,
+       place_code,
+       count(*) AS views
+FROM place_views
+GROUP BY bucket, place_code
+WITH NO DATA;
+
+ALTER MATERIALIZED VIEW place_views_hourly SET (timescaledb.materialized_only = false);
+
+SELECT add_continuous_aggregate_policy('place_views_hourly',
+    start_offset      => INTERVAL '60 days',
+    end_offset        => INTERVAL '1 hour',
+    schedule_interval => INTERVAL '15 minutes',
+    if_not_exists     => TRUE);
+
+ALTER TABLE place_views SET (
+    timescaledb.compress,
+    timescaledb.compress_segmentby = 'place_code',
+    timescaledb.compress_orderby   = 'time DESC'
+);
+
+SELECT add_compression_policy('place_views', INTERVAL '7 days', if_not_exists => TRUE);

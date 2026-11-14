@@ -27,4 +27,15 @@ async function remove(userId, placeId) {
   await db.query('DELETE FROM favorites WHERE user_id = $1 AND place_id = $2', [userId, placeId]);
 }
 
-module.exports = { list, add, remove };
+// For the statistics page: how many people saved each clinic since `from`.
+// Only totals per clinic, never who saved them.
+async function countsSince(from) {
+  const { rows } = await db.query(
+    `SELECT place_id, count(*)::int AS n FROM favorites
+     WHERE created_at >= $1 GROUP BY place_id`,
+    [from]
+  );
+  return Object.fromEntries(rows.map((r) => [r.place_id, r.n]));
+}
+
+module.exports = { list, add, remove, countsSince };
