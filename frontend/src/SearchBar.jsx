@@ -1,11 +1,8 @@
 import { useEffect, useRef, useState } from "react";
+import { IconSearch } from "@tabler/icons-react";
 import "./SearchBar.css";
 import { TEXT } from "./config/texts.js";
 
-// ICON: replace the file public/search-icon.svg with your own
-// (same name), or change this path to point at your file,
-// e.g. "/my-icon.png". Files in the public folder are served from "/".
-const ICON_SRC = "/search-icon.svg";
 
 export default function SearchBar({ value, onChange, placeholder = TEXT.searchPlaceholder }) {
   // Start open if there is already a search (e.g. typed on the start page)
@@ -30,7 +27,7 @@ export default function SearchBar({ value, onChange, placeholder = TEXT.searchPl
         aria-label={TEXT.searchButton}
         onClick={() => (open ? inputRef.current?.focus() : setOpen(true))}
       >
-        <img src={ICON_SRC} alt="" />
+        <IconSearch size={22} stroke={1.8} aria-hidden="true" />
       </button>
 
       {open && (

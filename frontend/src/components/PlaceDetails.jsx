@@ -8,6 +8,8 @@ import { TEXT } from "../config/texts.js";
 import { ratingBreakdown } from "../reviews/score.js";
 import { Stars, StarInput } from "./Stars.jsx";
 import OpeningHours from "./OpeningHours.jsx";
+import { IconMapPin, IconStar, IconStarFilled } from "@tabler/icons-react";
+import { CategoryIcon } from "./MedIcon.jsx";
 import "./panels.css";
 import "./PlaceDetails.css";
 
@@ -32,8 +34,8 @@ export default function PlaceDetails({
     <div className="details">
       {/* ---------- Header ---------- */}
       <div className="details-head">
-        <span className="details-icon" style={{ background: category.color }}>
-          {category.icon}
+        <span className="details-icon" style={{ background: `color-mix(in srgb, ${category.color} 14%, white)`, color: category.color }}>
+          <CategoryIcon id={category.id} size={24} />
         </span>
         <div>
           <span className="details-type" style={{ color: category.color }}>
@@ -52,7 +54,8 @@ export default function PlaceDetails({
         <div className="details-box">
           <h4>{TEXT.contactTitle}</h4>
           <p>
-            📍 {place.address}
+            <IconMapPin size={15} stroke={1.8} aria-hidden="true" style={{ verticalAlign: "-2px" }} />{" "}
+            {place.address}
             {place.postalCode && `, ${place.postalCode}`}
           </p>
           {place.approximate && <p className="details-muted">{TEXT.approximateLocation}</p>}
@@ -103,6 +106,11 @@ export default function PlaceDetails({
         className={"pp-save" + (isFavorite ? " saved" : "")}
         onClick={() => onToggleFavorite(place)}
       >
+        {isFavorite ? (
+          <IconStarFilled size={16} aria-hidden="true" />
+        ) : (
+          <IconStar size={16} stroke={1.8} aria-hidden="true" />
+        )}
         {isFavorite ? TEXT.saved : TEXT.save}
       </button>
 

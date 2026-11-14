@@ -1,3 +1,4 @@
+import { CategoryIcon } from "../components/MedIcon.jsx";
 // A row of clickable pills. With multiple: true, several can be on at once.
 // Options can have an icon (emoji) and a color.
 export default function ChipsFilter({ filter, value, onChange }) {
@@ -24,7 +25,11 @@ export default function ChipsFilter({ filter, value, onChange }) {
             style={on ? { background: color, borderColor: color } : undefined}
             onClick={() => toggle(option.value)}
           >
-            {option.icon && <span className="chip-icon">{option.icon}</span>}
+            {option.icon && (
+              <span className="chip-icon">
+                <CategoryIcon id={option.value} size={15} />
+              </span>
+            )}
             {!option.icon && option.color && !on && (
               <span className="chip-dot" style={{ background: option.color }} />
             )}

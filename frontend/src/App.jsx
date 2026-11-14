@@ -27,6 +27,8 @@ import { getCategory, SPECIALTY_GROUPS } from "./config/placeTypes.js";
 import { applyFilters, getDefaults } from "./filters/filterEngine.js";
 import { markerIcon } from "./map/markerIcons.js";
 import { TEXT, getLanguage, setLanguage } from "./config/texts.js";
+import { IconStethoscope } from "@tabler/icons-react";
+import { LogoIcon, CategoryIcon } from "./components/MedIcon.jsx";
 import "./App.css";
 import "./accessibility/accessible.css";
 
@@ -293,7 +295,9 @@ export default function App() {
         <div className="layout">
           <aside className="sidebar">
             <button type="button" className="brand" onClick={goHome} title={TEXT.backHome}>
-              <span className="brand-logo">🩺</span>
+              <span className="brand-logo">
+                <LogoIcon />
+              </span>
               <span>
                 <strong>{TEXT.brand}</strong>
                 <small>{TEXT.appTitle}</small>
@@ -306,7 +310,7 @@ export default function App() {
             </div>
 
             <button type="button" className="sidebar-symptom" onClick={() => setModal({ type: "symptoms" })}>
-              🩺 {TEXT.symptomButton}
+              <IconStethoscope size={18} stroke={1.8} aria-hidden="true" /> {TEXT.symptomButton}
             </button>
 
             <FilterPanel
@@ -341,8 +345,8 @@ export default function App() {
                     className={p.id === selectedId ? "selected" : ""}
                     onClick={() => selectPlace(p)}
                   >
-                    <span className="result-icon" style={{ background: category.color }}>
-                      {category.icon}
+                    <span className="result-icon" style={{ background: `color-mix(in srgb, ${category.color} 14%, white)`, color: category.color }}>
+                      <CategoryIcon id={category.id} size={18} />
                     </span>
                     <div className="result-text">
                       <strong>{p.name}</strong>
@@ -381,7 +385,12 @@ export default function App() {
                     zIndexOffset={state === "selected" ? 1000 : isMatch ? 500 : 0}
                     eventHandlers={{ click: () => setSelectedId(p.id) }}
                   >
-                    <Popup minWidth={260} maxWidth={300}>
+                    <Popup
+                      minWidth={250}
+                      maxWidth={280}
+                      className="mf-popup"
+                      autoPanPaddingTopLeft={[20, 96]} // keep clear of the search button
+                    >
                       <PlacePopup
                         place={p}
                         isFavorite={account.isFavorite(p.id)}

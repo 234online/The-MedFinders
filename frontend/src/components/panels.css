@@ -1,6 +1,10 @@
 /* ---------- Shared buttons ---------- */
 .btn-primary,
 .btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   width: 100%;
   padding: 11px 14px;
   border-radius: 8px;
@@ -20,9 +24,9 @@
 }
 
 .btn-secondary {
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--line);
   background: #fff;
-  color: #374151;
+  color: var(--ink);
 }
 
 .btn-secondary:hover {

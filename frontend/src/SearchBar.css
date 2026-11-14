@@ -8,19 +8,18 @@
 
   display: flex;
   align-items: center;
-  width: 52px;  /* closed size */
-  height: 52px;
+  width: 48px;  /* closed size */
+  height: 48px;
   overflow: hidden;
   border-radius: 999px;
 
-  /* Transparent "glass" look: change the last number (0.35) for more/less see-through */
-  background: rgba(255, 255, 255, 0.35);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  /* Solid white, like the other round map buttons (colours in App.css) */
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  color: var(--accent);
 
-  transition: width 0.3s ease, box-shadow 0.25s ease, background 0.25s ease;
+  transition: width 0.3s ease, border-color 0.15s ease;
 }
 
 /* Open size: up to 480px wide, never wider than the map minus some margin */
@@ -28,26 +27,25 @@
   width: min(480px, calc(100% - 160px));
 }
 
-/* ---------- Glow on hover / while typing ----------
-   Glow colour comes from --accent-glow in App.css. */
-.searchbar:hover,
+.searchbar:hover {
+  border-color: #d3c9b6;
+}
+
 .searchbar:focus-within {
-  background: rgba(255, 255, 255, 0.5);
-  box-shadow:
-    0 0 0 2px var(--accent-glow-strong),
-    0 0 18px 4px var(--accent-glow);
+  border-color: var(--accent);
 }
 
 /* ---------- Icon button ---------- */
 .searchbar-icon {
   flex-shrink: 0;
-  width: 52px;
-  height: 52px;
+  width: 46px;
+  height: 46px;
   display: grid;
   place-items: center;
   padding: 0;
   border: none;
   background: none;
+  color: inherit;
   cursor: pointer;
 }
 

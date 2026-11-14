@@ -4,6 +4,8 @@ import { getCategory } from "../config/placeTypes.js";
 import { isOpenAt } from "../services/hoursLogic.js";
 import { useChat } from "../chat/useChat.js";
 import { ScoreBadge } from "./Stars.jsx";
+import { CategoryIcon } from "./MedIcon.jsx";
+import { IconMessageCircle, IconX } from "@tabler/icons-react";
 import "./ChatPanel.css";
 
 // Turns the assistant's text into safe React elements:
@@ -80,7 +82,11 @@ export default function ChatPanel({ places, onSelectPlace, onShowResults }) {
         aria-expanded={open}
         aria-label={TEXT.chatButton}
       >
-        {open ? "✕" : "💬"}
+        {open ? (
+          <IconX size={22} stroke={2} aria-hidden="true" />
+        ) : (
+          <IconMessageCircle size={22} stroke={1.8} aria-hidden="true" />
+        )}
         {!open && <span className="chat-fab-label">{TEXT.chatButton}</span>}
       </button>
 
@@ -130,8 +136,8 @@ export default function ChatPanel({ places, onSelectPlace, onShowResults }) {
                       const openNow = isOpenAt(p.hours);
                       return (
                         <button key={p.id} type="button" className="chat-card" onClick={() => onSelectPlace(p.id)}>
-                          <span className="chat-card-icon" style={{ background: category.color }}>
-                            {category.icon}
+                          <span className="chat-card-icon" style={{ background: `color-mix(in srgb, ${category.color} 14%, white)`, color: category.color }}>
+                            <CategoryIcon id={category.id} size={18} />
                           </span>
                           <span className="chat-card-text">
                             <strong>{p.name}</strong>
