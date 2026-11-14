@@ -1026,6 +1026,14 @@
                     "open_time": "08:00",
                     "close_time": "14:00",
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -1119,6 +1127,14 @@
                     "open_time": "08:00",
                     "close_time": "15:00",
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -1208,6 +1224,14 @@
                     "open_time": "08:00",
                     "close_time": "15:00",
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -1306,6 +1330,22 @@
                     "open_time": "08:00",
                     "close_time": "20:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -1653,6 +1693,22 @@
                     "open_time": "08:00",
                     "close_time": "20:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -1969,6 +2025,22 @@
                     "open_time": "08:30",
                     "close_time": "16:30",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -2059,6 +2131,22 @@
                     "open_time": "08:00",
                     "close_time": "20:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -2145,6 +2233,22 @@
                     "open_time": "09:30",
                     "close_time": "13:30",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -2234,6 +2338,22 @@
                     "open_time": "08:00",
                     "close_time": "20:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -2318,6 +2438,14 @@
                     "open_time": "08:00",
                     "close_time": "14:00",
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -2411,6 +2539,22 @@
                     "open_time": "08:00",
                     "close_time": "19:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -2614,6 +2758,22 @@
                     "open_time": "08:00",
                     "close_time": "20:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -2693,6 +2853,22 @@
                     "open_time": "09:00",
                     "close_time": "21:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -2775,6 +2951,14 @@
                     "open_time": "08:00",
                     "close_time": "14:00",
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -2952,6 +3136,22 @@
                     "open_time": "08:00",
                     "close_time": "14:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -3041,6 +3241,22 @@
                     "open_time": "08:30",
                     "close_time": "19:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -3156,6 +3372,22 @@
                     "open_time": "14:00",
                     "close_time": "21:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -3591,6 +3823,22 @@
                     "open_time": "09:00",
                     "close_time": "16:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -3670,6 +3918,22 @@
                     "open_time": "09:00",
                     "close_time": "19:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -3970,6 +4234,22 @@
                     "open_time": "07:00",
                     "close_time": "15:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -4094,6 +4374,22 @@
                     "open_time": "08:00",
                     "close_time": "16:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -4167,6 +4463,22 @@
                     "open_time": "08:00",
                     "close_time": "19:30",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -4334,6 +4646,22 @@
                     "open_time": "09:00",
                     "close_time": "16:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -4667,6 +4995,22 @@
                     "open_time": "08:00",
                     "close_time": "15:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -4740,6 +5084,22 @@
                     "open_time": "09:00",
                     "close_time": "21:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -4822,6 +5182,14 @@
                     "open_time": "09:00",
                     "close_time": "20:00",
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -4911,6 +5279,22 @@
                     "open_time": "09:00",
                     "close_time": "14:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -4965,10 +5349,26 @@
                 {
                     "notes": null,
                     "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 1
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
                     "is_closed": false,
                     "open_time": "09:00",
                     "close_time": "18:00",
                     "day_of_week": 2
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 3
                 },
                 {
                     "notes": null,
@@ -4985,6 +5385,22 @@
                     "open_time": "14:00",
                     "close_time": "18:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -5066,6 +5482,22 @@
                     "open_time": "09:00",
                     "close_time": "20:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -5147,6 +5579,22 @@
                     "open_time": "09:00",
                     "close_time": "14:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -5236,6 +5684,14 @@
                     "open_time": "09:00",
                     "close_time": "17:00",
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -5318,6 +5774,22 @@
                     "open_time": "14:00",
                     "close_time": "20:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -5408,6 +5880,14 @@
                     "open_time": "10:00",
                     "close_time": "18:00",
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -5489,6 +5969,22 @@
                     "open_time": "12:00",
                     "close_time": "20:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -5571,6 +6067,22 @@
                     "open_time": "09:00",
                     "close_time": "20:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -5701,6 +6213,22 @@
                     "open_time": "10:00",
                     "close_time": "21:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -6056,6 +6584,14 @@
                     "open_time": "10:00",
                     "close_time": "14:00",
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -6137,6 +6673,14 @@
                     "open_time": "08:00",
                     "close_time": "14:00",
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -6218,6 +6762,14 @@
                     "open_time": "08:00",
                     "close_time": "11:00",
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -6299,6 +6851,14 @@
                     "open_time": null,
                     "close_time": null,
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -6380,6 +6940,14 @@
                     "open_time": "08:00",
                     "close_time": "11:00",
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -6461,6 +7029,14 @@
                     "open_time": null,
                     "close_time": null,
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -6542,6 +7118,14 @@
                     "open_time": "08:00",
                     "close_time": "11:00",
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -6623,6 +7207,14 @@
                     "open_time": "08:00",
                     "close_time": "11:00",
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -6704,6 +7296,14 @@
                     "open_time": null,
                     "close_time": null,
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -6785,6 +7385,14 @@
                     "open_time": null,
                     "close_time": null,
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -6871,6 +7479,14 @@
                     "open_time": "08:00",
                     "close_time": "12:00",
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -6949,6 +7565,22 @@
                     "open_time": "07:00",
                     "close_time": "15:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -7027,6 +7659,22 @@
                     "open_time": "07:00",
                     "close_time": "15:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -7113,6 +7761,14 @@
                     "open_time": "08:00",
                     "close_time": "12:00",
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -7191,6 +7847,22 @@
                     "open_time": "07:00",
                     "close_time": "15:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -7269,6 +7941,22 @@
                     "open_time": "07:00",
                     "close_time": "15:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -7355,6 +8043,14 @@
                     "open_time": "08:00",
                     "close_time": "12:00",
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -7436,6 +8132,14 @@
                     "open_time": "08:00",
                     "close_time": "14:00",
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -7517,6 +8221,14 @@
                     "open_time": null,
                     "close_time": null,
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -7598,6 +8310,14 @@
                     "open_time": null,
                     "close_time": null,
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -7681,6 +8401,22 @@
                     "open_time": "09:00",
                     "close_time": "20:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -7772,6 +8508,22 @@
                     "open_time": "09:00",
                     "close_time": "20:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -7863,6 +8615,22 @@
                     "open_time": "09:00",
                     "close_time": "14:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -7943,6 +8711,22 @@
                     "open_time": "09:00",
                     "close_time": "17:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -8109,6 +8893,22 @@
                     "open_time": "08:30",
                     "close_time": "20:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -8283,6 +9083,22 @@
                     "open_time": "09:00",
                     "close_time": "21:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -8364,6 +9180,22 @@
                     "open_time": "09:00",
                     "close_time": "18:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -8442,6 +9274,22 @@
                     "open_time": "10:00",
                     "close_time": "18:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": false,
+                    "open_time": "09:00",
+                    "close_time": "13:00",
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -8596,6 +9444,22 @@
                     "open_time": "08:00",
                     "close_time": "21:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": false,
+                    "open_time": "08:00",
+                    "close_time": "16:00",
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -8770,6 +9634,14 @@
                     "open_time": "09:00",
                     "close_time": "13:00",
                     "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         },
@@ -9107,6 +9979,22 @@
                     "open_time": "09:00",
                     "close_time": "21:00",
                     "day_of_week": 5
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 6
+                },
+                {
+                    "notes": null,
+                    "is_24h": false,
+                    "is_closed": true,
+                    "open_time": null,
+                    "close_time": null,
+                    "day_of_week": 7
                 }
             ]
         }
@@ -9173,36 +10061,36 @@
             "code": "neonat",
             "name_en": "Neonatology",
             "name_ro": "Neonatologie",
-            "category_en": "Women and children",
-            "category_ro": "Femei și copii"
+            "category_en": "Pediatric care",
+            "category_ro": "Îngrijire pediatrică"
         },
         {
             "code": "peds_neuro",
             "name_en": "Pediatric neurology",
             "name_ro": "Neurologie pediatrică",
-            "category_en": "Women and children",
-            "category_ro": "Femei și copii"
+            "category_en": "Pediatric care",
+            "category_ro": "Îngrijire pediatrică"
         },
         {
             "code": "gyn",
             "name_en": "Obstetrics & Gynecology",
             "name_ro": "Obstetrică-Ginecologie",
-            "category_en": "Women and children",
-            "category_ro": "Femei și copii"
+            "category_en": "Women’s health",
+            "category_ro": "Sănătatea femeii"
         },
         {
             "code": "peds",
             "name_en": "Pediatrics",
             "name_ro": "Pediatrie",
-            "category_en": "Women and children",
-            "category_ro": "Femei și copii"
+            "category_en": "Pediatric care",
+            "category_ro": "Îngrijire pediatrică"
         },
         {
             "code": "fertility",
             "name_en": "Fertility / IVF",
             "name_ro": "Reproducere umană asistată",
-            "category_en": "Women and children",
-            "category_ro": "Femei și copii"
+            "category_en": "Women’s health",
+            "category_ro": "Sănătatea femeii"
         },
         {
             "code": "family",
