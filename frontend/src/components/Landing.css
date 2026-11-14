@@ -116,12 +116,21 @@
   background: var(--accent-hover);
 }
 
+/* "Ce te doare?" and "Lângă mine" side by side under the search */
+.landing-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+
 /* "Ce te doare?" button (overrides the style in SymptomGuide.css) */
 .landing-hero .landing-symptom {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-top: 16px;
+  margin-top: 0;
   padding: 10px 22px;
   border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 999px;

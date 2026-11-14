@@ -1,0 +1,181 @@
+/* "Lângă mine": ask for the location, then show the nearest matching place */
+.nearme-ask {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--accent);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nearme-ask:hover {
+  background: var(--accent-soft);
+}
+
+.nearme-msg {
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+}
+
+.nearme-msg p {
+  margin: 0 0 4px;
+}
+
+.nearme-msg.error {
+  border-color: #f1dfb4;
+  background: #fdf6e3;
+  color: #6b4a0e;
+}
+
+/* The card */
+.nearme {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, white);
+  border-radius: 12px;
+  background: var(--accent-soft);
+}
+
+.nearme-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.nearme-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.nearme-distance {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.nearme-place {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.nearme-icon {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+}
+
+.nearme-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.nearme-text strong {
+  line-height: 1.25;
+}
+
+.nearme-text small {
+  color: var(--ink-soft);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.nearme-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.nearme-show,
+.nearme-route {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.nearme-show {
+  border: none;
+  background: var(--accent);
+  color: #fff;
+}
+
+.nearme-show:hover {
+  background: var(--accent-hover);
+}
+
+.nearme-route {
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+}
+
+.nearme-route:hover {
+  background: var(--paper);
+}
+
+.nearme-far {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+/* Round "my location" button on the map, under the account button */
+.floating-btn.locate {
+  top: 76px;
+  right: 16px;
+  color: var(--accent);
+}
+
+.floating-btn.locate.on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* Results list: distance under the name */
+.result-distance {
+  color: var(--accent);
+  font-weight: 600;
+}
