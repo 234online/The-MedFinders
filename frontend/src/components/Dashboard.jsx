@@ -48,7 +48,7 @@ export default function Dashboard({ places, onBack, onOpenPlace }) {
             {data && (
               <span className={"stats-source " + data.source}>
                 <IconDatabase size={14} stroke={1.8} aria-hidden="true" />
-                {TEXT.dataTiger}
+                {TEXT.statsLive}
               </span>
             )}
           </div>
@@ -61,6 +61,7 @@ export default function Dashboard({ places, onBack, onOpenPlace }) {
         {!data && error === "off" && <p className="stats-msg">{TEXT.statsOff}</p>}
         {!data && error === "failed" && <p className="stats-msg">{TEXT.statsError}</p>}
         {data && <DashboardContent data={data} places={places} onOpenPlace={onOpenPlace} />}
+        <p className="stats-credit">{TEXT.statsCredit}</p>
       </main>
     </div>
   );
@@ -109,18 +110,18 @@ function DashboardContent({ data, places, onOpenPlace }) {
             {views.total > 0 ? (
               <TopPlaces byPlace={views.byPlace} byCode={byCode} onOpenPlace={onOpenPlace} />
             ) : (
-              <p className="stats-storage">{TEXT.statsNone}</p>
+              <p className="stats-muted">{TEXT.statsNone}</p>
             )}
           </>
         ) : favs == null ? (
-          <p className="stats-storage">{TEXT.statsFavoritesOff}</p>
+          <p className="stats-muted">{TEXT.statsFavoritesOff}</p>
         ) : (
           <>
             <p className="stats-caption">{TEXT.statsFavoritesNote(favs.total)}</p>
             {favs.total > 0 ? (
               <TopPlaces byPlace={favs.byPlace} byCode={byCode} onOpenPlace={onOpenPlace} />
             ) : (
-              <p className="stats-storage">{TEXT.statsNone}</p>
+              <p className="stats-muted">{TEXT.statsNone}</p>
             )}
           </>
         )}
@@ -186,14 +187,6 @@ function DashboardContent({ data, places, onOpenPlace }) {
           <h2>{TEXT.statsRecent}</h2>
           <Recent recent={data.recent} byCode={byCode} now={data.generatedAt} />
         </section>
-        {data.storage && (
-          <section className="stats-card">
-            <h2>{TEXT.statsStorage}</h2>
-            <p className="stats-storage">
-              {TEXT.statsStorageText(data.storage.chunks, data.storage.compressedChunks, data.storage.savedPercent)}
-            </p>
-          </section>
-        )}
       </div>
     </>
   );

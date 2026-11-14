@@ -196,36 +196,8 @@ async function dashboard(rangeDays = 7) {
     timeline: [...timeline.values()].sort((a, b) => a.t - b.t),
     recent: rec.rows.map((r) => ({ t: new Date(r.time).getTime(), placeCode: r.place_code, kind: r.kind })),
     from: from.getTime(),
-    views: { total: Object.values(viewsByPlace).reduce((a, b) => a + b, 0), byPlace: viewsByPlace },
-    storage: await storageStats()
+    views: { total: Object.values(viewsByPlace).reduce((a, b) => a + b, 0), byPlace: viewsByPlace }
   };
-}
-
-// How much space compression saves
-async function storageStats() {
-  try {
-    const [chunks, comp] = await Promise.all([
-      pool.query(
-        `SELECT count(*)::int AS total, count(*) FILTER (WHERE is_compressed)::int AS compressed
-         FROM timescaledb_information.chunks WHERE hypertable_name = 'contact_activity'`
-      ),
-      pool.query(
-        `SELECT sum(before_compression_total_bytes)::bigint AS before,
-                sum(after_compression_total_bytes)::bigint  AS after
-         FROM hypertable_compression_stats('contact_activity')`
-      )
-    ]);
-    const before = Number(comp.rows[0]?.before) || 0;
-    const after = Number(comp.rows[0]?.after) || 0;
-    return {
-      chunks: chunks.rows[0].total,
-      compressedChunks: chunks.rows[0].compressed,
-      savedPercent: before ? Math.round((1 - after / before) * 100) : null
-    };
-  } catch (err) {
-    console.warn('[Tiger] Statistici compresie indisponibile:', err.message);
-    return null;
-  }
 }
 
 module.exports = { init, isEnabled, record, recordView, popularTimes, dashboard, KINDS, VIEW_SOURCES };
