@@ -14,7 +14,8 @@ const STATUSES = ['pending', 'confirmed', 'completed', 'cancelled'];
 const MAX_OPEN_PER_PATIENT = 10;
 
 const COLUMNS = `a.id, a.place_id, to_char(a.day, 'YYYY-MM-DD') AS date, to_char(a.time, 'HH24:MI') AS time,
-  a.reason, a.status, a.diagnosis, a.notes, a.created_at`;
+  a.reason, a.status, a.diagnosis, a.notes, a.created_at, a.requested_doctor_id,
+  (SELECT rd.name FROM users rd WHERE rd.id = a.requested_doctor_id) AS requested_doctor_name`;
 
 const toApi = (r) => ({
   id: r.id,
@@ -25,8 +26,14 @@ const toApi = (r) => ({
   status: r.status,
   diagnosis: r.diagnosis,
   notes: r.notes,
-  createdAt: r.created_at
+  createdAt: r.created_at,
+  // The doctor the patient chose, or null = any doctor of the clinic
+  requestedDoctor: r.requested_doctor_id ? { id: r.requested_doctor_id, name: r.requested_doctor_name } : null
 });
+
+// A doctor sees the clinic's requests addressed to "any doctor" or to them.
+// $N is the doctor's id; used by every doctor query below.
+const VISIBLE_TO_DOCTOR = (n) => `(a.requested_doctor_id IS NULL OR a.requested_doctor_id = $${n})`;
 
 // ---------- Patient ----------
 async function countOpen(patientId) {
@@ -38,11 +45,11 @@ async function countOpen(patientId) {
   return rows[0].n;
 }
 
-async function create({ patientId, placeId, date, time, reason }) {
+async function create({ patientId, placeId, date, time, reason, doctorId = null }) {
   const { rows } = await db.query(
-    `INSERT INTO appointments AS a (patient_id, place_id, day, time, reason)
-     VALUES ($1, $2, $3, $4, $5) RETURNING ${COLUMNS}`,
-    [patientId, placeId, date, time, reason]
+    `INSERT INTO appointments AS a (patient_id, place_id, day, time, reason, requested_doctor_id)
+     VALUES ($1, $2, $3, $4, $5, $6) RETURNING ${COLUMNS}`,
+    [patientId, placeId, date, time, reason, doctorId]
   );
   return toApi(rows[0]);
 }
@@ -70,7 +77,7 @@ async function cancelByPatient(id, patientId) {
 // Every appointment at the doctor's clinics, with the short patient card
 // (name, age, sex, allergies) taken from the patient's own account, and
 // which doctor handled it (several doctors share a clinic's requests).
-async function listForClinics(placeIds) {
+async function listForClinics(placeIds, doctorId) {
   const { rows } = await db.query(
     `SELECT ${COLUMNS}, u.id AS patient_id, u.name AS patient_name,
             to_char(u.birth_date, 'YYYY-MM-DD') AS patient_birth_date, u.sex AS patient_sex,
@@ -79,10 +86,11 @@ async function listForClinics(placeIds) {
      JOIN users u ON u.id = a.patient_id
      LEFT JOIN medical_profiles m ON m.user_id = u.id
      LEFT JOIN users d ON d.id = a.doctor_id
-     WHERE a.place_id = ANY($1::varchar[]) AND a.day >= CURRENT_DATE - INTERVAL '180 days'
+     WHERE a.place_id = ANY($1::varchar[]) AND ${VISIBLE_TO_DOCTOR(2)}
+       AND a.day >= CURRENT_DATE - INTERVAL '180 days'
      ORDER BY a.day, a.time
      LIMIT 2000`,
-    [placeIds]
+    [placeIds, doctorId]
   );
   return rows.map((r) => ({
     ...toApi(r),
@@ -97,10 +105,11 @@ async function listForClinics(placeIds) {
   }));
 }
 
-async function patientHasClinicAppointment(patientId, placeIds) {
+async function patientHasClinicAppointment(patientId, placeIds, doctorId) {
   const { rowCount } = await db.query(
-    'SELECT 1 FROM appointments WHERE patient_id = $1 AND place_id = ANY($2::varchar[]) LIMIT 1',
-    [patientId, placeIds]
+    `SELECT 1 FROM appointments a
+     WHERE a.patient_id = $1 AND a.place_id = ANY($2::varchar[]) AND ${VISIBLE_TO_DOCTOR(3)} LIMIT 1`,
+    [patientId, placeIds, doctorId]
   );
   return rowCount > 0;
 }
@@ -115,7 +124,7 @@ async function updateByDoctor(id, { placeIds, doctorId, status, diagnosis, notes
        notes     = CASE WHEN $6::boolean THEN $7::text ELSE a.notes END,
        doctor_id = $8,
        updated_at = now()
-     WHERE a.id = $1 AND a.place_id = ANY($2::varchar[])
+     WHERE a.id = $1 AND a.place_id = ANY($2::varchar[]) AND ${VISIBLE_TO_DOCTOR(8)}
      RETURNING ${COLUMNS}`,
     [id, placeIds, status ?? null, diagnosis !== undefined, diagnosis ?? null, notes !== undefined, notes ?? null, doctorId]
   );

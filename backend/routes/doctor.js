@@ -42,7 +42,7 @@ module.exports = function doctorRoutes({ requireRole }) {
   router.get('/api/doctor/appointments', wrap(async (req, res) => {
     const clinics = clinicsOf(req.user);
     if (clinics.length === 0) return res.json([]);
-    res.json(await appointments.listForClinics(clinics));
+    res.json(await appointments.listForClinics(clinics, req.user.id));
   }));
 
   // A patient who sent a request to one of my clinics (patient id or null)

@@ -52,6 +52,7 @@ export default function MyAppointments() {
                   <small>
                     {format.format(new Date(`${a.date}T00:00:00`))} · {a.time} — {a.reason}
                   </small>
+                  <small>{a.requestedDoctor ? a.requestedDoctor.name : TEXT.bookAnyDoctorShort}</small>
                   {a.diagnosis && <small>{a.diagnosis}</small>}
                 </span>
                 <span className="appointment-side">

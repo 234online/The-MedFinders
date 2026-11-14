@@ -12,9 +12,12 @@ const isConfigured = () => Boolean(config.auth0Domain && config.auth0Management)
 // The Auth0 "Database" connection that stores email + password logins
 const DB_CONNECTION = process.env.AUTH0_DB_CONNECTION || 'Username-Password-Authentication';
 
+// The token lasts ~24 h; the server runs longer than that, so renew it
+// a minute before it expires
 let cachedToken = null;
+let cachedUntil = 0;
 async function token() {
-  if (cachedToken) return cachedToken;
+  if (cachedToken && Date.now() < cachedUntil) return cachedToken;
   const { clientId, clientSecret } = config.auth0Management;
   const res = await fetch(`https://${config.auth0Domain}/oauth/token`, {
     method: 'POST',
@@ -27,7 +30,9 @@ async function token() {
     })
   });
   if (!res.ok) throw new Error(`Auth0 token: ${res.status} ${await res.text()}`);
-  cachedToken = (await res.json()).access_token;
+  const data = await res.json();
+  cachedToken = data.access_token;
+  cachedUntil = Date.now() + Math.max((data.expires_in ?? 3600) - 60, 30) * 1000;
   return cachedToken;
 }
 

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { accountApi } from "../account/api.js";
+import { useEffect, useState } from "react";
+import { accountApi, bookingApi } from "../account/api.js";
 import { TEXT } from "../config/texts.js";
 import "./panels.css";
 
@@ -9,7 +9,8 @@ const isoDay = (d) => {
 };
 
 // "Book online" form for one clinic. The booking is saved in the
-// appointments table and shows up on the clinic's doctor dashboard.
+// appointments table and shows up on the doctor dashboard: of the chosen
+// doctor, or of every doctor of the clinic when "any doctor" is picked.
 //   place      the clinic
 //   onDone     () => called after closing the success message
 export default function BookAppointment({ place, onDone }) {
@@ -17,7 +18,20 @@ export default function BookAppointment({ place, onDone }) {
   const lastDay = new Date();
   lastDay.setFullYear(lastDay.getFullYear() + 1);
 
-  const [form, setForm] = useState({ date: isoDay(tomorrow), time: "09:00", reason: "" });
+  const [form, setForm] = useState({ date: isoDay(tomorrow), time: "09:00", reason: "", doctorId: "" });
+  const [doctors, setDoctors] = useState(null); // null = loading
+
+  // The clinic's doctors on the site, to choose from
+  useEffect(() => {
+    let cancelled = false;
+    bookingApi
+      .doctors(place.id)
+      .then((list) => !cancelled && setDoctors(list))
+      .catch(() => !cancelled && setDoctors([]));
+    return () => {
+      cancelled = true;
+    };
+  }, [place.id]);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState(null);
   const [done, setDone] = useState(false);
@@ -28,10 +42,16 @@ export default function BookAppointment({ place, onDone }) {
     setSending(true);
     setError(null);
     try {
-      await accountApi.bookAppointment({ placeId: place.id, ...form, reason: form.reason.trim() });
+      await accountApi.bookAppointment({
+        placeId: place.id,
+        date: form.date,
+        time: form.time,
+        reason: form.reason.trim(),
+        doctorId: form.doctorId ? Number(form.doctorId) : null,
+      });
       setDone(true);
     } catch (err) {
-      setError([400, 429].includes(err.status) ? err.message : TEXT.bookError);
+      setError([400, 409, 429].includes(err.status) ? err.message : TEXT.bookError);
     } finally {
       setSending(false);
     }
@@ -48,11 +68,38 @@ export default function BookAppointment({ place, onDone }) {
     );
   }
 
+  if (doctors === null) return <p className="saved-empty">{TEXT.profileLoading}</p>;
+  if (doctors.length === 0) {
+    return (
+      <div className="login-form">
+        <p className="saved-user">
+          <strong>{place.name}</strong>
+        </p>
+        <p className="book-unavailable">{TEXT.bookUnavailable}</p>
+        <button type="button" className="btn-secondary" onClick={onDone}>
+          {TEXT.close}
+        </button>
+      </div>
+    );
+  }
+
   return (
     <form className="login-form" onSubmit={submit}>
       <p className="saved-user">
         <strong>{place.name}</strong>
       </p>
+      <label>
+        {TEXT.bookDoctor}
+        <select value={form.doctorId} onChange={set("doctorId")}>
+          <option value="">{TEXT.bookAnyDoctor(doctors.length)}</option>
+          {doctors.map((d) => (
+            <option key={d.id} value={d.id}>
+              {d.name}
+              {d.specialty && ` — ${d.specialty}`}
+            </option>
+          ))}
+        </select>
+      </label>
       <div className="book-row">
         <label>
           {TEXT.bookDate}
