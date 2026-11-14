@@ -10,9 +10,9 @@ import { getLanguage } from "../config/texts.js";
 function Romanian() {
   return (
     <>
-      <h3>Ce este TimiCareNow?</h3>
+      <h3>Ce este MedFinders?</h3>
       <p>
-        TimiCareNow te ajută să găsești rapid spitale, clinici, laboratoare și cabinete
+        MedFinders te ajută să găsești rapid spitale, clinici, laboratoare și cabinete
         medicale din Timișoara, direct pe hartă.
       </p>
 
@@ -34,12 +34,12 @@ function Romanian() {
       </p>
       <p>
         Scorul combină evaluările publice (ROmedic, SfatulMedicului) cu recenziile scrise pe
-        TimiCareNow. Ghidul „Ce te doare?” te orientează, dar nu înlocuiește un diagnostic.
+        MedFinders. Ghidul „Ce te doare?” te orientează, dar nu înlocuiește un diagnostic.
         Confirmă programul telefonic înainte de vizită. În caz de urgență, sună la 112.
       </p>
 
       <h3>Echipa</h3>
-      <p>Proiect realizat de echipa TimiCareNow la Unihack.</p>
+      <p>Proiect realizat de echipa MedFinders la Unihack.</p>
     </>
   );
 }
@@ -47,9 +47,9 @@ function Romanian() {
 function English() {
   return (
     <>
-      <h3>What is TimiCareNow?</h3>
+      <h3>What is MedFinders?</h3>
       <p>
-        TimiCareNow helps you quickly find hospitals, clinics, laboratories and medical
+        MedFinders helps you quickly find hospitals, clinics, laboratories and medical
         practices in Timișoara, right on the map.
       </p>
 
@@ -71,12 +71,12 @@ function English() {
       </p>
       <p>
         The score combines public ratings (ROmedic, SfatulMedicului) with reviews written on
-        TimiCareNow. The “What's wrong?” guide points you in the right direction but is not a
+        MedFinders. The “What's wrong?” guide points you in the right direction but is not a
         diagnosis. Confirm opening hours by phone before visiting. In an emergency, call 112.
       </p>
 
       <h3>Team</h3>
-      <p>Built by the TimiCareNow team at Unihack.</p>
+      <p>Built by the MedFinders team at Unihack.</p>
     </>
   );
 }
@@ -84,9 +84,9 @@ function English() {
 function Hungarian() {
   return (
     <>
-      <h3>Mi a TimiCareNow?</h3>
+      <h3>Mi a MedFinders?</h3>
       <p>
-        A TimiCareNow segít gyorsan megtalálni Temesvár kórházait, klinikáit,
+        A MedFinders segít gyorsan megtalálni Temesvár kórházait, klinikáit,
         laboratóriumait és orvosi rendelőit, közvetlenül a térképen.
       </p>
 
@@ -107,14 +107,14 @@ function Hungarian() {
         a nevét, címét, telefonszámát, nyitvatartását és legalább egy szakterületét.
       </p>
       <p>
-        A pontszám a nyilvános értékeléseket (ROmedic, SfatulMedicului) és a TimiCareNow-n írt
+        A pontszám a nyilvános értékeléseket (ROmedic, SfatulMedicului) és a MedFinders-n írt
         véleményeket egyesíti. A „Mi a panaszod?” útmutató eligazít, de nem helyettesíti a
         diagnózist. Látogatás előtt telefonon erősítsd meg a nyitvatartást. Vészhelyzetben hívd
         a 112-t.
       </p>
 
       <h3>Csapat</h3>
-      <p>A TimiCareNow csapat projektje az Unihack versenyen.</p>
+      <p>A MedFinders csapat projektje az Unihack versenyen.</p>
     </>
   );
 }

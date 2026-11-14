@@ -70,9 +70,16 @@ export function useVoice() {
   useEffect(() => {
     const canRecord = typeof window !== "undefined" && !!navigator.mediaDevices?.getUserMedia && "MediaRecorder" in window;
     fetch("/api/voice")
-      .then((r) => (r.ok ? r.json() : { enabled: false }))
-      .then((d) => setEnabled(Boolean(d.enabled) && canRecord))
-      .catch(() => setEnabled(false));
+      .then((r) => r.json())
+      .then((d) => {
+        if (!d.enabled) console.info("[voice] Off: add ELEVENLABS_API_KEY to the .env file and restart npm run dev.");
+        else if (!canRecord) console.info("[voice] Off: this browser/page can't use the microphone (open the site on localhost or https).");
+        setEnabled(Boolean(d.enabled) && canRecord);
+      })
+      .catch(() => {
+        console.info("[voice] Off: the /api/voice route isn't there. Replace server/chatProxy.js and restart npm run dev.");
+        setEnabled(false);
+      });
     return () => audio.current?.pause();
   }, []);
 

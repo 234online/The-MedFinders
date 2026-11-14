@@ -5,13 +5,7 @@
 /* Bigger text everywhere (sizes written in rem grow with this) */
 html.a11y {
   font-size: 118%;
-<<<<<<< HEAD
-<<<<<<< HEAD
-  /* Colours come from the site theme, not overridden here */
-=======
->>>>>>> 07006ef65def2be3e3ea933b93c4042defd67e51
-=======
->>>>>>> 87d65abf4501ac90e498fbcd7649ec1faad5d0b1
+  /* Colours come from the site theme; accessible mode doesn't change them */
 }
 
 html.a11y body {
@@ -31,6 +25,18 @@ html.a11y .review-meta,
 html.a11y .symptom-disclaimer,
 html.a11y .login-note {
   color: #1f2937 !important;
+}
+
+/* The chat keeps white text on its coloured header and on your own messages */
+html.a11y .chat-header,
+html.a11y .chat-header small,
+html.a11y .chat-msg.user,
+html.a11y .chat-msg.user * {
+  color: #fff !important;
+}
+
+html.a11y .chat-msg.assistant {
+  color: #111827;
 }
 
 /* Links are underlined */
