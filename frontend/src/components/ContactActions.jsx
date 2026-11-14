@@ -1,6 +1,7 @@
 import { TEXT } from "../config/texts.js";
 import { specialtyName } from "../config/placeTypes.js";
 import { splitPhones, whatsappLink, mailtoLink } from "../utils/contact.js";
+import { trackContact } from "../account/api.js";
 import "./ContactActions.css";
 
 // Call / WhatsApp / appointment-by-email buttons for one place.
@@ -34,13 +35,18 @@ export default function ContactActions({ place, specialty = null, user = null, c
         const wa = whatsappLink(p.tel, message);
         return (
           <div key={p.label} className="contact-phone">
-            <a className="contact-btn call" href={`tel:${p.tel}`} title={`${TEXT.callButton} ${p.label}`}>
+            <a
+              className="contact-btn call"
+              href={`tel:${p.tel}`}
+              onClick={() => trackContact(place.id, "call", p.label)}
+              title={`${TEXT.callButton} ${p.label}`}>
               📞 <span className="contact-number">{p.label}</span>
             </a>
             {wa && (
               <a
                 className="contact-btn whatsapp"
                 href={wa}
+                onClick={() => trackContact(place.id, "whatsapp", p.label)}
                 target="_blank"
                 rel="noreferrer"
                 title={`${TEXT.whatsappButton} ${p.label}`}
@@ -53,7 +59,11 @@ export default function ContactActions({ place, specialty = null, user = null, c
       })}
 
       {mail && (
-        <a className="contact-btn appointment" href={mail} title={TEXT.appointmentHint}>
+        <a
+          className="contact-btn appointment"
+          href={mail}
+          onClick={() => trackContact(place.id, "email", place.email)}
+          title={TEXT.appointmentHint}>
           {TEXT.appointmentButton}
         </a>
       )}

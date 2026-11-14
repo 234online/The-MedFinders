@@ -11,4 +11,8 @@
 
 export const AUTH0_DOMAIN = import.meta.env.VITE_AUTH0_DOMAIN;
 export const AUTH0_CLIENT_ID = import.meta.env.VITE_AUTH0_CLIENT_ID;
+// API identifier from Auth0 Dashboard -> Applications -> APIs.
+// Needed so the backend can save favourites / contact history per user.
+//    VITE_AUTH0_AUDIENCE=https://api.medfinders
+export const AUTH0_AUDIENCE = import.meta.env.VITE_AUTH0_AUDIENCE;
 export const AUTH0_ENABLED = Boolean(AUTH0_DOMAIN && AUTH0_CLIENT_ID);
