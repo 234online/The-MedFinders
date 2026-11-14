@@ -7,7 +7,8 @@
     "start": "node index.js",
     "dev": "node --watch index.js",
     "sync-db": "node scripts/sync_clinics.js",
-    "export-frontend": "node scripts/export_frontend.js"
+    "export-frontend": "node scripts/export_frontend.js",
+    "migrate": "node db/migrate.js"
   },
   "keywords": [
     "express",
