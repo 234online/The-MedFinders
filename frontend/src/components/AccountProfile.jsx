@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { accountApi } from "../account/api.js";
 import { places } from "../data/loadPlaces.js";
 import { TEXT, getLanguage } from "../config/texts.js";
+import MedicalForm from "./MedicalForm.jsx";
+import MyAppointments from "./MyAppointments.jsx";
 import "./panels.css";
 
 // =============================================================
@@ -11,7 +13,7 @@ import "./panels.css";
 //  (SERVER_ACCOUNT in account/useAccount.js).
 // =============================================================
 
-const FIELDS = ["name", "phone", "birth_date", "preferred_language"];
+const FIELDS = ["name", "phone", "birth_date", "sex", "preferred_language"];
 const LANGUAGE_OPTIONS = [
   { id: "ro", label: "Română" },
   { id: "en", label: "English" },
@@ -111,6 +113,17 @@ export default function AccountProfile({ onDeleted }) {
           />
         </label>
         <label>
+          {TEXT.profileSex}
+          <select value={form.sex} onChange={set("sex")}>
+            <option value="">—</option>
+            {Object.entries(TEXT.sexOptions).map(([id, label]) => (
+              <option key={id} value={id}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
           {TEXT.profileLanguage}
           <select value={form.preferred_language} onChange={set("preferred_language")}>
             <option value="">—</option>
@@ -129,6 +142,14 @@ export default function AccountProfile({ onDeleted }) {
           {saving ? TEXT.profileSaving : TEXT.profileSave}
         </button>
       </form>
+
+      {/* Patients: medical record + appointments (doctors see them on their dashboard) */}
+      {profile.role !== "doctor" && (
+        <>
+          <MyAppointments />
+          <MedicalForm />
+        </>
+      )}
 
       <h3>{TEXT.contactHistoryTitle}</h3>
       {contacts.length === 0 ? (

@@ -58,6 +58,11 @@
 }
 
 /* ---------- Big search bar ---------- */
+/* Room between the title and the search when there is no subtitle */
+.landing h1 + .landing-search {
+  margin-top: 18px;
+}
+
 .landing-search {
   width: 100%;
   max-width: 620px;
@@ -297,6 +302,19 @@
 
 .landing-all:hover {
   background: var(--accent-hover);
+}
+
+/* Link to the portal at the bottom of the public start page */
+.landing-doctor-link {
+  margin-top: 28px;
+  padding: 6px 10px;
+  border: none;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-size: 0.92rem;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 /* Phones: less space above the title */

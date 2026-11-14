@@ -5,7 +5,8 @@
 //
 //  The rest of the app uses TEXT.someKey, which always gives the
 //  text in the language currently chosen (see setLanguage below).
-//  (Category, specialty and service names are in placeTypes.js,
+//  (Doctor dashboard text is in doctor/doctorTexts.js.
+//   Category, specialty and service names are in placeTypes.js,
 //   symptoms in symptoms.js, documentation in Documentation.jsx.)
 // =============================================================
 
@@ -25,7 +26,6 @@ const TEXTS = {
 
     // Start page
     landingTitle: "Găsește ajutorul medical de care ai nevoie",
-    landingSubtitle: "Toate informațiile de care ai nevoie într-un singur loc.",
     landingSearchPlaceholder: "Ex: cardiologie, laborator analize, stomatolog, Dr. …",
     landingSearchButton: "Caută",
     landingCategoriesTitle: "Sau alege un domeniu medical",
@@ -83,6 +83,7 @@ const TEXTS = {
     invalidEmail: "Introdu o adresă de email validă.",
     shortPassword: "Parola trebuie să aibă cel puțin 4 caractere.",
     prototypeNote: "Prototip: contul este salvat doar în acest browser.",
+    demoAccountsNote: (emails, password) => `Conturi demo: ${emails.join(" (medic), ")} (pacient), parola ${password}`,
     auth0Intro: "Autentificarea se face securizat prin Auth0. Poți folosi email și parolă sau contul Google.",
     googleLogin: "Continuă cu Google",
     auth0Note: "Autentificare securizată prin Auth0.",
@@ -112,6 +113,47 @@ const TEXTS = {
     deleteAccount: "Șterge datele mele",
     deleteAccountConfirm:
       "Sigur vrei să ștergi datele tale de pe TimiCareNow (profil, favorite)? Istoricul contactărilor rămâne doar anonim. Acțiunea nu poate fi anulată.",
+
+    // Account types (patient / doctor)
+    accountTypeLabel: "Tip cont",
+    rolePatient: "Pacient",
+    roleDoctor: "Medic",
+    roleDoctorDemo: "Cont de medic (doar în prototip)",
+    openDoctorPortal: "Deschide portalul medicilor",
+    doctorClinic: "Clinica",
+    doctorSpecialty: "Specialitate",
+    doctorNoClinic: "Contul tău de medic nu are încă o clinică asociată. Contactează administratorul.",
+    profileSex: "Sex",
+    sexOptions: { M: "Masculin", F: "Feminin" },
+
+    // My medical record (patients)
+    medicalTitle: "Fișa mea medicală",
+    medicalWhy: "Opțional. O văd doar medicii clinicilor la care ai făcut o programare.",
+    bloodType: "Grupa sanguină",
+    allergies: "Alergii",
+    conditions: "Afecțiuni cronice",
+    medications: "Tratament curent",
+    oneItemPerLine: "câte una pe rând",
+    medicationsHint: "câte unul pe rând, ex: Metformin – 500 mg, de 2 ori pe zi",
+
+    // Appointments
+    myAppointmentsTitle: "Programările mele",
+    myAppointmentsEmpty: "Nu ai trimis nicio cerere. Apasă pe o clinică pe hartă și alege „Cere o programare online”.",
+    cancelAppointment: "Anulează",
+    cancelAppointmentConfirm: "Sigur vrei să anulezi programarea?",
+    appointmentStatus: { pending: "În așteptare", confirmed: "Confirmată", completed: "Finalizată", cancelled: "Anulată" },
+    bookButton: "Cere o programare online",
+    bookTitle: "Cerere de programare",
+    bookDate: "Ziua dorită",
+    bookTime: "Ora dorită",
+    bookReason: "Motivul consultației",
+    bookReasonPlaceholder: "Ex: control, dureri de spate, rezultate analize…",
+    bookNote: "Cererea apare pe panoul tuturor medicilor clinicii. Ei vor vedea datele tale de contact și fișa medicală din „Contul meu”.",
+    bookSubmit: "Trimite cererea",
+    bookSending: "Se trimite…",
+    bookDone: "Cererea a fost trimisă medicilor clinicii! Vezi răspunsul în „Contul meu” → „Programările mele”.",
+    bookError: "Programarea nu a putut fi trimisă. Încearcă din nou.",
+    loginToBook: "Autentifică-te pentru a face o programare.",
     authErrorTitle: "Autentificarea nu a reușit:",
 
     // Place popup & details
@@ -284,7 +326,6 @@ const TEXTS = {
     backHome: "Back to the start page",
     languageLabel: "Language",
 
-    landingSubtitle: "All the information you need, in one place.",
     landingSearchPlaceholder: "E.g. cardiology, blood tests, dentist, Dr. …",
     landingSearchButton: "Search",
     landingCategoriesTitle: "Or choose a medical field",
@@ -337,6 +378,7 @@ const TEXTS = {
     invalidEmail: "Enter a valid email address.",
     shortPassword: "The password must have at least 4 characters.",
     prototypeNote: "Prototype: the account is stored only in this browser.",
+    demoAccountsNote: (emails, password) => `Demo accounts: ${emails.join(" (doctor), ")} (patient), password ${password}`,
     auth0Intro: "Login is handled securely by Auth0. You can use email and password or your Google account.",
     googleLogin: "Continue with Google",
     auth0Note: "Secure login by Auth0.",
@@ -365,6 +407,47 @@ const TEXTS = {
     deleteAccount: "Delete my data",
     deleteAccountConfirm:
       "Delete your data on TimiCareNow (profile, favourites)? Your contact history is only kept anonymously. This can’t be undone.",
+
+    // Account types (patient / doctor)
+    accountTypeLabel: "Account type",
+    rolePatient: "Patient",
+    roleDoctor: "Doctor",
+    roleDoctorDemo: "Doctor account (prototype only)",
+    openDoctorPortal: "Open the doctor portal",
+    doctorClinic: "Clinic",
+    doctorSpecialty: "Specialty",
+    doctorNoClinic: "Your doctor account isn't linked to a clinic yet. Contact the administrator.",
+    profileSex: "Sex",
+    sexOptions: { M: "Male", F: "Female" },
+
+    // My medical record (patients)
+    medicalTitle: "My medical record",
+    medicalWhy: "Optional. Only doctors at clinics where you booked an appointment can see it.",
+    bloodType: "Blood type",
+    allergies: "Allergies",
+    conditions: "Chronic conditions",
+    medications: "Current medication",
+    oneItemPerLine: "one per line",
+    medicationsHint: "one per line, e.g. Metformin – 500 mg, twice a day",
+
+    // Appointments
+    myAppointmentsTitle: "My appointments",
+    myAppointmentsEmpty: "You haven't sent any requests. Click a clinic on the map and choose “Request an appointment”.",
+    cancelAppointment: "Cancel",
+    cancelAppointmentConfirm: "Cancel this appointment?",
+    appointmentStatus: { pending: "Waiting", confirmed: "Confirmed", completed: "Completed", cancelled: "Cancelled" },
+    bookButton: "Request an appointment",
+    bookTitle: "Appointment request",
+    bookDate: "Preferred day",
+    bookTime: "Preferred time",
+    bookReason: "Reason for the visit",
+    bookReasonPlaceholder: "E.g. check-up, back pain, test results…",
+    bookNote: "The request shows up on the dashboard of every doctor at this clinic. They will see your contact details and the medical record from “My account”.",
+    bookSubmit: "Send request",
+    bookSending: "Sending…",
+    bookDone: "Request sent to the clinic's doctors! See their answer in “My account” → “My appointments”.",
+    bookError: "The appointment couldn't be sent. Please try again.",
+    loginToBook: "Log in to book an appointment.",
     authErrorTitle: "Login failed:",
 
     save: "☆ Save to favourites",
@@ -530,7 +613,6 @@ const TEXTS = {
     backHome: "Vissza a kezdőlapra",
     languageLabel: "Nyelv",
 
-    landingSubtitle: "Minden információ, amire szükséged van, egy helyen.",
     landingSearchPlaceholder: "Pl. kardiológia, vérvétel, fogorvos, Dr. …",
     landingSearchButton: "Keresés",
     landingCategoriesTitle: "Vagy válassz egy orvosi területet",
@@ -583,6 +665,7 @@ const TEXTS = {
     invalidEmail: "Adj meg egy érvényes e-mail-címet.",
     shortPassword: "A jelszónak legalább 4 karakterből kell állnia.",
     prototypeNote: "Prototípus: a fiók csak ebben a böngészőben van tárolva.",
+    demoAccountsNote: (emails, password) => `Bemutató fiókok: ${emails.join(" (orvos), ")} (beteg), jelszó: ${password}`,
     auth0Intro: "A bejelentkezést biztonságosan az Auth0 kezeli. Használhatsz e-mailt és jelszót vagy Google-fiókot.",
     googleLogin: "Folytatás Google-lal",
     auth0Note: "Biztonságos bejelentkezés: Auth0.",
@@ -611,6 +694,47 @@ const TEXTS = {
     deleteAccount: "Adataim törlése",
     deleteAccountConfirm:
       "Biztosan törlöd az adataidat a TimiCareNow-ról (profil, kedvencek)? A kapcsolatfelvételek csak névtelenül maradnak meg. Ez nem vonható vissza.",
+
+    // Account types (patient / doctor)
+    accountTypeLabel: "Fióktípus",
+    rolePatient: "Beteg",
+    roleDoctor: "Orvos",
+    roleDoctorDemo: "Orvosi fiók (csak a prototípusban)",
+    openDoctorPortal: "Orvosi portál megnyitása",
+    doctorClinic: "Klinika",
+    doctorSpecialty: "Szakterület",
+    doctorNoClinic: "Az orvosi fiókod még nincs klinikához rendelve. Fordulj az adminisztrátorhoz.",
+    profileSex: "Nem",
+    sexOptions: { M: "Férfi", F: "Nő" },
+
+    // My medical record (patients)
+    medicalTitle: "Egészségügyi adataim",
+    medicalWhy: "Nem kötelező. Csak azoknak a klinikáknak az orvosai látják, ahová időpontot foglaltál.",
+    bloodType: "Vércsoport",
+    allergies: "Allergiák",
+    conditions: "Krónikus betegségek",
+    medications: "Jelenlegi kezelés",
+    oneItemPerLine: "soronként egy",
+    medicationsHint: "soronként egy, pl. Metformin – 500 mg, naponta kétszer",
+
+    // Appointments
+    myAppointmentsTitle: "Időpontjaim",
+    myAppointmentsEmpty: "Még nem küldtél kérést. Kattints egy klinikára a térképen, és válaszd az „Időpont kérése” lehetőséget.",
+    cancelAppointment: "Lemondás",
+    cancelAppointmentConfirm: "Biztosan lemondod az időpontot?",
+    appointmentStatus: { pending: "Függőben", confirmed: "Megerősítve", completed: "Lezárva", cancelled: "Lemondva" },
+    bookButton: "Időpont kérése",
+    bookTitle: "Időpontkérés",
+    bookDate: "Kívánt nap",
+    bookTime: "Kívánt időpont",
+    bookReason: "A vizsgálat oka",
+    bookReasonPlaceholder: "Pl. kontroll, hátfájás, leletek…",
+    bookNote: "A kérés a klinika minden orvosának felületén megjelenik. Látni fogják az elérhetőségeidet és az egészségügyi adataidat a „Fiókom” oldalról.",
+    bookSubmit: "Kérés elküldése",
+    bookSending: "Küldés…",
+    bookDone: "Elküldve a klinika orvosainak! A választ a „Fiókom” → „Időpontjaim” alatt látod.",
+    bookError: "Nem sikerült elküldeni. Próbáld újra.",
+    loginToBook: "Jelentkezz be az időpontfoglaláshoz.",
     authErrorTitle: "A bejelentkezés nem sikerült:",
 
     save: "☆ Mentés a kedvencek közé",

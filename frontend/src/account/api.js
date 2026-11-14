@@ -51,6 +51,14 @@ export const accountApi = {
   updateProfile: (changes) => apiFetch("/api/me", { method: "PATCH", body: changes }),
   deleteAccount: () => apiFetch("/api/me", { method: "DELETE" }),
   getContacts: (limit = 10) => apiFetch(`/api/me/contacts?limit=${limit}`),
+  // Medical details: { bloodType, allergies[], conditions[], medications[{ name, dose }] }
+  getMedical: () => apiFetch("/api/me/medical"),
+  saveMedical: (medical) => apiFetch("/api/me/medical", { method: "PUT", body: medical }),
+  // Appointments booked on the site
+  getAppointments: () => apiFetch("/api/me/appointments"),
+  // { placeId, date: "YYYY-MM-DD", time: "HH:MM", reason }
+  bookAppointment: (appointment) => apiFetch("/api/me/appointments", { method: "POST", body: appointment }),
+  cancelAppointment: (id) => apiFetch(`/api/me/appointments/${id}/cancel`, { method: "POST" }),
 };
 
 // Records a Call / WhatsApp / Email click (never blocks or breaks the link).

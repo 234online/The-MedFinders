@@ -5,6 +5,7 @@ import LanguageSwitcher from "./LanguageSwitcher.jsx";
 import AccessibleToggle from "../accessibility/AccessibleToggle.jsx";
 import { IconChartBar, IconSearch, IconStethoscope } from "@tabler/icons-react";
 import { GroupIcon, CategoryIcon, LogoIcon } from "./MedIcon.jsx";
+import { DTEXT } from "../doctor/doctorTexts.js";
 import "./Landing.css";
 
 // Quick buttons on the start page: filter ids from config/filters.js
@@ -20,6 +21,7 @@ const QUICK_FEATURES = ["open24h", "emergency", "kids"];
 //   onShowAll   () => open the map with everything
 //   onSymptoms  () => open the "Ce te doare?" guide
 //   lang, onLanguage  current language and how to change it
+//   onDoctorPortal    () => open the doctor dashboard
 //   children    extra things to show (the floating buttons)
 export default function Landing({
   counts,
@@ -35,6 +37,7 @@ export default function Landing({
   onLanguage,
   accessible,
   onToggleAccessible,
+  onDoctorPortal,
   children,
 }) {
   const [text, setText] = useState("");
@@ -65,7 +68,6 @@ export default function Landing({
           <span>{TEXT.brand}</span>
         </div>
         <h1>{TEXT.landingTitle}</h1>
-        <p className="landing-subtitle">{TEXT.landingSubtitle}</p>
 
         <form className="landing-search" onSubmit={handleSubmit}>
           <IconSearch className="landing-search-icon" size={22} stroke={1.8} aria-hidden="true" />
@@ -141,6 +143,12 @@ export default function Landing({
         {onStats && (
           <button type="button" className="landing-stats" onClick={onStats}>
             <IconChartBar size={18} stroke={1.8} aria-hidden="true" /> {TEXT.statsLink}
+          </button>
+        )}
+
+        {onDoctorPortal && (
+          <button type="button" className="landing-doctor-link" onClick={onDoctorPortal}>
+            {DTEXT.doctorLink}
           </button>
         )}
       </div>

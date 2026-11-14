@@ -9,29 +9,92 @@ const db = require('../db/pool');
 
 // Columns returned to the app (never select * : new private columns stay private)
 const PUBLIC_COLUMNS = `id, auth0_id, email, name, picture, role, phone,
-  to_char(birth_date, 'YYYY-MM-DD') AS birth_date, preferred_language,
+  to_char(birth_date, 'YYYY-MM-DD') AS birth_date, sex, preferred_language, specialty,
+  ARRAY(SELECT dc.place_id FROM doctor_clinics dc WHERE dc.doctor_id = users.id ORDER BY dc.place_id) AS clinic_ids,
   created_at, last_login, updated_at`;
 
 const clean = (v, max) => (typeof v === 'string' && v.trim() ? v.trim().slice(0, max) : null);
+
+const ROLES = ['patient', 'doctor', 'admin'];
 
 /**
  * Called on every logged-in request. Creates the user the first time.
  * From Auth0: email (Auth0 is the source of truth) and picture are refreshed;
  * the name is only filled in once, so a name edited on the site is kept.
+ *
+ * `access` comes from the Auth0 access token (see middleware/auth.js and
+ * backend/auth0/README.md): { role, clinicIds: [...], specialty }. Auth0 is
+ * the source of truth for roles, so when the token carries a role it is
+ * copied here together with the doctor's clinics; without one (Action not
+ * set up yet) the role and clinics in the database are kept.
  */
-async function upsertFromAuth0(auth0Id, profile = {}) {
+async function upsertFromAuth0(auth0Id, profile = {}, access = null) {
+  const role = ROLES.includes(access?.role) ? access.role : null;
   const { rows } = await db.query(
-    `INSERT INTO users (auth0_id, email, name, picture)
-     VALUES ($1, $2, $3, $4)
+    `INSERT INTO users (auth0_id, email, name, picture, role, specialty)
+     VALUES ($1, $2, $3, $4, COALESCE($5::varchar, 'patient'), $6)
      ON CONFLICT (auth0_id) DO UPDATE SET
        email      = COALESCE(EXCLUDED.email,   users.email),
        name       = COALESCE(users.name,       EXCLUDED.name),
        picture    = COALESCE(EXCLUDED.picture, users.picture),
+       role       = COALESCE($5, users.role),
+       specialty  = CASE WHEN $5 IS NULL THEN users.specialty ELSE $6 END,
        last_login = now()
      RETURNING ${PUBLIC_COLUMNS}`,
-    [auth0Id, clean(profile.email, 254), clean(profile.name, 200), clean(profile.picture, 2000)]
+    [
+      auth0Id,
+      clean(profile.email, 254),
+      clean(profile.name, 200),
+      clean(profile.picture, 2000),
+      role,
+      role === 'doctor' ? clean(access.specialty, 120) : null
+    ]
   );
-  return rows[0];
+  const user = rows[0];
+  if (role) user.clinic_ids = await setClinics(user.id, role === 'doctor' ? access.clinicIds : []);
+  return user;
+}
+
+// Clinic codes like 'medlife-spital': valid, no duplicates, at most 50
+function cleanClinicIds(list) {
+  if (!Array.isArray(list)) return [];
+  const ok = list.filter((v) => typeof v === 'string' && /^[a-z0-9][a-z0-9_-]{0,79}$/i.test(v));
+  return [...new Set(ok)].slice(0, 50).sort();
+}
+
+// Makes doctor_clinics match the list (one round trip; nothing changes if equal)
+async function setClinics(userId, clinicIds) {
+  const ids = cleanClinicIds(clinicIds);
+  await db.query(
+    `WITH removed AS (
+       DELETE FROM doctor_clinics WHERE doctor_id = $1 AND NOT (place_id = ANY($2::varchar[]))
+     )
+     INSERT INTO doctor_clinics (doctor_id, place_id)
+     SELECT $1, unnest($2::varchar[])
+     ON CONFLICT DO NOTHING`,
+    [userId, ids]
+  );
+  return ids;
+}
+
+async function findByEmail(email) {
+  const { rows } = await db.query(
+    `SELECT ${PUBLIC_COLUMNS} FROM users WHERE lower(email) = lower($1) ORDER BY last_login DESC NULLS LAST`,
+    [email]
+  );
+  return rows;
+}
+
+// Used by scripts/set_role.js (Auth0 stays the source of truth: the next
+// login copies the role from Auth0 again)
+async function setAccess(id, { role, clinicIds = [], specialty = null }) {
+  const { rows } = await db.query(
+    'UPDATE users SET role = $2, specialty = $3, updated_at = now() WHERE id = $1 RETURNING id',
+    [id, role, role === 'doctor' ? specialty : null]
+  );
+  if (!rows[0]) return null;
+  await setClinics(id, role === 'doctor' ? clinicIds : []);
+  return findById(id);
 }
 
 async function findById(id) {
@@ -40,7 +103,7 @@ async function findById(id) {
 }
 
 // Fields a user may change about themselves (role is NOT one of them)
-const EDITABLE = ['name', 'phone', 'birth_date', 'preferred_language'];
+const EDITABLE = ['name', 'phone', 'birth_date', 'sex', 'preferred_language'];
 
 async function updateProfile(id, changes) {
   const keys = EDITABLE.filter((k) => k in changes);
@@ -59,4 +122,15 @@ async function remove(id) {
   await db.query('DELETE FROM users WHERE id = $1', [id]);
 }
 
-module.exports = { EDITABLE, upsertFromAuth0, findById, updateProfile, remove };
+module.exports = {
+  ROLES,
+  EDITABLE,
+  upsertFromAuth0,
+  findById,
+  findByEmail,
+  setAccess,
+  setClinics,
+  cleanClinicIds,
+  updateProfile,
+  remove
+};

@@ -23,6 +23,18 @@ module.exports = {
       ? { issuerBaseURL: `https://${AUTH0_DOMAIN}/`, audience: AUTH0_AUDIENCE }
       : null,
 
+  // Prefix of the custom claims the Auth0 Action adds to the access token
+  // (role, clinic_id, specialty). Must match NAMESPACE in auth0/post-login-action.js.
+  auth0ClaimNamespace: (process.env.AUTH0_CLAIM_NAMESPACE || 'https://timicarenow.app').replace(/\/$/, ''),
+
+  // Optional: Auth0 Management API (Machine to Machine app), used by
+  // scripts/set_role.js to write the role into Auth0 app_metadata.
+  auth0Domain: AUTH0_DOMAIN || null,
+  auth0Management:
+    process.env.AUTH0_MGMT_CLIENT_ID && process.env.AUTH0_MGMT_CLIENT_SECRET
+      ? { clientId: process.env.AUTH0_MGMT_CLIENT_ID, clientSecret: process.env.AUTH0_MGMT_CLIENT_SECRET }
+      : null,
+
   // Optional: lets scripts change clinics with the "x-admin-key" header
   adminApiKey: process.env.ADMIN_API_KEY || null,
 

@@ -6,7 +6,9 @@ import "./panels.css";
 
 // The "my account" page: saved places, profile + contact history
 // (when the backend is set up), log out
-export default function SavedPlaces({ user, places, onSelect, onRemove, onLogout }) {
+//   onDoctorPortal  () => open the doctor dashboard (shown to doctors)
+export default function SavedPlaces({ user, places, onSelect, onRemove, onLogout, onDoctorPortal }) {
+  const isDoctor = user.role === "doctor";
   return (
     <div className="saved">
       <div className="saved-user">
@@ -15,9 +17,18 @@ export default function SavedPlaces({ user, places, onSelect, onRemove, onLogout
         )}
         <span>
           {TEXT.loggedInAs} <strong>{user.name}</strong>
+          <span className={`role-badge ${isDoctor ? "doctor" : ""}`} title={TEXT.accountTypeLabel}>
+            {isDoctor ? TEXT.roleDoctor : TEXT.rolePatient}
+          </span>
           <small>{user.email}</small>
         </span>
       </div>
+
+      {isDoctor && onDoctorPortal && (
+        <button type="button" className="btn-primary" onClick={onDoctorPortal}>
+          {TEXT.openDoctorPortal}
+        </button>
+      )}
 
       <h3>
         {TEXT.savedTitle} ({places.length})

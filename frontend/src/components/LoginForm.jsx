@@ -1,19 +1,23 @@
 import { useState } from "react";
 import { TEXT } from "../config/texts.js";
+import { DEMO_ACCOUNTS, DEMO_PASSWORD } from "../account/useAccount.js";
 import "./panels.css";
 
 // Login / create-account form.
 //   notice   optional message at the top (e.g. "log in to save")
-//   onSubmit (email, password) => error text, or null when it worked
+//   onSubmit (email, password, role) => error text, or null when it worked
+//            role: "patient" | "doctor" (the prototype lets you try both;
+//            with Auth0, doctors are set by an admin, never chosen here)
 export default function LoginForm({ notice, onSubmit }) {
   const [mode, setMode] = useState("login"); // "login" | "register"
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [doctor, setDoctor] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
-    setError(onSubmit(email, password) ?? "");
+    setError(onSubmit(email, password, doctor ? "doctor" : "patient") ?? "");
   }
 
   return (
@@ -43,6 +47,11 @@ export default function LoginForm({ notice, onSubmit }) {
         />
       </label>
 
+      <label className="login-check">
+        <input type="checkbox" checked={doctor} onChange={(e) => setDoctor(e.target.checked)} />
+        {TEXT.roleDoctorDemo}
+      </label>
+
       {error && <p className="login-error">{error}</p>}
 
       <button type="submit" className="btn-primary">
@@ -58,6 +67,7 @@ export default function LoginForm({ notice, onSubmit }) {
       </button>
 
       <p className="login-note">{TEXT.prototypeNote}</p>
+      <p className="login-note">{TEXT.demoAccountsNote(Object.keys(DEMO_ACCOUNTS), DEMO_PASSWORD)}</p>
     </form>
   );
 }

@@ -316,3 +316,121 @@
   line-height: 1;
   cursor: pointer;
 }
+
+/* ---------- Account types, medical record, appointments ---------- */
+.login-form label.login-check {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  font-weight: 400;
+}
+
+.login-form label.login-check input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
+
+.login-form textarea {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  resize: vertical;
+}
+
+.login-form textarea:focus {
+  outline: 2px solid var(--accent);
+  border-color: transparent;
+}
+
+.login-form label small {
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+
+.role-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+  font-size: 0.78rem;
+  font-weight: 600;
+  vertical-align: 1px;
+}
+
+.role-badge.doctor {
+  background: var(--accent);
+  color: #fff;
+}
+
+.doctor-account {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--paper);
+}
+
+.doctor-account p {
+  margin: 0;
+}
+
+.appointment-list li {
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.appointment-list li > span {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.appointment-list small {
+  color: var(--ink-soft);
+}
+
+.appointment-side {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.appt-status {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+}
+
+.appt-status.pending { background: #fbf0d9; color: #7a4f00; }
+.appt-status.completed { background: #eeebe5; color: #57524a; }
+.appt-status.cancelled { background: #f8e3e0; color: #8f2f24; }
+
+.book-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.book-button {
+  margin-top: 4px;
+}
+
+.btn-primary.popup-book {
+  margin-top: 8px;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+}

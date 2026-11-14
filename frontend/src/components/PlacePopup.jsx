@@ -6,6 +6,8 @@ import { Stars, ScoreBadge } from "./Stars.jsx";
 import OpeningHours from "./OpeningHours.jsx";
 import PopularTimes from "./PopularTimes.jsx";
 import ContactActions from "./ContactActions.jsx";
+import { SERVER_ACCOUNT } from "../account/useAccount.js";
+import "./panels.css";
 import { placeDescription } from "../data/translations.js";
 import { IconMapPin, IconStar, IconStarFilled } from "@tabler/icons-react";
 import { CategoryIcon } from "./MedIcon.jsx";
@@ -19,6 +21,7 @@ export default function PlacePopup({
   onOpenDetails,
   requestSpecialty = null,
   user = null,
+  onBook,
 }) {
   const category = getCategory(place.category);
   const badges = FEATURES.filter((f) => place[f.id] === true);
@@ -54,6 +57,12 @@ export default function PlacePopup({
         )}
 
         <ContactActions place={place} specialty={requestSpecialty} user={user} compact />
+        {/* Request sent to every doctor of this clinic (doctor dashboard) */}
+        {SERVER_ACCOUNT && onBook && user?.role !== "doctor" && (
+          <button type="button" className="btn-primary book-button popup-book" onClick={() => onBook(place)}>
+            📅 {TEXT.bookButton}
+          </button>
+        )}
 
         <OpeningHours place={place} compact />
 

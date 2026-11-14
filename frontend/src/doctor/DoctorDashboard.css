@@ -1,0 +1,631 @@
+/* =============================================================
+   Doctor dashboard. Reuses the start page look (Landing.css):
+   green band on top, cream area with white cards below.
+   ============================================================= */
+.doctor .landing-hero {
+  padding-bottom: 36px;
+}
+
+/* "← Back to the site" (top right, on the green band) */
+.doc-exit {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+  padding: 8px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 999px;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.doc-exit:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #fff;
+}
+
+.doc-exit:focus-visible,
+.doc-stat:focus-visible,
+.doc-appt:focus-visible,
+.doc-tabs button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.doc-content {
+  max-width: 960px;
+  text-align: left;
+  align-items: stretch;
+}
+
+.doc-demo {
+  margin: 20px 0 0;
+  padding: 10px 14px;
+  border: 1px dashed #d7b56d;
+  border-radius: 10px;
+  background: #fbf3df;
+  color: #6b5216;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.doc-message {
+  margin: 36px 0;
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+.doc-message .landing-all {
+  margin-top: 12px;
+}
+
+/* ---------- Stat tiles ---------- */
+.doc-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.doc-stat {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 12px;
+  align-items: center;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+
+.doc-stat:hover {
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+}
+
+.doc-stat-icon {
+  grid-row: 1 / 3;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.doc-stat.warn .doc-stat-icon {
+  background: #fbf0d9;
+  color: #8a5a00;
+}
+
+.doc-stat strong {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  line-height: 1.1;
+}
+
+.doc-stat small {
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+
+/* ---------- List header + tabs ---------- */
+.doc-list-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin: 32px 0 12px;
+}
+
+.doc-list-head .landing-section {
+  margin: 0;
+}
+
+.doc-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.doc-tabs button {
+  padding: 7px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.doc-tabs button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.doc-tabs button.active {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+.doc-empty {
+  padding: 28px;
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+/* ---------- Appointment cards ---------- */
+.doc-appointments {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.doc-appt {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: box-shadow 0.15s;
+}
+
+.doc-appt:hover {
+  box-shadow: var(--shadow);
+}
+
+.doc-appt.pending {
+  border-left-color: #c58a12;
+}
+
+.doc-appt.completed {
+  border-left-color: #8c867b;
+}
+
+.doc-appt.cancelled {
+  border-left-color: #b4483c;
+  opacity: 0.7;
+}
+
+.doc-when,
+.doc-who,
+.doc-side {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.doc-when strong {
+  font-size: 1.15rem;
+}
+
+.doc-when small,
+.doc-who small {
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+}
+
+.doc-reason {
+  margin-top: 2px;
+  font-size: 0.92rem;
+  overflow-wrap: anywhere;
+}
+
+.doc-side {
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.doc-status {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+}
+
+.doc-status.pending {
+  background: #fbf0d9;
+  color: #7a4f00;
+}
+
+.doc-status.completed {
+  background: #eeebe5;
+  color: #57524a;
+}
+
+.doc-status.cancelled {
+  background: #f8e3e0;
+  color: #8f2f24;
+}
+
+.doc-allergy {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #9a3412;
+}
+
+/* ---------- Medical record (inside the window) ---------- */
+.doc-record {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  color: var(--ink);
+}
+
+.doc-record-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.doc-record h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+}
+
+.doc-record-head p {
+  margin: 4px 0 0;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.doc-blood {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: #f8e3e0;
+  color: #8f2f24;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.doc-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+}
+
+.doc-contact a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.92rem;
+}
+
+.doc-contact a:hover {
+  text-decoration: underline;
+}
+
+.doc-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #fdecea;
+  color: #8f2f24;
+}
+
+.doc-record-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.doc-record h4 {
+  margin: 0 0 8px;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.doc-bullets {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.doc-bullets li + li {
+  margin-top: 4px;
+}
+
+.doc-none {
+  margin: 0;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.doc-mini {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.doc-mini li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.92rem;
+}
+
+.doc-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 16px;
+  border-left: 2px solid var(--accent-soft);
+}
+
+.doc-timeline li {
+  position: relative;
+  padding: 0 0 14px 4px;
+}
+
+.doc-timeline li::before {
+  content: "";
+  position: absolute;
+  left: -23px;
+  top: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.doc-timeline small {
+  display: block;
+  color: var(--ink-soft);
+}
+
+.doc-timeline p {
+  margin: 4px 0 0;
+  font-size: 0.92rem;
+}
+
+.doc-timeline em {
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* Doctor's actions on an appointment (inside the record window) */
+.doc-mini li.doc-appt-row {
+  display: block;
+}
+
+.doc-appt-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.doc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.doc-action {
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.doc-action:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.doc-action.primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+.doc-action.primary:hover {
+  background: var(--accent-hover);
+  color: #fff;
+}
+
+.doc-action:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.doc-complete {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--paper);
+}
+
+.doc-complete label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.doc-complete input,
+.doc-complete textarea {
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.doc-error {
+  margin: 6px 0 0;
+  color: #b4483c;
+  font-size: 0.85rem;
+}
+
+/* Clinic filter (doctors working at several clinics) */
+.doc-clinics {
+  margin-top: 20px;
+  justify-content: center;
+}
+
+/* New appointment requests */
+.doc-requests {
+  margin-top: 8px;
+}
+
+.doc-requests-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  margin: 28px 0 12px;
+}
+
+.doc-requests-head .landing-section {
+  margin: 0;
+}
+
+.doc-requests-head small {
+  color: var(--ink-soft);
+}
+
+.doc-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #c58a12;
+  color: #fff;
+  font-family: system-ui, sans-serif;
+  font-size: 0.8rem;
+  vertical-align: 3px;
+}
+
+.doc-request-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px;
+}
+
+.doc-request {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border: 1px solid #ecd9a8;
+  border-left: 4px solid #c58a12;
+  border-radius: 12px;
+  background: #fffaf0;
+}
+
+.doc-request-main {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.doc-request-main:hover strong:first-child {
+  text-decoration: underline;
+}
+
+.doc-request-main small {
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+}
+
+.doc-request-when {
+  margin-top: 4px;
+  font-size: 0.9rem;
+}
+
+/* Phones: the back button would cover the language buttons, so it
+   moves into the flow; cards stack */
+@media (max-width: 600px) {
+  .doc-exit {
+    top: 64px;
+    left: 20px;
+    right: auto;
+  }
+
+  .doctor .landing-hero {
+    padding-top: 116px;
+  }
+
+  .doc-appt {
+    grid-template-columns: 64px minmax(0, 1fr);
+  }
+
+  .doc-side {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}
