@@ -2,7 +2,7 @@
 
 **Find the right clinic in Timișoara, fast.** TimiCareNow is a map of 100 real hospitals, clinics, laboratories and private practices in Timișoara, with search, filters, an AI assistant, online appointment requests and a portal for doctors. Built by **The MedFinders**.
 
-Live site: <https://the-medfinders-unihack.vercel.app>
+Live site: <https://timicarenow-medfinders-unihack.vercel.app>
 
 > **For medical emergencies call 112.** Opening hours and phone numbers were collected on 2026-11-13 and can change; call the clinic before you go.
 
