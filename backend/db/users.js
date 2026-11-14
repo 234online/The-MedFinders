@@ -50,7 +50,7 @@ async function upsertUser(auth0Id, profile = {}) {
        name       = COALESCE(EXCLUDED.name,    users.name),
        picture    = COALESCE(EXCLUDED.picture, users.picture),
        last_login = now()
-     RETURNING user_id, auth0_id, email, name, picture, created_at, last_login`,
+     RETURNING id AS user_id, auth0_id, email, name, picture, role, created_at, last_login`,
     [auth0Id, clean(profile.email, 254), clean(profile.name, 200), clean(profile.picture, 2000)]
   );
   return rows[0];
