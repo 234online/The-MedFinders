@@ -2,6 +2,8 @@ import { getCategory } from "../config/placeTypes.js";
 import { TEXT } from "../config/texts.js";
 import { SERVER_ACCOUNT } from "../account/useAccount.js";
 import AccountProfile from "./AccountProfile.jsx";
+import DoctorRequestForm from "./DoctorRequestForm.jsx";
+import AdminDoctorRequests from "./AdminDoctorRequests.jsx";
 import "./panels.css";
 
 // The "my account" page: saved places, profile + contact history
@@ -18,7 +20,7 @@ export default function SavedPlaces({ user, places, onSelect, onRemove, onLogout
         <span>
           {TEXT.loggedInAs} <strong>{user.name}</strong>
           <span className={`role-badge ${isDoctor ? "doctor" : ""}`} title={TEXT.accountTypeLabel}>
-            {isDoctor ? TEXT.roleDoctor : TEXT.rolePatient}
+            {isDoctor ? TEXT.roleDoctor : user.role === "admin" ? TEXT.roleAdmin : TEXT.rolePatient}
           </span>
           <small>{user.email}</small>
         </span>
@@ -66,6 +68,10 @@ export default function SavedPlaces({ user, places, onSelect, onRemove, onLogout
           })}
         </ul>
       )}
+
+      {/* Admins approve doctor accounts; patients can ask for one */}
+      {SERVER_ACCOUNT && user.role === "admin" && <AdminDoctorRequests />}
+      {SERVER_ACCOUNT && user.role === "patient" && <DoctorRequestForm compact />}
 
       {SERVER_ACCOUNT && <AccountProfile onDeleted={onLogout} />}
 

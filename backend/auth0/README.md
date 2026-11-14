@@ -50,7 +50,35 @@ Everything on the doctor page comes from those patients' own data:
      AUTH0_MGMT_CLIENT_SECRET=...
      ```
 
-## Making someone a doctor
+## Doctors ask, an admin approves (on the site)
+
+1. In the login window the person chooses **Medic** and logs in / signs up. Back on the
+   site, the **doctor account request** opens: clinics (one or more), specialty, College of
+   Physicians number / stamp code, optional message. (Already logged-in patients find the same
+   form under **Contul meu → Ești medic?**)
+2. The account stays a **patient** account while the request waits.
+3. An **admin** sees the waiting requests under **Contul meu → Cereri de cont de medic** and
+   approves or rejects them (with a reason the person sees). Check the number in the
+   College of Physicians register before approving.
+4. Approving writes `{ role, clinic_ids, specialty }` to Auth0 **and** the database, like
+   `set-role` below. This needs the Machine to Machine app (`AUTH0_MGMT_CLIENT_ID` /
+   `AUTH0_MGMT_CLIENT_SECRET`) **on Render too**: without it only the database changes and,
+   with the Action installed, the next login turns the person back into a patient (the site
+   shows this warning when approving).
+5. The person logs out and in again to see the doctor portal. From then on, patients can
+   pick them when booking at those clinics.
+
+A clinic **takes online appointments** when at least one approved doctor works there.
+Patients choose a doctor or "any doctor": a request for one doctor is seen only by them; a
+request for "any doctor" by every doctor of the clinic.
+
+**The first admin** is made with the script (there is nobody yet to approve them):
+
+```bash
+npm run set-role -- your.email@gmail.com admin
+```
+
+## Making someone a doctor (script)
 
 The person must sign up on the site first, as a normal patient. Then:
 

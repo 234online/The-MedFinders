@@ -300,6 +300,8 @@ export default function DoctorDashboard({
                           {a.patient.sex && ` · ${DTEXT.sex[a.patient.sex]}`}
                         </small>
                         <span className="doc-reason">{a.reason}</span>
+                        {/* The patient chose this doctor (otherwise: any doctor of the clinic) */}
+                        {a.requestedDoctor && <small className="doc-for-you">{DTEXT.forYou}</small>}
                         {(manyClinics || a.handledBy) && (
                           <small>
                             {[manyClinics && clinicName(a.placeId), a.handledBy && DTEXT.handledBy(a.handledBy)]

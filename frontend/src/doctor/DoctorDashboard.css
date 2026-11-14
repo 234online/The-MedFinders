@@ -629,3 +629,9 @@
     flex-wrap: wrap;
   }
 }
+
+/* The patient chose this doctor */
+.doc-for-you {
+  color: var(--accent-dark, #14532d);
+  font-weight: 600;
+}
